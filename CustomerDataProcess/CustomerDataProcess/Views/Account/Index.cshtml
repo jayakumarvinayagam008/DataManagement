@@ -1,0 +1,155 @@
+﻿@model CustomerDataProcess.Models.AccountModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<style>
+    .loginPage {
+        width: 100%;
+        height: 800px;
+    }
+</style>
+<style type="text/css">
+    .login-register-form-section {
+        max-width: 350px;
+        margin: 0 auto;
+        border: solid 2px #808080;
+        background-color: gainsboro;
+    }
+
+        .login-register-form-section i {
+            width: 10px;
+        }
+
+        .login-register-form-section .nav-tabs > li > a {
+            color: #2abb9b;
+        }
+
+        .login-register-form-section .nav-tabs > li.active > a {
+            background-color: #2abb9b;
+            border-color: #2abb9b;
+            color: white;
+        }
+
+        .login-register-form-section .nav-tabs > li > a,
+        .login-register-form-section .nav-tabs > li.active > a {
+            width: 160px;
+            text-align: center;
+            border-radius: 0;
+        }
+
+        .login-register-form-section .nav-tabs {
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .login-register-form-section .btn-custom {
+            width: 100%;
+            background-color: #2abb9b;
+            border-color: #2abb9b;
+            margin-bottom: 0.5em;
+            border-radius: 0;
+        }
+
+            .login-register-form-section .btn-custom:hover {
+                width: 100%;
+                background-color: #48A497;
+                border-color: #2abb9b;
+            }
+
+        .login-register-form-section .form-group {
+            padding: 0 20px;
+        }
+
+    .input-group {
+        width: 100%;
+    }
+</style>
+
+<div class="loginPage">
+
+    <div class="row">
+        <div class="container">
+            <div class="login-register-form-section">
+                <ul class="nav nav-tabs" role="tablist" id="accountPannel">
+                    <li class="active"><a href="#login" data-toggle="tab">Login</a></li>
+                    <li><a href="#register" data-toggle="tab">Register</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active" id="login">
+                        <form class="form-horizontal" method="post">
+                            <div class="form-group ">
+                                <div class="input-group">
+                                    <input type="text" name="UserLogin.UserName" class="form-control" placeholder="Username or email" required="required" value="">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group">
+                                    <input type="password" name="UserLogin.Password" class="form-control" placeholder="Password" required="required">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" id="rememberMe">
+                                <label for="rememberMe">Remember Me</label>
+                                <a href="#" class="pull-right">Forgot password?</a>
+                            </div>
+
+
+                            <input type="submit" value="Login" class="btn btn-success btn-custom">
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="register">
+                        <form class="form-horizontal" method="post" action="">
+                            <div class="form-group ">
+                                <div class="input-group">
+                                    <input type="text" name="UserRegister.FirstName" class="form-control" placeholder="First Name" required="required" value="">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group">
+                                    <input type="text" name="UserRegister.LastName" class="form-control" placeholder="Last Name" required="required" value="">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group">
+                                    <input type="email" name="UserRegister.Email" class="form-control" placeholder="Email" required="required" value="">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group">
+                                    <input type="text" name="UserRegister.Phone" class="form-control" placeholder="Phone" required="required">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group">
+                                    <select>
+                                        <option>Please select</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group">
+                                    <input type="text" name="UserRegister.UserName" class="form-control" placeholder="User Name" required="required">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group">
+                                    <input type="password" name="UserRegister.Password" class="form-control" placeholder="Password" required="required">
+                                </div>
+                            </div>
+                            <input type="submit" value="Register" class="btn btn-success btn-custom">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        $('#accountPannel').on('click', function (eve) { 
+
+        });
+
+</script>

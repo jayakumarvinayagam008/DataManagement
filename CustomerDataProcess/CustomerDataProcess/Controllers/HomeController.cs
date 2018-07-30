@@ -16,6 +16,26 @@ namespace CustomerDataProcess.Controllers
         }
 
         
+        public IActionResult BusinessToBusiness()
+        {
+            return View();
+        }
+
+        public IActionResult BusinessToCustomers()
+        {
+            return View();
+        }
+
+        public IActionResult CustomerData()
+        {
+            return View();
+        }
+
+        public IActionResult UploadUserData()
+        {
+            return View();
+        }
+       
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

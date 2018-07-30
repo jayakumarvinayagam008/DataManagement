@@ -1,0 +1,33 @@
+﻿@model CustomerDataProcess.Models.AccountModel
+
+@{
+    ViewData["Title"] = "AccountView";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<h2>AccountView</h2>
+
+<h4>AccountModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AccountView">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsLoginRequest" /> @Html.DisplayNameFor(model => model.IsLoginRequest)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
