@@ -7,7 +7,7 @@
 <style>
     .loginPage {
         width: 100%;
-        height: 800px;
+        height: 700px;
     }
 </style>
 <style type="text/css">
@@ -95,7 +95,7 @@
                                 <a href="#" class="pull-right">Forgot password?</a>
                             </div>
 
-
+                            <input type="hidden" name="UserLogin.IsLoginRequest" value="true" />
                             <input type="submit" value="Login" class="btn btn-success btn-custom">
                         </form>
                     </div>
@@ -123,8 +123,10 @@
                             </div>
                             <div class="form-group ">
                                 <div class="input-group">
-                                    <select>
+                                    <select id="selectRole" class=form-control>
                                         <option>Please select</option>
+                                        <option>Administrator</option>
+                                        <option>Accountant</option>
                                     </select>
                                 </div>
                             </div>
@@ -147,9 +149,4 @@
     </div>
 </div>
 
-<script>
-        $('#accountPannel').on('click', function (eve) { 
 
-        });
-
-</script>
