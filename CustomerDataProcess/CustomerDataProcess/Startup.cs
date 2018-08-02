@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.DataUpload.Commands.SaveDataUpload;
+using Application.DataUpload.Queries.GetUpLoadDataType;
 using Application.UserAccount.Queries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +25,9 @@ namespace CustomerDataProcess
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IUserValidation, UserValidation>();
+            services.AddScoped<IGetUpLoadDataTypeList, GetUpLoadDataTypeList>();
+            services.AddScoped<ISaveUploadDataCommand, SaveUploadDataCommand>();
+            
             services.AddMvc();
         }
 
