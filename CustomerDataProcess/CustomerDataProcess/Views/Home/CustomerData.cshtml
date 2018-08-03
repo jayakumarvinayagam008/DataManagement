@@ -1,7 +1,95 @@
 ﻿
 @{
     ViewData["Title"] = "CustomerDate";
+    @model Application.CustomerData.Queries.CustomerListDataModel
 }
 
 <h2>CustomerDate</h2>
+<style>
+    .mainTableBlock {
+        min-height: 100px;
+        max-height: 500px;
+        overflow-y: auto;
+        overflow-x: auto;
+        width: 100%;
+        background-color: aquamarine;
+    }
 
+    .table-fixed tbody {
+        height: 200px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    .table-fixed thead,
+    .table-fixed tbody,
+    .table-fixed tr,
+    .table-fixed td,
+    .table-fixed th {
+        display: flex;
+    }
+
+        .table-fixed tr:after {
+            content: "";
+            display: block;
+            visibility: hidden;
+            clear: both;
+        }
+
+        .table-fixed tbody td,
+        .table-fixed thead > tr > th {
+            float: left;
+        }
+
+    .table > thead > tr > th,
+    .table > thead > tr > td {
+        font-size: .9em;
+        font-weight: 400;
+        border-bottom: 0;
+        letter-spacing: 1px;
+        vertical-align: top;
+        padding: 8px;
+        background: #51596a;
+        text-transform: uppercase;
+        color: #ffffff;
+    }
+</style>
+<div class="mainTableBlock">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Numbers</th>
+                <th>Operator</th>
+                <th>Circle</th>
+                <th>ClientName</th>
+                <th>ClientBusinessVertical</th>
+                <th>DBQuality</th>
+                <th>DateOfUse</th>
+                <th>ClientCity</th>
+                <th>Uploaded On</th>
+            </tr>
+        </thead>
+        <tbody>
+           
+            @{
+            int i = 0;
+            foreach (var item in Model.CustomerDataModels.ToList())
+            {
+                <tr>
+                <td>@i++</td>
+                <td>@item.Numbers</td>
+                <td>@item.Operator</td>
+                <td>@item.Circle</td>
+                <td>@item.ClientName</td>
+                <td>@item.ClientBusinessVertical</td>
+                <td>@item.DBQuality</td>
+                <td>@item.DateOfUse.ToString()</td>
+                <td>@item.ClientCity</td>
+                <td>@item.DateOfUse.ToString()</td>
+            </tr>              
+            }
+        }
+        </tbody>
+    </table>
+</div>

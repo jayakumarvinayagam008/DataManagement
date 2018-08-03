@@ -10,13 +10,16 @@
     <Folder Include="BusinessToCustomers\Commands\" />
     <Folder Include="BusinessToCustomers\Queries\" />
     <Folder Include="CustomerData\Commands\" />
-    <Folder Include="CustomerData\Queries\" />
     <Folder Include="UserAccount\Commands\" />
     <Folder Include="UserAccount\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Persistance\Persistance.csproj" />
   </ItemGroup>
 
 </Project>

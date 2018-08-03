@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.CustomerData.Queries;
 using Application.DataUpload.Commands.SaveDataUpload;
 using Application.DataUpload.Queries.GetUpLoadDataType;
 using Application.UserAccount.Queries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Persistance;
 
 namespace CustomerDataProcess
 {
@@ -24,10 +27,19 @@ namespace CustomerDataProcess
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<CustomerDataManagementContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+
+
             services.AddScoped<IUserValidation, UserValidation>();
             services.AddScoped<IGetUpLoadDataTypeList, GetUpLoadDataTypeList>();
             services.AddScoped<ISaveUploadDataCommand, SaveUploadDataCommand>();
-            
+            services.AddScoped<IFileToDataModel, FileToDataModel>();
+            services.AddScoped<ISaveCustomerData, SaveCustomerData>();
+            services.AddScoped<IGetCustomerData, GetCustomerData>();
+
             services.AddMvc();
         }
 

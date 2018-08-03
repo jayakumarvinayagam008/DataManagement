@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Application.DataUpload.Commands.SaveDataUpload
 {
-    public interface ISaveUploadDataCommand
+    public interface IFileToDataModel
     {
-        UploadSaveStatus Upload(SaveDataModel saveDataModel);
+        IEnumerable<CustomerDataModel> ReadFileData(SaveDataModel saveDataModel);
 
     }
 }

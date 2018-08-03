@@ -11,17 +11,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.IO;
 using System.Net.Http.Headers;
 using Application.DataUpload.Commands.SaveDataUpload;
+using Application.CustomerData.Queries;
 
 namespace CustomerDataProcess.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IGetUpLoadDataTypeList _getUpLoadDataTypeList;
-        private readonly ISaveUploadDataCommand _saveUploadDataCommand; 
-        public HomeController(IGetUpLoadDataTypeList getUpLoadDataTypeList, ISaveUploadDataCommand saveUploadDataCommand)
+        private readonly ISaveUploadDataCommand _saveUploadDataCommand;
+        private readonly IGetCustomerData _getCustomerData;
+        public HomeController(IGetUpLoadDataTypeList getUpLoadDataTypeList, ISaveUploadDataCommand saveUploadDataCommand,
+            IGetCustomerData getCustomerData)
         {
             _getUpLoadDataTypeList = getUpLoadDataTypeList;
             _saveUploadDataCommand = saveUploadDataCommand;
+            _getCustomerData = getCustomerData;
         }
         public IActionResult Index()
         {
@@ -41,7 +45,8 @@ namespace CustomerDataProcess.Controllers
 
         public IActionResult CustomerData()
         {
-            return View();
+            var customerData = _getCustomerData.Get();
+            return View(customerData);
         }
 
         public IActionResult UploadUserData()

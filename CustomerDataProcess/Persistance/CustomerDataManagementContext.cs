@@ -15,6 +15,15 @@ namespace Persistance
         public virtual DbSet<UploadHistoryDetail> UploadHistoryDetail { get; set; }
         public virtual DbSet<UploadStatus> UploadStatus { get; set; }
 
+        public CustomerDataManagementContext()
+        {
+
+        }
+        public CustomerDataManagementContext(string connectionString)
+        {
+
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
