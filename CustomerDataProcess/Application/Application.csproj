@@ -12,6 +12,7 @@
     <Folder Include="CustomerData\Commands\" />
     <Folder Include="UserAccount\Commands\" />
     <Folder Include="UserAccount\Queries\" />
+    <Folder Include="BusinessToBusiness\Queries\New Folder\" />
   </ItemGroup>
 
   <ItemGroup>

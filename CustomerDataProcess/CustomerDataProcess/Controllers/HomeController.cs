@@ -12,6 +12,8 @@ using System.IO;
 using System.Net.Http.Headers;
 using Application.DataUpload.Commands.SaveDataUpload;
 using Application.CustomerData.Queries;
+using Application.BusinessToBusiness.Queries;
+using Application.BusinessToCustomers.Queries;
 
 namespace CustomerDataProcess.Controllers
 {
@@ -20,12 +22,17 @@ namespace CustomerDataProcess.Controllers
         private readonly IGetUpLoadDataTypeList _getUpLoadDataTypeList;
         private readonly ISaveUploadDataCommand _saveUploadDataCommand;
         private readonly IGetCustomerData _getCustomerData;
+        private readonly IGetBusinessToBusiness _getBusinessToBusiness;
+        private readonly IGetBusinessToCustomer _getBusinessToCustomer;
         public HomeController(IGetUpLoadDataTypeList getUpLoadDataTypeList, ISaveUploadDataCommand saveUploadDataCommand,
-            IGetCustomerData getCustomerData)
+                              IGetCustomerData getCustomerData, IGetBusinessToBusiness getBusinessToBusiness,
+                              IGetBusinessToCustomer getBusinessToCustomer)
         {
             _getUpLoadDataTypeList = getUpLoadDataTypeList;
             _saveUploadDataCommand = saveUploadDataCommand;
             _getCustomerData = getCustomerData;
+            _getBusinessToBusiness = getBusinessToBusiness;
+            _getBusinessToCustomer = getBusinessToCustomer;
         }
         public IActionResult Index()
         {
@@ -35,11 +42,13 @@ namespace CustomerDataProcess.Controllers
 
         public IActionResult BusinessToBusiness()
         {
+            var businessToBusinessData = _getBusinessToBusiness.Get();
             return View();
         }
 
         public IActionResult BusinessToCustomers()
         {
+            var businessToCustomerData = _getBusinessToCustomer.Get();
             return View();
         }
 

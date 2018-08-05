@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.BusinessToBusiness.Queries;
+using Application.BusinessToCustomers.Queries;
 using Application.CustomerData.Queries;
 using Application.DataUpload.Commands.SaveDataUpload;
 using Application.DataUpload.Queries.GetUpLoadDataType;
@@ -39,7 +41,8 @@ namespace CustomerDataProcess
             services.AddScoped<IFileToDataModel, FileToDataModel>();
             services.AddScoped<ISaveCustomerData, SaveCustomerData>();
             services.AddScoped<IGetCustomerData, GetCustomerData>();
-
+            services.AddScoped<IGetBusinessToCustomer, GetBusinessToCustomer>();
+            services.AddScoped<IGetBusinessToBusiness, GetBusinessToBusiness>();
             services.AddMvc();
         }
 

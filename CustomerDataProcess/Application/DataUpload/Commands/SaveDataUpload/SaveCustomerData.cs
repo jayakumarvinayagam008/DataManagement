@@ -32,7 +32,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                     }));
                 saveStatus = customerDataManagementContext.SaveChanges() > 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 throw;
