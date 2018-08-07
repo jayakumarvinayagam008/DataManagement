@@ -8,6 +8,7 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -108,7 +109,7 @@
                 }
 
         .main-content {
-            margin-top: 60px;
+            margin-top: 10px;
             margin-left: 200px;
             padding: 20px;
         }
@@ -202,21 +203,29 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
 
+    </environment>
+    <script src="~/js/jquery.dataTables.min.js"></script>
     @RenderSection("Scripts", required: false)
     <script>
         $('.btn-expand-collapse').click(function (e) {
             $('.navbar-primary').toggleClass('collapsed');
         });
 
-            $(document).on('click', '.browse', function(){
-                var file = $(this).parent().parent().parent().find('.file');
-                file.trigger('click');
-            });
-            $(document).on('change', '.file', function(){
-                $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
-            });
+        $(document).on('click', '.browse', function () {
+            var file = $(this).parent().parent().parent().find('.file');
+            file.trigger('click');
+        });
+        $(document).on('change', '.file', function () {
+            $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+        });
+
+        $(document).ready(function (eve) {
+            var table = $('#customerDataGrid').DataTable();
+            //customerDataGrid
+
+        });
+
     </script>
 </body>
 </html>

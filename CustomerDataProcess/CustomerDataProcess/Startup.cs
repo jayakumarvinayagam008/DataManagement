@@ -43,6 +43,9 @@ namespace CustomerDataProcess
             services.AddScoped<IGetCustomerData, GetCustomerData>();
             services.AddScoped<IGetBusinessToCustomer, GetBusinessToCustomer>();
             services.AddScoped<IGetBusinessToBusiness, GetBusinessToBusiness>();
+            services.AddScoped<IBusinessToBusinessFileToDataModel, BusinessToBusinessFileToDataModel>();
+            services.AddScoped<IBusinessToCustomerFileToDataModel, BusinessToCustomerFileToDataModel>();
+
             services.AddMvc();
         }
 
