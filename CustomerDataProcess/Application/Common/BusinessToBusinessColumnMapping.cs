@@ -33,7 +33,7 @@ namespace Application.Common
             ColumnName.Add("Contactperson1", 20);
             ColumnName.Add("Designation1", 21);
             ColumnName.Add("Est_year", 22);
-            ColumnName.Add("CategoryId", 23);
+            ColumnName.Add("Category ID", 23);
             ColumnName.Add("LandMark", 24);
             ColumnName.Add("No_of_Emp", 25);
             ColumnName.Add("Country", 26);

@@ -43,13 +43,13 @@ namespace CustomerDataProcess.Controllers
         public IActionResult BusinessToBusiness()
         {
             var businessToBusinessData = _getBusinessToBusiness.Get();
-            return View();
+            return View(businessToBusinessData);
         }
 
         public IActionResult BusinessToCustomers()
         {
             var businessToCustomerData = _getBusinessToCustomer.Get();
-            return View();
+            return View(businessToCustomerData);
         }
 
         public IActionResult CustomerData()
@@ -62,6 +62,7 @@ namespace CustomerDataProcess.Controllers
         {
             var uploadDataModel = new UploadDataModel();
             uploadDataModel.UploadDataTypes = _getUpLoadDataTypeList.Get().Select(x => new SelectListItem { Value = $"{x.Id}", Text = x.Name });
+            
             return View(uploadDataModel);
         }
 
@@ -97,6 +98,10 @@ namespace CustomerDataProcess.Controllers
 
 
             var saveStatus = _saveUploadDataCommand.Upload(saveUploadModel);
+            uploadDataModel.StatusCode = (saveStatus.IsUploaded) ? 1 : 2;
+            uploadDataModel.StatusMessage = saveStatus.StatusMessage;
+            uploadDataModel.Summary = $"{123} rows uploaded out of {saveStatus.UploadedRows}";
+            uploadDataModel.ValidationMessage = string.Empty;
 
             return View(uploadDataModel);
         }

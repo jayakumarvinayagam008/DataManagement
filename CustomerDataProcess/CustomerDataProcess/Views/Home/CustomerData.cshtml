@@ -9,6 +9,12 @@
     .mainTableBlock {
         min-height: 100px;
         max-height: 500px;
+
+        width: 100%;
+    }
+    .gridBlock {
+        min-height: 100px;
+        max-height: 500px;
         overflow-y: auto;
         overflow-x: auto;
         width: 100%;
@@ -52,45 +58,97 @@
         text-transform: uppercase;
         color: #ffffff;
     }
+
+    .card-header {
+        background-color: #119292;
+        cursor: pointer;
+    }
+
+    .filterText {
+        color: whitesmoke;
+        background-color: #119292;
+    }
 </style>
 <div class="mainTableBlock">
-    <table id="customerDataGrid">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Numbers</th>
-                <th>Operator</th>
-                <th>Circle</th>
-                <th>ClientName</th>
-                <th>ClientBusinessVertical</th>
-                <th>DBQuality</th>
-                <th>DateOfUse</th>
-                <th>ClientCity</th>
-                <th>Uploaded On</th>
-            </tr>
-        </thead>
-        <tbody>
-           
-            @{
-                int i = 0;
-                foreach (var item in Model.CustomerDataModels.ToList())
-                {
-                    i = i + 1;
+    <div class="accordion" id="accordionExample">
+
+        <div class="card">
+            <div class="card-header" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <h5 class="mb-0">
+                    <button class="btn collapsed filterText" type="button">
+                        Filter Option
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                <div class="card-body">
+                    <div class="form-group">
+                        <p>
+                            <div class="form-group">
+                                <div class="col-sm-6">
+                                    <div>City</div>
+                                    <div>
+                                        <select asp-for="Filter.CityId"
+                                                class=form-control
+                                                asp-items="@Model.Filter.Cities">
+                                            <option>Please select</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-group" style="text-align:center; margin-top:20px;margin-bottom:20px;">
+                                            <button type="submit" class="btn">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </p>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="gridBlock">
+        <table id="customerDataGrid">
+            <thead>
                 <tr>
-                <td>@i</td>
-                <td>@item.Numbers</td>
-                <td>@item.Operator</td>
-                <td>@item.Circle</td>
-                <td>@item.ClientName</td>
-                <td>@item.ClientBusinessVertical</td>
-                <td>@item.DBQuality</td>
-                <td>@item.DateOfUse.ToString()</td>
-                <td>@item.ClientCity</td>
-                <td>@item.DateOfUse.ToString()</td>
-            </tr>              
-            }
-        }
-        </tbody>
-    </table>
+                    <th>#</th>
+                    <th>Numbers</th>
+                    <th>Operator</th>
+                    <th>Circle</th>
+                    <th>ClientName</th>
+                    <th>ClientBusinessVertical</th>
+                    <th>DBQuality</th>
+                    <th>DateOfUse</th>
+                    <th>ClientCity</th>
+                    <th>Uploaded On</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @{
+                    int i = 0;
+                    foreach (var item in Model.CustomerDataModels.ToList())
+                    {
+                        i = i + 1;
+                        <tr>
+                            <td>@i</td>
+                            <td>@item.Numbers</td>
+                            <td>@item.Operator</td>
+                            <td>@item.Circle</td>
+                            <td>@item.ClientName</td>
+                            <td>@item.ClientBusinessVertical</td>
+                            <td>@item.DBQuality</td>
+                            <td>@item.DateOfUse.ToString()</td>
+                            <td>@item.ClientCity</td>
+                            <td>@item.DateOfUse.ToString()</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 

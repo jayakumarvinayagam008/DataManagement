@@ -190,6 +190,7 @@ namespace Persistance
             modelBuilder.Entity<BusinessToCustomer>(entity =>
             {
                 entity.HasKey(e => e.B2cid);
+                entity.ToTable("BusinessToCustomer", "dm");
 
                 entity.Property(e => e.B2cid).HasColumnName("B2CId");
 
@@ -204,7 +205,8 @@ namespace Persistance
 
                 entity.Property(e => e.AnnualSalary)
                     .HasColumnName("Annual_Salary")
-                    .HasColumnType("decimal(18, 0)");
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Area)
                     .HasMaxLength(500)
@@ -242,6 +244,10 @@ namespace Persistance
                 entity.Property(e => e.Employer)
                     .HasMaxLength(500)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Experience)
+                   .HasMaxLength(10)
+                   .IsUnicode(false);
 
                 entity.Property(e => e.Gender)
                     .HasMaxLength(10)

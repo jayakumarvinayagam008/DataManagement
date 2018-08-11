@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Application.Common;
 using Persistance;
 
@@ -8,13 +9,30 @@ namespace Application.BusinessToCustomers.Queries
     public class GetBusinessToCustomer:IGetBusinessToCustomer
     {
         private readonly CustomerDataManagementContext _customerDataManagementContext;
-        public GetBusinessToCustomer(CustomerDataManagementContext dbContext)
+        private readonly IGetCity _getCity;
+        private readonly IGetCountry _getCountry;
+        private readonly IGetArea _getArea;
+        private readonly IGetState _getState;
+        private readonly IGetDistinctName _getDestination;
+        
+        public GetBusinessToCustomer(CustomerDataManagementContext dbContext, IGetArea getArea,
+            IGetCity getCity, IGetCountry getCountry, IGetState getState, IGetDistinctName getDestination)
         {
             _customerDataManagementContext = dbContext;
+            _getArea = getArea;
+            _getDestination = getDestination;
+            _getState = getState;
+            _getCountry = getCountry;
+            _getCity = getCity;
         }
 
         public BusinessToCustomerListModel Get()
         {
+            var filterCity = _getCity.Get();
+            var filterState = _getState.Get();
+            var filterArea = _getArea.Get();
+            var filterCountry = _getCountry.Get();
+            //var filterDestination = _getDestination.Get();
             var customer = _customerDataManagementContext.BusinessToCustomer.Select(cust => new BusinessToCustomerModel
             {
                 Address = cust.Address,
@@ -43,7 +61,17 @@ namespace Application.BusinessToCustomers.Queries
                 Roles = cust.Roles,
                 State = cust.State
             }).AsEnumerable<BusinessToCustomerModel>();
-            return new BusinessToCustomerListModel { BusinessToCustomers = customer };
+            return new BusinessToCustomerListModel
+            {
+                BusinessToCustomers = customer,
+                Filter = new DataFilter
+                {
+                    Area = filterArea,
+                    Cities = filterCity,
+                    Countries = filterCountry,
+                    States = filterState
+                }
+            };
         }
     }
 }

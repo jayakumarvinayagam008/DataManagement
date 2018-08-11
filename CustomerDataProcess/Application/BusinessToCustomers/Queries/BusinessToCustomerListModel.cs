@@ -7,7 +7,7 @@ namespace Application.BusinessToCustomers.Queries
 {
     public class BusinessToCustomerListModel
     {
-
+        public DataFilter Filter { get; set; }
         public IEnumerable<BusinessToCustomerModel> BusinessToCustomers { get; set; }
     }
 }

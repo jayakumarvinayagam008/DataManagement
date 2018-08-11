@@ -5,14 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="BusinessToBusiness\Queries\New Folder\**" />
+    <EmbeddedResource Remove="BusinessToBusiness\Queries\New Folder\**" />
+    <None Remove="BusinessToBusiness\Queries\New Folder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="BusinessToBusiness\Commands\" />
-    <Folder Include="BusinessToBusiness\Queries\" />
     <Folder Include="BusinessToCustomers\Commands\" />
-    <Folder Include="BusinessToCustomers\Queries\" />
     <Folder Include="CustomerData\Commands\" />
     <Folder Include="UserAccount\Commands\" />
     <Folder Include="UserAccount\Queries\" />
-    <Folder Include="BusinessToBusiness\Queries\New Folder\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +24,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Persistance\Persistance.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.mvc.viewfeatures\2.0.4\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

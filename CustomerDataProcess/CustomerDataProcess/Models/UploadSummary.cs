@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace CustomerDataProcess.Models
 {
-    public class UploadDataModel
+    public class UploadSummary
     {
-        public int UploadTypeId { get; set; }
-        public IEnumerable<SelectListItem> UploadDataTypes { get; set; }
-        public int? StatusCode { get; set; }
+        public int StatusCode { get; set; }
         public string StatusMessage { get; set; }
         public string Summary { get; set; }
         public string ValidationMessage { get; set; }

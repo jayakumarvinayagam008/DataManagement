@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
+        <link href="~/css/jquery.dropdown.min.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -117,6 +118,33 @@
         .collapsed + .main-content {
             margin-left: 60px;
         }
+
+        #loader {
+            height: 400px;
+            position: relative;
+            background-color: gray; /* for demonstration */
+        }
+
+        .spen_loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -32px; /* -1 * image width / 2 */
+            margin-top: -32px; /* -1 * image height / 2 */
+        }
+
+        #divLoading {
+            margin: 0px;
+            padding: 0px;
+            position: fixed;
+            right: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(102, 102, 102);
+            z-index: 30001;
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
@@ -133,6 +161,11 @@
                 </div>
             </div>
         </nav>*@
+    <div id="divLoading">
+        <p style="position: absolute; color: White; top: 50%; left: 45%;">
+            <img src="~/images/loader3.gif">
+        </p>
+    </div>
 
     <nav class="navbar navbar-inverse navbar-global navbar-fixed-top">
         <div class="container-fluid">
@@ -161,8 +194,8 @@
                 <a asp-area="" asp-controller="Home" asp-action="Index"><span class="glyphicon glyphicon-home"></span><span class="nav-label">Home</span></a>
                 <a asp-area="" asp-controller="Home" asp-action="BusinessToBusiness"><span class="glyphicon glyphicon-list-alt"></span><span class="nav-label">Business To Business</span></a>
                 <a asp-area="" asp-controller="Home" asp-action="BusinessToCustomers"><span class="glyphicon glyphicon-cog"></span><span class="nav-label">Business To Customers</span></a>
-                <a asp-area="" asp-controller="Home" asp-action="CustomerData"><span class="glyphicon glyphicon-film"></span><span class="nav-label">Customer Date</span></a>
-                <a asp-area="" asp-controller="Home" asp-action="UploadUserData"><span class="glyphicon glyphicon-upload"></span><span class="nav-label">Data Uploaa</span></a>
+                <a asp-area="" asp-controller="Home" asp-action="CustomerData"><span class="glyphicon glyphicon-film"></span><span class="nav-label">Customer Data</span></a>
+                <a asp-area="" asp-controller="Home" asp-action="UploadUserData"><span class="glyphicon glyphicon-upload"></span><span class="nav-label">Data Upload</span></a>
             </li>
         </ul>
     </nav>
@@ -206,8 +239,10 @@
 
     </environment>
     <script src="~/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/jquery.dropdown.min.js"></script>
     @RenderSection("Scripts", required: false)
     <script>
+        $('.navbar-primary').toggleClass('collapsed');
         $('.btn-expand-collapse').click(function (e) {
             $('.navbar-primary').toggleClass('collapsed');
         });
@@ -223,9 +258,63 @@
         $(document).ready(function (eve) {
             var table = $('#customerDataGrid').DataTable();
             //customerDataGrid
+            var business2BusinessTable = $('#tblB2B').DataTable();
 
+            var business2CustomerTable = $('#tblB2C').DataTable();
+
+            $('#sltDesigination').dropdown({
+                
+                // read only
+                readOnly: false,
+
+                // the maximum number of options allowed to be selected
+                limitCount: Infinity,
+
+                // search field
+                input: '<input type="text" maxLength="20" placeholder="Search">',
+
+                // dynamic data here
+                data: [],
+
+                // is search able?
+                searchable: true,
+
+                // when there's no result
+                searchNoData: '<li style="color:#ddd">No Results</li>',
+
+                // callback
+                choice: function () { }
+            });
+            $('.sltDesigination, .sltArea, .sltState, .sltCountry, .sltCity,.sltbusinessCateg').dropdown({
+
+                // read only
+                readOnly: false,
+
+                // the maximum number of options allowed to be selected
+                limitCount: Infinity,
+
+                // search field
+                input: '<input type="text" maxLength="20" placeholder="Search">',
+
+                // dynamic data here
+                data: [],
+
+                // is search able?
+                searchable: true,
+
+                // when there's no result
+                searchNoData: '<li style="color:#ddd">No Results</li>',
+
+                // callback
+                choice: function () { }
+
+            });
         });
 
+        $(window).on('load', function () {
+            // code here
+            $("#divLoading").hide();
+        });
     </script>
 </body>
 </html>

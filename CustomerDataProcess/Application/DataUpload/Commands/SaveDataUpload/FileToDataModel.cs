@@ -11,7 +11,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
     public class FileToDataModel : IFileToDataModel
     {
         private Dictionary<string, int> columnIndex;
-
+        private IDictionary<string, int> columnArray;
         public IEnumerable<CustomerDataModel> ReadFileData(SaveDataModel saveDataModel)
         {
             FileInfo fileInfo = new FileInfo(saveDataModel.FilePath);
@@ -29,7 +29,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             var rowCount = worksheet.Dimension?.Rows;
             var colCount = worksheet.Dimension?.Columns;
             columnIndex = new CustomerDataColumnMapping().GetCustomerColumnMapping();
-            IList<string> columnHeader = new List<string>();
+            IDictionary<string, int> columnHeader = new Dictionary<string, int>();
             IList<CustomerDataModel> customerDataModel = new List<CustomerDataModel>();
             // check column count
             if (colCount.HasValue && columnIndex.Count == colCount)
@@ -38,7 +38,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 int firstRow = 1;
                 for (int col = 1; col <= colCount.Value; col++)
                 {
-                    columnHeader.Add($"{worksheet.Cells[firstRow, col].Value}");
+                    columnHeader.Add($"{worksheet.Cells[firstRow, col].Value}", col);
                 }
                 // Check tempalate columns exist in requested customer data input
                 {
@@ -46,7 +46,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 }
 
                 //Featch all remain rows
-                var columnArray = columnHeader.ToArray();
+                var columnArray = columnHeader;
                 for (int row = 2; row <= rowCount.Value; row++)
                 {
                     DateTime.TryParse($"{worksheet.Cells[row, GetColumnIndex("DateOfUse")].Value}", out DateTime dateOfUse);
@@ -81,9 +81,9 @@ namespace Application.DataUpload.Commands.SaveDataUpload
         }
         private int GetColumnIndex(string keyName)
         {
-            if (columnIndex.Keys.Any(x => x == keyName))
+            if (columnArray.Keys.Any(x => x == keyName))
             {
-                return columnIndex[keyName];
+                return columnArray[keyName];
             }
             return 0;
         }

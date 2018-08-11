@@ -45,6 +45,22 @@ namespace CustomerDataProcess
             services.AddScoped<IGetBusinessToBusiness, GetBusinessToBusiness>();
             services.AddScoped<IBusinessToBusinessFileToDataModel, BusinessToBusinessFileToDataModel>();
             services.AddScoped<IBusinessToCustomerFileToDataModel, BusinessToCustomerFileToDataModel>();
+            services.AddScoped<ISaveBusinessToBusiness, SaveBusinessToBusiness>();
+            services.AddScoped<IValidateEntiry, ValidatePhone>();
+            services.AddScoped<IValidateBusinessCategoruEntiry, ValidateBusinessCategory>();
+            services.AddScoped<ISaveBusinessToCustomer, SaveBusinessToCustomer>();
+
+            services.AddScoped<IGetArea, GetArea>();
+            services.AddScoped<IGetState, GetState>();
+            services.AddScoped<IGetCity, GetCity>();
+            services.AddScoped<IGetCountry, GetCountry>();
+            services.AddScoped<IGetDistinctName, GetDestination>();
+
+            services.AddScoped<IGetBusinessCities, GetBusinessCities>();
+            services.AddScoped<IGetBusinessCountry, GetBusinessCountry>();
+            services.AddScoped<IGetBusinessArea, GetBusinessArea>();
+            services.AddScoped<IGetBusinessStates, GetBusinessStates>();
+            services.AddScoped<IGetBusinessDestination, GetBusinessDestination>();
 
             services.AddMvc();
         }

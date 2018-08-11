@@ -1,7 +1,228 @@
 ﻿
 @{
     ViewData["Title"] = "BusinessToBusiness";
+    @model Application.BusinessToBusiness.Queries.BusinessToBusinesListModel 
 }
+<style>
+    .mainTableBlock {
+        min-height: 100px;
+        max-height: 500px;
+        width: 100%;
+    }
+    .gridBlock {
+        min-height: 100px;
+        max-height: 500px;
+        overflow-y: auto;
+        overflow-x: auto;
+        width: 100%;
+    }
 
+    .table-fixed tbody {
+        height: 200px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    .table-fixed thead,
+    .table-fixed tbody,
+    .table-fixed tr,
+    .table-fixed td,
+    .table-fixed th {
+        display: flex;
+    }
+
+        .table-fixed tr:after {
+            content: "";
+            display: block;
+            visibility: hidden;
+            clear: both;
+        }
+
+        .table-fixed tbody td,
+        .table-fixed thead > tr > th {
+            float: left;
+        }
+
+    .table > thead > tr > th,
+    .table > thead > tr > td {
+        font-size: .9em;
+        font-weight: 400;
+        border-bottom: 0;
+        letter-spacing: 1px;
+        vertical-align: top;
+        padding: 8px;
+        background: #51596a;
+        text-transform: uppercase;
+        color: #ffffff;
+    }
+
+    .card-header {
+        background-color: #119292;
+        cursor: pointer;
+    }
+    .filterText {
+        color: whitesmoke;
+        background-color: #119292;
+    }
+</style>
 <h2>BusinessToBusiness</h2>
+<div class="mainTableBlock">
+    <div>
+        <div class="accordion" id="accordionExample">          
+            
+            <div class="card">
+                <div class="card-header" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <h5 class="mb-0">
+                        <button class="btn collapsed filterText" type="button" >
+                            Filter Option
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p>
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        <div>Country</div>
+                                        <div class="sltCountry">
+                                            <select asp-for="Filter.CountryId"
+                                                    class=form-control
+                                                    asp-items="@Model.Filter.Countries">
+                                                <option>Please select</option>
+                                            </select>
+                                        </div>
+                                        <div>City</div>
+                                        <div class="sltCity">
+                                            <select asp-for="Filter.CityId"
+                                                    class=form-control
+                                                    asp-items="@Model.Filter.Cities">
+                                                <option>Please select</option>
+                                            </select>
+                                        </div>
+                                        <div>BusinessCategory</div>
+                                        <div class="sltbusinessCateg">
+                                            <select asp-for="Filter.BusinessCategoryId"
+                                                    class=form-control
+                                                    asp-items="@Model.Filter.BusinessCategories">
+                                                <option>Please select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div>State</div>
+                                        <div class="sltState">
+                                            <select asp-for="Filter.StateId"
+                                                    class=form-control
+                                                    asp-items="@Model.Filter.States">
+                                                <option>Please select</option>
+                                            </select>
+                                        </div>
+                                        <div>Area</div>
+                                        <div class="sltArea">
+                                            <select asp-for="Filter.AreaId"
+                                                    class=form-control
+                                                    asp-items="@Model.Filter.Area">
+                                                <option>Please select</option>
+                                            </select>
+                                        </div>
+                                        <div>Designation</div>
+                                        <div class="sltDesigination">
+                                            <select asp-for="Filter.DesiginationId"
+                                                    class=form-control multiple
+                                                    asp-items="@Model.Filter.Desigination">
+                                                <option>Please select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group" style="text-align:center; margin-top:20px;margin-bottom:20px;">
+                                <button type="submit" class="btn">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+        </div>
 
+    </div>
+    <div class="gridBlock">
+        <!-- Grid-->
+        <table id="tblB2B">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>CompanyName</th>
+                    <th>Add1</th>
+                    <th>Add2</th>
+                    <th>City</th>
+                    <th>Area</th>
+                    <th>Pincode</th>
+                    <th>State</th>
+                    <th>Phone_New</th>
+                    <th>Mobile_New</th>
+                    <th>Phone1</th>
+                    <th>Phone2</th>
+                    <th>Mobile1</th>
+                    <th>Mobile2</th>
+                    <th>Fax</th>
+                    <th>Email</th>
+                    <th>Email1</th>
+                    <th>Web</th>
+                    <th>ContactPerson</th>
+                    <th>Designation</th>
+                    <th>Contactperson1</th>
+                    <th>Designation1</th>
+                    <th>Est_year</th>
+                    <th>Category</th>
+                    <th>LandMark</th>                    
+                    <th>No_of_Emp</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ 
+                    int i = 0;
+                    foreach (var item in Model.BusinessToBusiness.ToList())
+                    {
+                        i = i + 1;
+                <tr>
+                    <td>@i</td>
+                    <td>@item.CompanyName</td>
+                    <td>@item.Add1</td>
+                    <td>@item.Add2</td>
+                    <td>@item.City</td>
+                    <td>@item.Area</td>
+                    <td>@item.Pincode</td>
+                    <td>@item.State</td>
+                    <td>@item.PhoneNew</td>
+                    <td>@item.MobileNew</td>
+                    <td>@item.Phone1</td>
+                    <td>@item.Phone2</td>
+                    <td>@item.Mobile1</td>
+                    <td>@item.Mobile2</td>
+                    <td>@item.Fax</td>
+                    <td>@item.Email</td>
+                    <td>@item.Email1</td>
+                    <td>@item.Web</td>
+                    <td>@item.ContactPerson</td>
+                    <td>@item.Designation</td>
+                    <td>@item.Contactperson1</td>
+                    <td>@item.Designation1</td>
+                    <td>@item.EstYear</td>
+                    <td>@item.CategoryName</td>
+                    <td>@item.LandMark</td>
+                    <td>@item.NoOfEmp</td>
+                    <td>@item.Country</td>
+
+                </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

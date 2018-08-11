@@ -7,7 +7,7 @@ namespace Application.Common
         public string Name { get; set; }
         public DateTime? Dob { get; set; }
         public string Qualification { get; set; }
-        public int? Experience { get; set; }
+        public string Experience { get; set; }
         public string Employer { get; set; }
         public string KeySkills { get; set; }
         public string Location { get; set; }
@@ -19,7 +19,7 @@ namespace Application.Common
         public string PhoneNew { get; set; }
         public string MobileNew { get; set; }
         public string Mobile2 { get; set; }
-        public decimal? AnnualSalary { get; set; }
+        public string AnnualSalary { get; set; }
         public string Pincode { get; set; }
         public string Area { get; set; }
         public string City { get; set; }

@@ -23,13 +23,13 @@ namespace Application.DataUpload.Commands.SaveDataUpload
 
             return businessToBusinessModels;
         }
-
+        private IDictionary<string, int> columnArray;
         private IEnumerable<BusinessToBusinesModel> ReadExcelPackageToString(ExcelPackage package, ExcelWorksheet worksheet)
         {
             var rowCount = worksheet.Dimension?.Rows;
             var colCount = worksheet.Dimension?.Columns;
             columnIndex = new BusinessToBusinessColumnMapping().GetCustomerColumnMapping();
-            IList<string> columnHeader = new List<string>();
+            IDictionary<string, int> columnHeader = new Dictionary<string, int>();
             IList<BusinessToBusinesModel> businessToBusinesModels = new List<BusinessToBusinesModel>();
             // check column count
             if (colCount.HasValue && columnIndex.Count == colCount)
@@ -38,7 +38,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 int firstRow = 1;
                 for (int col = 1; col <= colCount.Value; col++)
                 {
-                    columnHeader.Add($"{worksheet.Cells[firstRow, col].Value}");
+                    columnHeader.Add($"{worksheet.Cells[firstRow, col].Value}", col);
                 }
                 // Check tempalate columns exist in requested customer data input
                 {
@@ -46,12 +46,12 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 }
 
                 //Featch all remain rows
-                var columnArray = columnHeader.ToArray();
+                columnArray = columnHeader;
                 for (int row = 2; row <= rowCount.Value; row++)
                 {
-                    int.TryParse($"{worksheet.Cells[row, GetColumnIndex("CategoryId")].Value}", out int categoryId);
+                    int.TryParse($"{worksheet.Cells[row, GetColumnIndex("Category ID")].Value}", out int categoryId);
                     int.TryParse($"{worksheet.Cells[row, GetColumnIndex("Est_year")].Value}", out int estYear);
-                    int.TryParse($"{worksheet.Cells[row, GetColumnIndex("NoOfEmp")].Value}", out int noOfEmp);
+                    int.TryParse($"{worksheet.Cells[row, GetColumnIndex("No_of_Emp")].Value}", out int noOfEmp);
                     businessToBusinesModels.Add(new BusinessToBusinesModel
                     {
                         Add1 = $"{worksheet.Cells[row, GetColumnIndex("Add1")].Value}",
@@ -72,14 +72,15 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                         LandMark = $"{worksheet.Cells[row, GetColumnIndex("LandMark")].Value}",
                         Mobile1 = $"{worksheet.Cells[row, GetColumnIndex("Mobile1")].Value}",
                         Mobile2 = $"{worksheet.Cells[row, GetColumnIndex("Mobile2")].Value}",
-                        MobileNew = $"{worksheet.Cells[row, GetColumnIndex("MobileNew")].Value}",
+                        MobileNew = $"{worksheet.Cells[row, GetColumnIndex("Mobile_New")].Value}",
                         NoOfEmp = noOfEmp,
                         Phone1 = $"{worksheet.Cells[row, GetColumnIndex("Phone1")].Value}",
                         Phone2 = $"{worksheet.Cells[row, GetColumnIndex("Phone2")].Value}",
-                        PhoneNew = $"{worksheet.Cells[row, GetColumnIndex("PhoneNew")].Value}",
+                        PhoneNew = $"{worksheet.Cells[row, GetColumnIndex("Phone_New")].Value}",
                         Pincode = $"{worksheet.Cells[row, GetColumnIndex("Pincode")].Value}",
                         State = $"{worksheet.Cells[row, GetColumnIndex("State")].Value}",
                         Web = $"{worksheet.Cells[row, GetColumnIndex("Web")].Value}"
+
                     });
                 }
             }
@@ -92,9 +93,9 @@ namespace Application.DataUpload.Commands.SaveDataUpload
 
         private int GetColumnIndex(string keyName)
         {
-            if (columnIndex.Keys.Any(x => x == keyName))
+            if (columnArray.Keys.Any(x => x.Trim() == keyName.Trim()))
             {
-                return columnIndex[keyName];
+                return columnArray[keyName];
             }
             return 0;
         }

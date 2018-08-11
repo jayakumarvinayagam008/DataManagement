@@ -8,13 +8,31 @@ namespace Application.BusinessToBusiness.Queries
     public class GetBusinessToBusiness:IGetBusinessToBusiness
     {
         private readonly CustomerDataManagementContext _customerDataManagementContext;
-        public GetBusinessToBusiness(CustomerDataManagementContext dbContext)
+        private readonly IGetBusinessCities _getCity;
+        private readonly IGetBusinessCountry _getCountry;
+        private readonly IGetBusinessArea _getArea;
+        private readonly IGetBusinessStates _getState;
+        private readonly IGetBusinessDestination _getDestination;
+        public GetBusinessToBusiness(CustomerDataManagementContext dbContext,
+            IGetBusinessCities getCity, IGetBusinessCountry getCountry, IGetBusinessArea getArea,
+            IGetBusinessStates getState, IGetBusinessDestination getDestination)
         {
             _customerDataManagementContext = dbContext;
+            _getCity = getCity;
+            _getCountry = getCountry;
+            _getArea = getArea;
+            _getState = getState;
+            _getDestination = getDestination;
         }
 
         public BusinessToBusinesListModel Get()
         {
+            var filterCity = _getCity.Get();
+            var filterState = _getState.Get();
+            var filterArea = _getArea.Get();
+            var filterCountry = _getCountry.Get();
+            var filterDestination = _getDestination.Get();
+
             var customer = _customerDataManagementContext.BusinessToBusiness
                                                          .Select(cust =>
                                                                       new BusinessToBusinesModel
@@ -48,7 +66,18 @@ namespace Application.BusinessToBusiness.Queries
                                                                           Web = cust.Web,
                                                                           Country = cust.Country
                                                                       }).AsEnumerable<BusinessToBusinesModel>();
-            return new BusinessToBusinesListModel { BusinessToBusiness = customer };
+            return new BusinessToBusinesListModel
+            {
+                BusinessToBusiness = customer,
+                Filter = new DataFilter
+                {
+                    Area = filterArea,
+                    Cities = filterCity,
+                    Countries = filterCountry,
+                    Desigination = filterDestination,
+                    States = filterState
+                }
+            };
         }
     }
 }

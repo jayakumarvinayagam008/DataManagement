@@ -29,7 +29,9 @@ namespace Application.CustomerData.Queries
                     Numbers = x.Numbers,
                     Operator = x.Operator
                 }).AsEnumerable<CustomerDataModel>();
-            return new CustomerListDataModel { CustomerDataModels = customerData };
+            return new CustomerListDataModel { CustomerDataModels = customerData, Filter = new Common.DataFilter {
+                Countries = null
+            } };
         }
     }
 }

@@ -7,18 +7,25 @@
 <style>
     .centerDiv {
         width: 50%;
-        height: 200px;
+        height: auto;
         margin: 0 auto;
     }
+
     .file {
         visibility: hidden;
         position: absolute;
+    }
+
+    .uploadSummary {
+        padding-top: 10px;
+        width: 70%;
+        height: auto;
+        margin: 0 auto;
     }
 </style>
 
 <div class="centerDiv">
     <form asp-action="UploadUserData" method="post" enctype="multipart/form-data">
-        
         <div class="form-group">
             <label>Upload Data Type</label>
             <select asp-for="UploadTypeId"
@@ -43,10 +50,71 @@
             <button type="submit" class="btn">Cancel</button>
             <button type="submit" class="btn btn-primary">Upload</button>
         </div>
-
     </form>
 
-    
+</div>
+    <!-- Summary-->
+<div class="uploadSummary">
+    @{
+        if (Model.StatusCode.HasValue && Model.StatusCode == 1)
+        {
+            <div class="alert alert-success" role="alert">
+                <ul>
+                    @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+                    {
+                        <li>
+                            <label asp-for="@Model.StatusMessage"></label>
+                        </li>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.Summary))
+                    {
+                        <li>
+                            <label>@Model.Summary</label>
+                        </li>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.ValidationMessage))
+                    {
+                        <li>
+                            <label asp-for="@Model.ValidationMessage"></label>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+        }
+        else if (Model.StatusCode.HasValue && Model.StatusCode == 2)
+        {
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+                    {
+                        <li>
+                            <label>@Model.StatusMessage"</label>
+                        </li>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.Summary))
+                    {
+                        <li>
+                            <label>@Model.Summary</label>
+                        </li>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.ValidationMessage))
+                    {
+                        <li>
+                            <label>@Model.ValidationMessage"></label>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+        }
+    }
+
+
+
+
+
+
 </div>
 
 
