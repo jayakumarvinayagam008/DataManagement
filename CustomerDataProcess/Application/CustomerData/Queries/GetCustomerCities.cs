@@ -16,7 +16,6 @@ namespace Application.CustomerData.Queries
         }
         public IEnumerable<SelectListItem> Get()
         {
-            int cityId = 0;
             var cities = _customerDataManagementContext.CustomerDataManagement
 
                 .Select(x => x.ClientCity)
@@ -26,7 +25,7 @@ namespace Application.CustomerData.Queries
 
             return cities.Select(x => new SelectListItem()
             {
-                Value = $"{++cityId}",
+                Value = x,
                 Text = x
             }).AsEnumerable<SelectListItem>();
         }

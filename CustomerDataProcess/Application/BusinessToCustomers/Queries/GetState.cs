@@ -20,12 +20,11 @@ namespace Application.BusinessToCustomers.Queries
                 .Select(x => x.State.Trim())
                 .Distinct<string>()
                 .OrderBy(x => x).ToArray();
-            int areaId = 0;
 
             return area.Where(x=> !string.IsNullOrWhiteSpace(x)).Select(x =>
             new SelectListItem()
             {
-                Value = $"{++areaId}",
+                Value = x,
                 Text = x
             }).AsEnumerable<SelectListItem>();
         }

@@ -93,52 +93,47 @@
                                     <div class="col-sm-6">
                                         <div>Country</div>
                                         <div class="sltCountry">
-                                            <select asp-for="Filter.CountryId"
+                                            <select asp-for="Filter.CountryId" multiple placeholder="Please select"
                                                     class=form-control
                                                     asp-items="@Model.Filter.Countries">
-                                                <option>Please select</option>
                                             </select>
                                         </div>
                                         <div>City</div>
                                         <div class="sltCity">
-                                            <select asp-for="Filter.CityId"
+                                            <select asp-for="Filter.CityId" multiple placeholder="Please select"
                                                     class=form-control
                                                     asp-items="@Model.Filter.Cities">
-                                                <option>Please select</option>
                                             </select>
                                         </div>
                                         <div>BusinessCategory</div>
                                         <div class="sltbusinessCateg">
-                                            <select asp-for="Filter.CityId"
+                                            <select asp-for="Filter.BusinessCategoryId" multiple placeholder="Please select"
                                                     class=form-control
                                                     asp-items="@Model.Filter.BusinessCategories">
-                                                <option>Please select</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div>State</div>
                                         <div class="sltState">
-                                            <select asp-for="Filter.StateId"
+                                            <select asp-for="Filter.StateId" multiple placeholder="Please select"
                                                     class=form-control
                                                     asp-items="@Model.Filter.States">
-                                                <option>Please select</option>
                                             </select>
                                         </div>
                                         <div>Area</div>
                                         <div class="sltArea">
-                                            <select asp-for="Filter.AreaId"
+                                            <select asp-for="Filter.AreaId" multiple placeholder="Please select"
                                                     class=form-control
                                                     asp-items="@Model.Filter.Area">
-                                                <option>Please select</option>
                                             </select>
                                         </div>
                                         <div>Designation</div>
                                         <div class="sltDesigination">
-                                            <select asp-for="Filter.DesiginationId"
+                                            <select asp-for="Filter.DesiginationId" multiple placeholder="Please select"
                                                     class=form-control
                                                     asp-items="@Model.Filter.Desigination">
-                                                <option>Please select</option>
+                                                @*<option>Please select</option>*@
                                             </select>
                                         </div>
                                     </div>
@@ -148,7 +143,7 @@
                         <div class="form-group">
                             <div class="form-group" style="text-align:center; margin-top:20px;margin-bottom:20px;">
                                 <input type="button" class="btn" value="Clear" />
-                                <input type="button" class="btn btn-primary" value="Apply" />
+                                <input id="btnApply" type="button" class="btn btn-primary" value="Apply" />
                             </div>
                         </div>
                     </div>
