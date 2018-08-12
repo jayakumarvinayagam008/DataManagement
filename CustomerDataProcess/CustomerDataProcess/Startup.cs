@@ -61,7 +61,7 @@ namespace CustomerDataProcess
             services.AddScoped<IGetBusinessArea, GetBusinessArea>();
             services.AddScoped<IGetBusinessStates, GetBusinessStates>();
             services.AddScoped<IGetBusinessDestination, GetBusinessDestination>();
-
+            services.AddScoped < IGetCustomerCities, GetCustomerCities>();
             services.AddMvc();
         }
 

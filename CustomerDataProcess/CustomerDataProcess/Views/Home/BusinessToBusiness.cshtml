@@ -64,6 +64,13 @@
         color: whitesmoke;
         background-color: #119292;
     }
+    #accordionExample {
+        background-color: #a2a2a2;
+    }
+    #middle{
+        height:30px;
+        width:100%;
+    }
 </style>
 <h2>BusinessToBusiness</h2>
 <div class="mainTableBlock">
@@ -72,11 +79,11 @@
             
             <div class="card">
                 <div class="card-header" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    <h5 class="mb-0">
+     
                         <button class="btn collapsed filterText" type="button" >
                             Filter Option
                         </button>
-                    </h5>
+        
                 </div>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                     <div class="card-body">
@@ -102,7 +109,7 @@
                                         </div>
                                         <div>BusinessCategory</div>
                                         <div class="sltbusinessCateg">
-                                            <select asp-for="Filter.BusinessCategoryId"
+                                            <select asp-for="Filter.CityId"
                                                     class=form-control
                                                     asp-items="@Model.Filter.BusinessCategories">
                                                 <option>Please select</option>
@@ -129,7 +136,7 @@
                                         <div>Designation</div>
                                         <div class="sltDesigination">
                                             <select asp-for="Filter.DesiginationId"
-                                                    class=form-control multiple
+                                                    class=form-control
                                                     asp-items="@Model.Filter.Desigination">
                                                 <option>Please select</option>
                                             </select>
@@ -140,8 +147,8 @@
                         </div>
                         <div class="form-group">
                             <div class="form-group" style="text-align:center; margin-top:20px;margin-bottom:20px;">
-                                <button type="submit" class="btn">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Apply</button>
+                                <input type="button" class="btn" value="Clear" />
+                                <input type="button" class="btn btn-primary" value="Apply" />
                             </div>
                         </div>
                     </div>
@@ -150,6 +157,7 @@
         </div>
 
     </div>
+    <div id="middle"></div>
     <div class="gridBlock">
         <!-- Grid-->
         <table id="tblB2B">

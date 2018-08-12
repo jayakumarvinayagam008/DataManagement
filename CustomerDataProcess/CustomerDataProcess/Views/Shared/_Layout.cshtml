@@ -145,6 +145,11 @@
             z-index: 30001;
             opacity: 0.9;
         }
+        .dataTables_filter, .dataTables_info { 
+            /*display: none;*/
+            width:30%;
+        }
+
     </style>
 </head>
 <body>
@@ -258,34 +263,13 @@
         $(document).ready(function (eve) {
             var table = $('#customerDataGrid').DataTable();
             //customerDataGrid
-            var business2BusinessTable = $('#tblB2B').DataTable();
+            var business2BusinessTable = $('#tblB2B').DataTable({
+               
+            });
 
             var business2CustomerTable = $('#tblB2C').DataTable();
 
-            $('#sltDesigination').dropdown({
-                
-                // read only
-                readOnly: false,
-
-                // the maximum number of options allowed to be selected
-                limitCount: Infinity,
-
-                // search field
-                input: '<input type="text" maxLength="20" placeholder="Search">',
-
-                // dynamic data here
-                data: [],
-
-                // is search able?
-                searchable: true,
-
-                // when there's no result
-                searchNoData: '<li style="color:#ddd">No Results</li>',
-
-                // callback
-                choice: function () { }
-            });
-            $('.sltDesigination, .sltArea, .sltState, .sltCountry, .sltCity,.sltbusinessCateg').dropdown({
+            $('.sltArea, .sltState, .sltCountry, .sltCity,.sltbusinessCateg, .sltDesigination').dropdown({
 
                 // read only
                 readOnly: false,
@@ -309,6 +293,8 @@
                 choice: function () { }
 
             });
+
+
         });
 
         $(window).on('load', function () {

@@ -10,13 +10,15 @@ namespace Application.CustomerData.Queries
     public class GetCustomerData : IGetCustomerData
     {
         private readonly CustomerDataManagementContext _customerDataManagementContext;
-        public GetCustomerData(CustomerDataManagementContext dbContext)
+        private readonly IGetCustomerCities _getCustomerCities;
+        public GetCustomerData(CustomerDataManagementContext dbContext, IGetCustomerCities getCustomerCities)
         {
             _customerDataManagementContext = dbContext;
+            _getCustomerCities = getCustomerCities;
         }
         public CustomerListDataModel Get()
         {
-
+            var cities = _getCustomerCities.Get();
             var customerData = _customerDataManagementContext.CustomerDataManagement
                 .Select(x => new CustomerDataModel
                 {
@@ -29,9 +31,14 @@ namespace Application.CustomerData.Queries
                     Numbers = x.Numbers,
                     Operator = x.Operator
                 }).AsEnumerable<CustomerDataModel>();
-            return new CustomerListDataModel { CustomerDataModels = customerData, Filter = new Common.DataFilter {
-                Countries = null
-            } };
+            return new CustomerListDataModel
+            {
+                CustomerDataModels = customerData,
+                Filter = new Common.DataFilter
+                {
+                    Cities = cities
+                }
+            };
         }
     }
 }
