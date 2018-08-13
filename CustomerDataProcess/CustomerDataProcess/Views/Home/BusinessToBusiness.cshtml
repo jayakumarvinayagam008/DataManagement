@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "BusinessToBusiness";
-    @model Application.BusinessToBusiness.Queries.BusinessToBusinesListModel 
+    @model Application.BusinessToBusiness.Queries.BusinessToBusinesListModel
 }
 <style>
     .mainTableBlock {
@@ -9,6 +9,7 @@
         max-height: 500px;
         width: 100%;
     }
+
     .gridBlock {
         min-height: 100px;
         max-height: 500px;
@@ -60,30 +61,33 @@
         background-color: #119292;
         cursor: pointer;
     }
+
     .filterText {
         color: whitesmoke;
         background-color: #119292;
     }
+
     #accordionExample {
         background-color: #a2a2a2;
     }
-    #middle{
-        height:30px;
-        width:100%;
+
+    #middle {
+        height: 30px;
+        width: 100%;
     }
 </style>
 <h2>BusinessToBusiness</h2>
 <div class="mainTableBlock">
     <div>
-        <div class="accordion" id="accordionExample">          
-            
+        <div class="accordion" id="accordionExample">
+
             <div class="card">
                 <div class="card-header" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-     
-                        <button class="btn collapsed filterText" type="button" >
-                            Filter Option
-                        </button>
-        
+
+                    <button class="btn collapsed filterText" type="button">
+                        Filter Option
+                    </button>
+
                 </div>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                     <div class="card-body">
@@ -95,22 +99,19 @@
                                         <div class="sltCountry">
                                             <select asp-for="Filter.CountryId" multiple placeholder="Please select"
                                                     class=form-control
-                                                    asp-items="@Model.Filter.Countries">
-                                            </select>
+                                                    asp-items="@Model.Filter.Countries"></select>
                                         </div>
                                         <div>City</div>
                                         <div class="sltCity">
                                             <select asp-for="Filter.CityId" multiple placeholder="Please select"
                                                     class=form-control
-                                                    asp-items="@Model.Filter.Cities">
-                                            </select>
+                                                    asp-items="@Model.Filter.Cities"></select>
                                         </div>
                                         <div>BusinessCategory</div>
                                         <div class="sltbusinessCateg">
                                             <select asp-for="Filter.BusinessCategoryId" multiple placeholder="Please select"
                                                     class=form-control
-                                                    asp-items="@Model.Filter.BusinessCategories">
-                                            </select>
+                                                    asp-items="@Model.Filter.BusinessCategories"></select>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -118,15 +119,13 @@
                                         <div class="sltState">
                                             <select asp-for="Filter.StateId" multiple placeholder="Please select"
                                                     class=form-control
-                                                    asp-items="@Model.Filter.States">
-                                            </select>
+                                                    asp-items="@Model.Filter.States"></select>
                                         </div>
                                         <div>Area</div>
                                         <div class="sltArea">
                                             <select asp-for="Filter.AreaId" multiple placeholder="Please select"
                                                     class=form-control
-                                                    asp-items="@Model.Filter.Area">
-                                            </select>
+                                                    asp-items="@Model.Filter.Area"></select>
                                         </div>
                                         <div>Designation</div>
                                         <div class="sltDesigination">
@@ -147,7 +146,7 @@
                             </div>
                         </div>
                     </div>
-                    </div>
+                </div>
             </div>
         </div>
 
@@ -182,50 +181,51 @@
                     <th>Designation1</th>
                     <th>Est_year</th>
                     <th>Category</th>
-                    <th>LandMark</th>                    
+                    <th>LandMark</th>
                     <th>No_of_Emp</th>
                     <th>Country</th>
                 </tr>
             </thead>
             <tbody>
-                @{ 
+                @{
                     int i = 0;
                     foreach (var item in Model.BusinessToBusiness.ToList())
                     {
                         i = i + 1;
-                <tr>
-                    <td>@i</td>
-                    <td>@item.CompanyName</td>
-                    <td>@item.Add1</td>
-                    <td>@item.Add2</td>
-                    <td>@item.City</td>
-                    <td>@item.Area</td>
-                    <td>@item.Pincode</td>
-                    <td>@item.State</td>
-                    <td>@item.PhoneNew</td>
-                    <td>@item.MobileNew</td>
-                    <td>@item.Phone1</td>
-                    <td>@item.Phone2</td>
-                    <td>@item.Mobile1</td>
-                    <td>@item.Mobile2</td>
-                    <td>@item.Fax</td>
-                    <td>@item.Email</td>
-                    <td>@item.Email1</td>
-                    <td>@item.Web</td>
-                    <td>@item.ContactPerson</td>
-                    <td>@item.Designation</td>
-                    <td>@item.Contactperson1</td>
-                    <td>@item.Designation1</td>
-                    <td>@item.EstYear</td>
-                    <td>@item.CategoryName</td>
-                    <td>@item.LandMark</td>
-                    <td>@item.NoOfEmp</td>
-                    <td>@item.Country</td>
+                        <tr>
+                            <td>@i</td>
+                            <td>@item.CompanyName</td>
+                            <td>@item.Add1</td>
+                            <td>@item.Add2</td>
+                            <td>@item.City</td>
+                            <td>@item.Area</td>
+                            <td>@item.Pincode</td>
+                            <td>@item.State</td>
+                            <td>@item.PhoneNew</td>
+                            <td>@item.MobileNew</td>
+                            <td>@item.Phone1</td>
+                            <td>@item.Phone2</td>
+                            <td>@item.Mobile1</td>
+                            <td>@item.Mobile2</td>
+                            <td>@item.Fax</td>
+                            <td>@item.Email</td>
+                            <td>@item.Email1</td>
+                            <td>@item.Web</td>
+                            <td>@item.ContactPerson</td>
+                            <td>@item.Designation</td>
+                            <td>@item.Contactperson1</td>
+                            <td>@item.Designation1</td>
+                            <td>@item.EstYear</td>
+                            <td>@item.CategoryName</td>
+                            <td>@item.LandMark</td>
+                            <td>@item.NoOfEmp</td>
+                            <td>@item.Country</td>
 
-                </tr>
+                        </tr>
                     }
                 }
             </tbody>
         </table>
     </div>
 </div>
+

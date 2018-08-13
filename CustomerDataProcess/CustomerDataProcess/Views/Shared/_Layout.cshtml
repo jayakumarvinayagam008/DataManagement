@@ -261,7 +261,7 @@
         });
 
         $(document).ready(function (eve) {
-            var table = $('#customerDataGrid').DataTable();
+            var customerDataTable = $('#customerDataGrid').DataTable();
             //customerDataGrid
             var business2BusinessTable = $('#tblB2B').DataTable({
 
@@ -269,7 +269,7 @@
 
             var business2CustomerTable = $('#tblB2C').DataTable();
 
-            $('.sltArea, .sltState, .sltCountry, .sltCity,.sltbusinessCateg, .sltDesigination').dropdown({
+            $('.sltArea, .sltState, .sltCountry, .sltCity,.sltbusinessCateg, .sltDesigination, .sltCustomerFilterCity, .sltb2cCountry, .sltb2cCity, .sltb2cState, .sltb2cArea').dropdown({
 
                 // read only
                 readOnly: false,
@@ -296,8 +296,19 @@
 
 
             $("#btnApply").on('click', function (eve) {
-
                 business2BusinessTable.draw();
+            });
+
+            $("#btnCustomerFilterApply").on('click', function (eve) {
+                customerDataTable.draw();
+            });
+
+            $("#btnB2CFilterApply").on('click', function (eve) {
+                business2CustomerTable.draw();
+            });
+
+            $("#UploadTypeId").on('change', function (eve) { 
+
             });
         });
 
@@ -366,7 +377,6 @@
                 function (setting, data, dataIndex) {
                     var area = data[5] || '';
                     var selectedArea = $('#Filter_AreaId').val() || [];
-                    console.log(selectedArea);
                     var matchedItems = [];
                     var result = $.grep(selectedArea, function (n, i) {
                         if (area.indexOf(n) > -1) {
@@ -391,9 +401,78 @@
                         return true;
                     }
                     return false;
-                }
+                },
+                function (setting, data, dataIndex) {
+                    var cities = data[8] || '';
+                    var selectedCities = $('#CustomerFilterCityId').val() || [];
+                    var matchedItems = [];
+                    var result = $.grep(selectedCities, function (n, i) {
+                        if (cities.indexOf(n) > -1) {
+                            matchedItems.push(n);
+                        }
+                    });
+                    if (selectedCities != null && selectedCities.length === 0 || matchedItems.length > 0) {
+                        return true;
+                    }
+                    return false;
+                },
+                function (setting, data, dataIndex) {
+                    var country = data[21] || '';
+                    var selectedCountry = $('#B2CFilterCountryId').val() || [];
+                    var matchedItems = [];
+                    var result = $.grep(selectedCountry, function (n, i) {
+                        if (country.indexOf(n) > -1) {
+                            matchedItems.push(n);
+                        }
+                    });
+                    if (selectedCountry != null && selectedCountry.length === 0 || matchedItems.length > 0) {
+                        return true;
+                    }
+                    return false;
+                },
+                function (setting, data, dataIndex) {
+                    var city = data[19] || '';
+                    var selectedCity = $('#B2CFilterCityId').val() || [];
+                    var matchedItems = [];
+                    var result = $.grep(selectedCity, function (n, i) {
+                        if (city.indexOf(n) > -1) {
+                            matchedItems.push(n);
+                        }
+                    });
+                    if (selectedCity != null && selectedCity.length === 0 || matchedItems.length > 0) {
+                        return true;
+                    }
+                    return false;
+                },
+                function (setting, data, dataIndex) {
+                    var state = data[20] || '';
+                    var selectedState = $('#B2CFilterStateId').val() || [];
+                    var matchedItems = [];
+                    var result = $.grep(selectedState, function (n, i) {
+                        if (state.indexOf(n) > -1) {
+                            matchedItems.push(n);
+                        }
+                    });
+                    if (selectedState != null && selectedState.length === 0 || matchedItems.length > 0) {
+                        return true;
+                    }
+                    return false;
+                },
+                function (setting, data, dataIndex) {
+                    var area = data[18] || '';
+                    var selectedArea = $('#B2CFilterAreaId').val() || [];
+                    var matchedItems = [];
+                    var result = $.grep(selectedArea, function (n, i) {
+                        if (area.indexOf(n) > -1) {
+                            matchedItems.push(n);
+                        }
+                    });
+                    if (selectedArea != null && selectedArea.length === 0 || matchedItems.length > 0) {
+                        return true;
+                    }
+                    return false;
+                }                
             );
-
         });
 
 

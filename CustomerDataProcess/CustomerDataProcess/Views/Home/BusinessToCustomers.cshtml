@@ -9,6 +9,7 @@
         max-height: 500px;
         width: 100%;
     }
+
     .gridBlock {
         min-height: 100px;
         max-height: 500px;
@@ -16,6 +17,7 @@
         overflow-x: auto;
         width: 100%;
     }
+
     .table-fixed tbody {
         height: 200px;
         overflow-y: auto;
@@ -94,39 +96,33 @@
                                 <div class="form-group">
                                     <div class="col-sm-6">
                                         <div>Country</div>
-                                        <div>
+                                        <div class="sltb2cCountry">
                                             <select asp-for="Filter.CountryId"
-                                                    class=form-control
-                                                    asp-items="@Model.Filter.Countries">
-                                                <option>Please select</option>
-                                            </select>
+                                                    class=form-control multiple id="B2CFilterCountryId" placeholder="Please select"
+                                                    asp-items="@Model.Filter.Countries"></select>
                                         </div>
                                         <div>City</div>
-                                        <div>
+                                        <div class="sltb2cCity">
                                             <select asp-for="Filter.CityId"
-                                                    class=form-control
-                                                    asp-items="@Model.Filter.Cities">
-                                                <option>Please select</option>
-                                            </select>
-                                        </div>                                        
+                                                    class=form-control multiple id="B2CFilterCityId" placeholder="Please select"
+                                                    asp-items="@Model.Filter.Cities"></select>
+                                        </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div>State</div>
-                                        <div>
+                                        <div class="sltb2cState">
                                             <select asp-for="Filter.StateId"
-                                                    class=form-control
+                                                    class=form-control multiple id="B2CFilterStateId" placeholder="Please select"
                                                     asp-items="@Model.Filter.States">
-                                                <option>Please select</option>
                                             </select>
                                         </div>
                                         <div>Area</div>
-                                        <div>
+                                        <div class="sltb2cArea">
                                             <select asp-for="Filter.AreaId"
-                                                    class=form-control
+                                                    class=form-control multiple id="B2CFilterAreaId" placeholder="Please select"
                                                     asp-items="@Model.Filter.Area">
-                                                <option>Please select</option>
                                             </select>
-                                        </div>                                        
+                                        </div>
                                     </div>
                                 </div>
                             </p>
@@ -134,7 +130,7 @@
                         <div class="form-group">
                             <div class="form-group" style="text-align:center; margin-top:20px;margin-bottom:20px;">
                                 <input type="button" class="btn" value="Clear" />
-                                <input type="button" class="btn btn-primary" value="Apply"/>
+                                <input type="button" class="btn btn-primary" value="Apply" id="btnB2CFilterApply" />
                             </div>
                         </div>
                     </div>
@@ -143,7 +139,7 @@
         </div>
     </div>
     <div id="middle"></div>
-    <div  class="gridBlock">
+    <div class="gridBlock">
         <!-- Grid-->
         <table id="tblB2C">
             <thead>
@@ -181,33 +177,33 @@
                     foreach (var item in Model.BusinessToCustomers.ToList())
                     {
                         i = i + 1;
-                <tr>
-                    <td>@i</td>
-                    <td>@item.Name</td>
-                    <td>@item.Dob</td>
-                    <td>@item.Qualification</td>
-                    <td>@item.Experience</td>
-                    <td>@item.Employer</td>
-                    <td>@item.KeySkills</td>
-                    <td>@item.Location</td>
-                    <td>@item.Roles</td>
-                    <td>@item.Industry</td>
-                    <td>@item.Address</td>
-                    <td>@item.Address2</td>
-                    <td>@item.Email</td>
-                    <td>@item.PhoneNew</td>
-                    <td>@item.MobileNew</td>
-                    <td>@item.Mobile2</td>
-                    <td>@item.AnnualSalary</td>
-                    <td>@item.Pincode</td>
-                    <td>@item.Area</td>
-                    <td>@item.City</td>
-                    <td>@item.State</td>
-                    <td>@item.Country</td>
-                    <td>@item.Network</td>
-                    <td>@item.Gender</td>
-                    <td>@item.Caste</td>
-                </tr>
+                        <tr>
+                            <td>@i</td>
+                            <td>@item.Name</td>
+                            <td>@item.Dob</td>
+                            <td>@item.Qualification</td>
+                            <td>@item.Experience</td>
+                            <td>@item.Employer</td>
+                            <td>@item.KeySkills</td>
+                            <td>@item.Location</td>
+                            <td>@item.Roles</td>
+                            <td>@item.Industry</td>
+                            <td>@item.Address</td>
+                            <td>@item.Address2</td>
+                            <td>@item.Email</td>
+                            <td>@item.PhoneNew</td>
+                            <td>@item.MobileNew</td>
+                            <td>@item.Mobile2</td>
+                            <td>@item.AnnualSalary</td>
+                            <td>@item.Pincode</td>
+                            <td>@item.Area</td>
+                            <td>@item.City</td>
+                            <td>@item.State</td>
+                            <td>@item.Country</td>
+                            <td>@item.Network</td>
+                            <td>@item.Gender</td>
+                            <td>@item.Caste</td>
+                        </tr>
                     }
                 }
             </tbody>
