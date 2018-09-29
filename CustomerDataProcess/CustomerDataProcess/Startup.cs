@@ -29,11 +29,11 @@ namespace CustomerDataProcess
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            var dbConnection = Configuration["CustomerData:DataSource"];
+            //Configuration.GetConnectionString("DefaultConnection")
             services.AddDbContext<CustomerDataManagementContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-
+                    options.UseSqlServer(dbConnection));
+           
 
             services.AddScoped<IUserValidation, UserValidation>();
             services.AddScoped<IGetUpLoadDataTypeList, GetUpLoadDataTypeList>();

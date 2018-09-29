@@ -15,23 +15,24 @@ namespace Persistance
         public virtual DbSet<UploadHistoryDetail> UploadHistoryDetail { get; set; }
         public virtual DbSet<UploadStatus> UploadStatus { get; set; }
 
-        public CustomerDataManagementContext()
+        public CustomerDataManagementContext(DbContextOptions<CustomerDataManagementContext> options)
+            :base(options)
         {
 
         }
-        public CustomerDataManagementContext(string connectionString)
-        {
+//        public CustomerDataManagementContext(string connectionString)
+//        {
 
-        }
+//        }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(@"Server=DESKTOP-OS2RV1K;Database=CustomerDataManagement;Trusted_Connection=True;");
-            }
-        }
+//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//        {
+//            if (!optionsBuilder.IsConfigured)
+//            {
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//                optionsBuilder.UseSqlServer(@"Server=DESKTOP-OS2RV1K;Database=CustomerDataManagement;Trusted_Connection=True;");
+//            }
+//        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

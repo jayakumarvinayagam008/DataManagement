@@ -93,7 +93,6 @@
 
 $(document).ready(function (eve) {
     $("#btnApply").on('click', function (eve) {
-        alert(33);
         business2BusinessTable.draw();
     });
 });

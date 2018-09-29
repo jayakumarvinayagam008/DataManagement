@@ -6,7 +6,7 @@ namespace Application.UserAccount.Queries
         
         public ValidationResponse Validate(UserLogin userLogin)
         {
-            if (userLogin.UserName.ToLower().Equals("jaya") && userLogin.Password.Equals("12345"))
+            if (userLogin.UserName.ToLower().Equals("admin") && userLogin.Password.Equals("admin@123"))
             {
                 return new ValidationResponse { 
                     IsValidUser = true,
