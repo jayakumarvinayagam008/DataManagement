@@ -11,7 +11,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
 {
     public class SaveUploadDataCommand : ISaveUploadDataCommand
     {
-        private readonly IFileToDataModel _fileToDataModel;
+        private readonly IFileToDataModel _CustomerDataFileToDataModel;
         private readonly ISaveCustomerData _saveCustomerData;
         private readonly IBusinessToBusinessFileToDataModel _businessToBusinessFileToDataModel;
         private readonly IBusinessToCustomerFileToDataModel _businessToCustomerFileToDataModel;
@@ -20,16 +20,19 @@ namespace Application.DataUpload.Commands.SaveDataUpload
         private readonly IValidateBusinessCategoruEntiry _validateBusinessCategoruEntiry;
         private readonly ISaveBusinessToCustomer _saveBusinessToCustomer;
         //private IUploadProcess[] uploadProcesses = new IUploadProcess[] {
-        //    new BusinessToCustomerUploadProcess(new BusinessToCustomerFileToDataModel(), new SaveCustomerData()),
+        //    new BusinessToCustomerUploadProcess(new BusinessToCustomerFileToDataModel(),        //new SaveCustomerData()),
 
         //};
-        public SaveUploadDataCommand(IFileToDataModel fileToDataModel, ISaveCustomerData saveCustomerData,
-            IBusinessToBusinessFileToDataModel businessToBusinessFileToDataModel, IBusinessToCustomerFileToDataModel businessToCustomerFileToDataModel,
-            ISaveBusinessToBusiness saveBusinessToBusiness, IValidateEntiry validateEntiry,
+        public SaveUploadDataCommand(IFileToDataModel fileToDataModel, 
+            ISaveCustomerData saveCustomerData,
+            IBusinessToBusinessFileToDataModel businessToBusinessFileToDataModel, 
+            IBusinessToCustomerFileToDataModel businessToCustomerFileToDataModel,
+            ISaveBusinessToBusiness saveBusinessToBusiness, 
+            IValidateEntiry validateEntiry,
             IValidateBusinessCategoruEntiry validateBusinessCategoruEntiry,
             ISaveBusinessToCustomer saveBusinessToCustomer)
         {
-            _fileToDataModel = fileToDataModel;
+            _CustomerDataFileToDataModel = fileToDataModel;
             _saveCustomerData = saveCustomerData;
             _businessToBusinessFileToDataModel = businessToBusinessFileToDataModel;
             _businessToCustomerFileToDataModel = businessToCustomerFileToDataModel;
@@ -44,7 +47,9 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             var uploadStatus = new UploadSaveStatus();
             if(saveDataModel.UploadTypeId == (int)UploadType.BusinessToBusiness)
             {
-                var businessToBusiness = _businessToBusinessFileToDataModel.ReadFileData(saveDataModel);
+                var businessToBusinessData = _businessToBusinessFileToDataModel.ReadFileData(saveDataModel);
+                var businessToBusiness = businessToBusinessData.Item1;
+                uploadStatus.TotalRows = businessToBusinessData.Item2;
                 uploadStatus.UploadedRows = businessToBusiness.Count(); // number of rows going to update
                 // Check business category validation
                 // Ceck phone number validation 
@@ -58,7 +63,9 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                     if (true || unmappedCategory.Count()<1)
                     {
                         var status = _saveBusinessToBusiness.Save(validBusinessToBusiness);
-                    }else
+                        uploadStatus.IsUploaded = status;
+                    }
+                    else
                     {
                         uploadStatus.StatusMessage = "Some business category doesn't mapped.";
                     }
@@ -70,15 +77,18 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             else if(saveDataModel.UploadTypeId == (int)UploadType.BusinessToCustomer)
             {
                 var businessToCustomer = _businessToCustomerFileToDataModel.ReadFileData(saveDataModel);
-                uploadStatus.UploadedRows = businessToCustomer.Count(); // number of rows going to update
-                var saveStatus = _saveBusinessToCustomer.Save(businessToCustomer);
+
+                uploadStatus.UploadedRows = businessToCustomer.Item1.Count(); // number of rows going to update
+                var saveStatus = _saveBusinessToCustomer.Save(businessToCustomer.Item1);
+                uploadStatus.TotalRows = businessToCustomer.Item2;
                 uploadStatus.IsUploaded = saveStatus;
             }
             else if(saveDataModel.UploadTypeId == (int)UploadType.CustomerData)
             {
-                var customerData = _fileToDataModel.ReadFileData(saveDataModel);
-                uploadStatus.UploadedRows = customerData.Count(); // number of rows going to update
-                var saveStatus = _saveCustomerData.Save(customerData);
+                var customerData = _CustomerDataFileToDataModel.ReadFileData(saveDataModel);
+                uploadStatus.TotalRows = customerData.Item2;
+                uploadStatus.UploadedRows = customerData.Item1.Count(); // number of rows going to update
+                var saveStatus = _saveCustomerData.Save(customerData.Item1);
                 uploadStatus.IsUploaded = saveStatus;
             } else
             {

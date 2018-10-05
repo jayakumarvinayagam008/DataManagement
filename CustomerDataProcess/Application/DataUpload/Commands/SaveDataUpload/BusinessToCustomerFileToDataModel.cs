@@ -11,22 +11,27 @@ namespace Application.DataUpload.Commands.SaveDataUpload
     public class BusinessToCustomerFileToDataModel : IBusinessToCustomerFileToDataModel
     {
         private Dictionary<string, int> columnIndex;
-        public IEnumerable<BusinessToCustomerModel> ReadFileData(SaveDataModel saveDataModel)
+        private int totalRowCount;
+        public (IEnumerable<BusinessToCustomerModel>, int) ReadFileData(SaveDataModel saveDataModel)
         {
             FileInfo fileInfo = new FileInfo(saveDataModel.FilePath);
-            IEnumerable<BusinessToCustomerModel> businessToCustomerModels;
-            using (ExcelPackage package = new ExcelPackage(fileInfo))
+            IEnumerable<BusinessToCustomerModel> businessToCustomerModels = null;
+            if (fileInfo != null)
             {
-                var worksheet = package.Workbook.Worksheets[1]; // Tip: To access the first worksheet, try index 1, not 0
-                businessToCustomerModels = ReadExcelPackageToString(package, worksheet);
+                using (ExcelPackage package = new ExcelPackage(fileInfo))
+                {
+                    var worksheet = package.Workbook.Worksheets[1]; // Tip: To access the first worksheet, try index 1, not 0
+                    businessToCustomerModels = ReadExcelPackageToString(package, worksheet);
+                    package.Dispose();
+                }
             }
-
-            return businessToCustomerModels;
+            return (businessToCustomerModels, totalRowCount);
         }
         private IDictionary<string, int> columnArray;
         private IEnumerable<BusinessToCustomerModel> ReadExcelPackageToString(ExcelPackage package, ExcelWorksheet worksheet)
         {
             var rowCount = worksheet.Dimension?.Rows;
+            totalRowCount = rowCount.Value - 1;
             var colCount = worksheet.Dimension?.Columns;
             columnIndex = new BusinessToCustomerColumnMapping().GetCustomerColumnMapping();
             IDictionary<string, int> columnHeader = new Dictionary<string, int>();
@@ -39,10 +44,6 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 for (int col = 1; col <= colCount.Value; col++)
                 {
                     columnHeader.Add($"{worksheet.Cells[firstRow, col].Value}", col);
-                }
-                // Check tempalate columns exist in requested customer data input
-                {
-
                 }
 
                 //Featch all remain rows
@@ -77,7 +78,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                         Qualification = $"{worksheet.Cells[row, GetColumnIndex("Qualification")].Value}",
                         Roles = $"{worksheet.Cells[row, GetColumnIndex("Roles")].Value}",
                         State = $"{worksheet.Cells[row, GetColumnIndex("State")].Value}",
-                    });                   
+                    });
                 }
             }
             else

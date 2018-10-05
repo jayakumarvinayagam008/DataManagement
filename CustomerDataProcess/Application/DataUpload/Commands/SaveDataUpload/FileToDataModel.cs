@@ -12,21 +12,34 @@ namespace Application.DataUpload.Commands.SaveDataUpload
     {
         private Dictionary<string, int> columnIndex;
         private IDictionary<string, int> columnArray;
-        public IEnumerable<CustomerDataModel> ReadFileData(SaveDataModel saveDataModel)
+        private int totalRows;
+        public (IEnumerable<CustomerDataModel>, int) ReadFileData(SaveDataModel saveDataModel)
         {
             FileInfo fileInfo = new FileInfo(saveDataModel.FilePath);
-            IEnumerable<CustomerDataModel> customerDataModels;
-            using (ExcelPackage package = new ExcelPackage(fileInfo))
+            IEnumerable<CustomerDataModel> customerDataModels = null;
+            if (fileInfo != null)
             {
-                var worksheet = package.Workbook.Worksheets[1]; // Tip: To access the first worksheet, try index 1, not 0
-                customerDataModels = ReadExcelPackageToString(package, worksheet);
+                try
+                {
+                    using (ExcelPackage package = new ExcelPackage(fileInfo))
+                    {
+                        var worksheet = package.Workbook.Worksheets[1]; // Tip: To access the first worksheet, try index 1, not 0
+                        customerDataModels = ReadExcelPackageToString(package, worksheet);
+                        package.Dispose();
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            
             }
-
-            return customerDataModels;
+            return (customerDataModels, totalRows);
         }
         private IEnumerable<CustomerDataModel> ReadExcelPackageToString(ExcelPackage package, ExcelWorksheet worksheet)
         {
             var rowCount = worksheet.Dimension?.Rows;
+            totalRows = rowCount.Value - 1;
             var colCount = worksheet.Dimension?.Columns;
             columnIndex = new CustomerDataColumnMapping().GetCustomerColumnMapping();
             IDictionary<string, int> columnHeader = new Dictionary<string, int>();
@@ -38,7 +51,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 int firstRow = 1;
                 for (int col = 1; col <= colCount.Value; col++)
                 {
-                    columnHeader.Add($"{worksheet.Cells[firstRow, col].Value}", col);
+                    columnHeader.Add($"{worksheet.Cells[firstRow, col].Value}".Trim(), col);
                 }
                 // Check tempalate columns exist in requested customer data input
                 {
@@ -46,19 +59,19 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 }
 
                 //Featch all remain rows
-                var columnArray = columnHeader;
+                columnArray = columnHeader;
                 for (int row = 2; row <= rowCount.Value; row++)
                 {
-                    DateTime.TryParse($"{worksheet.Cells[row, GetColumnIndex("DateOfUse")].Value}", out DateTime dateOfUse);
+                    DateTime.TryParse($"{worksheet.Cells[row, GetColumnIndex("Date of Use")].Value}", out DateTime dateOfUse);
 
                     customerDataModel.Add(new CustomerDataModel
                     {
                         Circle = $"{worksheet.Cells[row, GetColumnIndex("Circle")].Value}",
-                        ClientBusinessVertical = $"{worksheet.Cells[row, GetColumnIndex("ClientBusinessVertical")].Value}",
-                        ClientCity = $"{worksheet.Cells[row, GetColumnIndex("ClientCity")].Value}",
-                        ClientName = $"{worksheet.Cells[row, GetColumnIndex("ClientName")].Value}",
+                        ClientBusinessVertical = $"{worksheet.Cells[row, GetColumnIndex("Client Business Vertical")].Value}",
+                        ClientCity = $"{worksheet.Cells[row, GetColumnIndex("Client City")].Value}",
+                        ClientName = $"{worksheet.Cells[row, GetColumnIndex("Client Name")].Value}",
                         DateOfUse = dateOfUse,
-                        DBQuality = $"{worksheet.Cells[row, GetColumnIndex("DBQuality")].Value}",
+                        DBQuality = $"{worksheet.Cells[row, GetColumnIndex("DB Quality")].Value}",
                         Numbers = $"{worksheet.Cells[row, GetColumnIndex("Numbers")].Value}",
                         Operator = $"{worksheet.Cells[row, GetColumnIndex("Operator")].Value}"
                     });
@@ -81,9 +94,9 @@ namespace Application.DataUpload.Commands.SaveDataUpload
         }
         private int GetColumnIndex(string keyName)
         {
-            if (columnArray.Keys.Any(x => x == keyName))
+            if (columnArray.Keys.Any(x => x.Trim() == keyName.Trim()))
             {
-                return columnArray[keyName];
+                return columnArray[keyName.Trim()];
             }
             return 0;
         }

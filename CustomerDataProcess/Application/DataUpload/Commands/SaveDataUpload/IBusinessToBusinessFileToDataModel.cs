@@ -7,6 +7,6 @@ namespace Application.DataUpload.Commands.SaveDataUpload
 {
     public interface IBusinessToBusinessFileToDataModel
     {
-        IEnumerable<BusinessToBusinesModel> ReadFileData(SaveDataModel saveDataModel);
+        (IEnumerable<BusinessToBusinesModel>, int) ReadFileData(SaveDataModel saveDataModel);
     }
 }

@@ -127,7 +127,8 @@
                     <th>DBQuality</th>
                     <th>DateOfUse</th>
                     <th>ClientCity</th>
-                    <th>Uploaded On</th>
+                    @*<th>Uploaded On</th>
+                    <th>Uploaded By</th>*@
                 </tr>
             </thead>
             <tbody>
@@ -137,18 +138,19 @@
                     foreach (var item in Model.CustomerDataModels.ToList())
                     {
                         i = i + 1;
-                        <tr>
-                            <td>@i</td>
-                            <td>@item.Numbers</td>
-                            <td>@item.Operator</td>
-                            <td>@item.Circle</td>
-                            <td>@item.ClientName</td>
-                            <td>@item.ClientBusinessVertical</td>
-                            <td>@item.DBQuality</td>
-                            <td>@item.DateOfUse.ToString()</td>
-                            <td>@item.ClientCity</td>
-                            <td>@item.DateOfUse.ToString()</td>
-                        </tr>
+                <tr>
+                    <td>@i</td>
+                    <td>@item.Numbers</td>
+                    <td>@item.Operator</td>
+                    <td>@item.Circle</td>
+                    <td>@item.ClientName</td>
+                    <td>@item.ClientBusinessVertical</td>
+                    <td>@item.DBQuality</td>
+                    <td>@item.DateOfUse.ToString()</td>
+                    <td>@item.ClientCity</td>
+                    @*<td>@item.UpdatedOn.ToString()</td>
+                    <td>@item.UpdatedBy.ToString()</td>*@
+                </tr>
                     }
                 }
             </tbody>

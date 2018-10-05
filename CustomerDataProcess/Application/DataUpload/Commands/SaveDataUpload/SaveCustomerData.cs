@@ -28,7 +28,11 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                         DateOfUse = x.DateOfUse,
                         Numbers = x.Numbers,
                         Operator = x.Operator,
-                        Dbquality = x.DBQuality
+                        Dbquality = x.DBQuality,
+                        CreatedBy = x.UpdatedBy,
+                        CreatedDate = x.UpdatedOn,
+                        ModifiedBy = x.UpdatedBy,
+                        ModifiedDate = x.UpdatedOn
                     }));
                 saveStatus = customerDataManagementContext.SaveChanges() > 0;
             }

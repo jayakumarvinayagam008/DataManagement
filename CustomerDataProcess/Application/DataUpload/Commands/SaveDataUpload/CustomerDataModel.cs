@@ -13,6 +13,8 @@ namespace Application.DataUpload.Commands.SaveDataUpload
         public string ClientBusinessVertical { get; set; }
         public string DBQuality { get; set; }
         public DateTime DateOfUse { get; set; }
-        public string ClientCity { get; set; }     
+        public string ClientCity { get; set; }
+        public DateTime UpdatedOn { get; set; }
+        public string UpdatedBy { get; set; }
     }
 }

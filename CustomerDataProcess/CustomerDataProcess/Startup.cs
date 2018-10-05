@@ -8,6 +8,7 @@ using Application.CustomerData.Queries;
 using Application.DataUpload.Commands.SaveDataUpload;
 using Application.DataUpload.Queries.GetUpLoadDataType;
 using Application.UserAccount.Queries;
+using CustomerDataProcess.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,10 @@ namespace CustomerDataProcess
             //Configuration.GetConnectionString("DefaultConnection")
             services.AddDbContext<CustomerDataManagementContext>(options =>
                     options.UseSqlServer(dbConnection));
-           
+
+            var tt = Configuration["CustomerDataProcessingSetting"];
+            services.Configure<CustomerDataProcessingSetting>(Configuration.GetSection("CustomerDataProcessingSetting"));
+
 
             services.AddScoped<IUserValidation, UserValidation>();
             services.AddScoped<IGetUpLoadDataTypeList, GetUpLoadDataTypeList>();
@@ -62,6 +66,9 @@ namespace CustomerDataProcess
             services.AddScoped<IGetBusinessStates, GetBusinessStates>();
             services.AddScoped<IGetBusinessDestination, GetBusinessDestination>();
             services.AddScoped < IGetCustomerCities, GetCustomerCities>();
+            services.AddScoped<IGetFullFilePath, GetFullFilePath>();
+            services.AddScoped<IGetFileName, GetFileName>();
+            services.AddScoped<IGetFileContent, GetFileContent>();  
             services.AddMvc();
         }
 

@@ -11,22 +11,27 @@ namespace Application.DataUpload.Commands.SaveDataUpload
     public class BusinessToBusinessFileToDataModel : IBusinessToBusinessFileToDataModel
     {
         private Dictionary<string, int> columnIndex;
-        public IEnumerable<BusinessToBusinesModel> ReadFileData(SaveDataModel saveDataModel)
+        private int totalRows = 0;
+        public (IEnumerable<BusinessToBusinesModel>, int) ReadFileData(SaveDataModel saveDataModel)
         {
             FileInfo fileInfo = new FileInfo(saveDataModel.FilePath);
-            IEnumerable<BusinessToBusinesModel> businessToBusinessModels;
-            using (ExcelPackage package = new ExcelPackage(fileInfo))
+            IEnumerable<BusinessToBusinesModel> businessToBusinessModels = null;
+            if(fileInfo != null)
             {
-                var worksheet = package.Workbook.Worksheets[1]; // Tip: To access the first worksheet, try index 1, not 0
-                businessToBusinessModels = ReadExcelPackageToString(package, worksheet);
+                using (ExcelPackage package = new ExcelPackage(fileInfo))
+                {
+                    var worksheet = package.Workbook.Worksheets[1]; // Tip: To access the first worksheet, try index 1, not 0
+                    businessToBusinessModels = ReadExcelPackageToString(package, worksheet);
+                    package.Dispose();
+                }
             }
-
-            return businessToBusinessModels;
+            return (businessToBusinessModels, totalRows);
         }
         private IDictionary<string, int> columnArray;
         private IEnumerable<BusinessToBusinesModel> ReadExcelPackageToString(ExcelPackage package, ExcelWorksheet worksheet)
         {
             var rowCount = worksheet.Dimension?.Rows;
+            totalRows = rowCount.Value - 1;
             var colCount = worksheet.Dimension?.Columns;
             columnIndex = new BusinessToBusinessColumnMapping().GetCustomerColumnMapping();
             IDictionary<string, int> columnHeader = new Dictionary<string, int>();
@@ -40,11 +45,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 {
                     columnHeader.Add($"{worksheet.Cells[firstRow, col].Value}", col);
                 }
-                // Check tempalate columns exist in requested customer data input
-                {
-
-                }
-
+               
                 //Featch all remain rows
                 columnArray = columnHeader;
                 for (int row = 2; row <= rowCount.Value; row++)

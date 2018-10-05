@@ -14,6 +14,8 @@ using Application.DataUpload.Commands.SaveDataUpload;
 using Application.CustomerData.Queries;
 using Application.BusinessToBusiness.Queries;
 using Application.BusinessToCustomers.Queries;
+using Microsoft.Extensions.Options;
+using System.Threading;
 
 namespace CustomerDataProcess.Controllers
 {
@@ -24,15 +26,21 @@ namespace CustomerDataProcess.Controllers
         private readonly IGetCustomerData _getCustomerData;
         private readonly IGetBusinessToBusiness _getBusinessToBusiness;
         private readonly IGetBusinessToCustomer _getBusinessToCustomer;
+        private readonly IOptions<CustomerDataProcessingSetting> _appSettings;
+        private readonly IGetFileContent _getFileContent;
         public HomeController(IGetUpLoadDataTypeList getUpLoadDataTypeList, ISaveUploadDataCommand saveUploadDataCommand,
                               IGetCustomerData getCustomerData, IGetBusinessToBusiness getBusinessToBusiness,
-                              IGetBusinessToCustomer getBusinessToCustomer)
+                              IGetBusinessToCustomer getBusinessToCustomer,
+                              IOptions<CustomerDataProcessingSetting> appSettings,
+                              IGetFileContent getFileContent)
         {
             _getUpLoadDataTypeList = getUpLoadDataTypeList;
             _saveUploadDataCommand = saveUploadDataCommand;
             _getCustomerData = getCustomerData;
             _getBusinessToBusiness = getBusinessToBusiness;
             _getBusinessToCustomer = getBusinessToCustomer;
+            _appSettings = appSettings;
+            _getFileContent = getFileContent;
         }
         public IActionResult Index()
         {
@@ -62,16 +70,17 @@ namespace CustomerDataProcess.Controllers
         {
             var uploadDataModel = new UploadDataModel();
             uploadDataModel.UploadDataTypes = _getUpLoadDataTypeList.Get().Select(x => new SelectListItem { Value = $"{x.Id}", Text = x.Name });
-            
+
             return View(uploadDataModel);
         }
 
         [HttpPost]
-        public IActionResult UploadUserData(UploadDataModel uploadDataModel, IList<IFormFile> files)
+        public async Task<IActionResult> UploadUserData(UploadDataModel uploadDataModel, IList<IFormFile> files)
         {
             uploadDataModel.UploadDataTypes = _getUpLoadDataTypeList.Get().Select(x => new SelectListItem { Value = $"{x.Id}", Text = x.Name });
             uploadDataModel.UploadTypeId = uploadDataModel.UploadTypeId;
-            var saveUploadModel = new SaveDataModel() {
+            var saveUploadModel = new SaveDataModel()
+            {
                 UploadTypeId = uploadDataModel.UploadTypeId
             };
             foreach (var file in files)
@@ -80,29 +89,43 @@ namespace CustomerDataProcess.Controllers
                     .Parse(file.ContentDisposition)
                     .FileName
                     .Trim('"');
-                var rootFilePath = @"F:\DataManagement\FileUpload";
+                var rootFilePath = _appSettings.Value.SharePath;
                 // full path to file in temp location
                 var filePath = Path.GetFullPath(rootFilePath);
                 // checked file types
                 if (fileName.EndsWith(".xlsx") || fileName.EndsWith(".csv"))
                 {
                     var dateTime = DateTime.Now;
-                    filePath = $"{filePath}\\{GetGUID()}_{fileName}" ;
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    filePath = $"{filePath}\\{GetGUID()}_{fileName}";
+                    await SaveFileToServerAsync(filePath);
+
+                    async Task SaveFileToServerAsync(string fileFullPath)
                     {
-                        file.CopyToAsync(stream);
+                        using (var stream = new FileStream(fileFullPath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
                     }
+
+                    //async Task SaveFileToServerAsync(string filePath)
+                    //{
+
+                    //    using (var stream = new FileStream(filePath, FileMode.Create))
+                    //    {
+                    //        await file.CopyToAsync(stream);
+                    //    }
+                    //}
+
+
                 }
                 saveUploadModel.FilePath = filePath;
             }
-
+            Thread.Sleep(1000);
 
             var saveStatus = _saveUploadDataCommand.Upload(saveUploadModel);
             uploadDataModel.StatusCode = (saveStatus.IsUploaded) ? 1 : 2;
             uploadDataModel.StatusMessage = saveStatus.StatusMessage;
-            uploadDataModel.Summary = $"{123} rows uploaded out of {saveStatus.UploadedRows}";
-            uploadDataModel.ValidationMessage = string.Empty;
-
+            uploadDataModel.Summary = $"{saveStatus.UploadedRows} rows uploaded out of {saveStatus.TotalRows}";
             return View(uploadDataModel);
         }
 
@@ -111,7 +134,7 @@ namespace CustomerDataProcess.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        
+
 
         private bool IsInternetExplore(string browser)
         {
@@ -121,6 +144,11 @@ namespace CustomerDataProcess.Controllers
         {
             Guid guid = Guid.NewGuid();
             return $"{guid.ToString()}{DateTime.Now.ToString("yyyyMMddhhmmss")}";
+        }
+        public ActionResult DownloadSampleTemplate(int templateId)
+        {
+            var sampleTempate = _getFileContent.Get(templateId, _appSettings.Value.SampleDownloadPath);
+            return File(sampleTempate.content, "application/vnd.ms-excel", $"{sampleTempate.TemplateType.Name}.xlsx");
         }
 
     }

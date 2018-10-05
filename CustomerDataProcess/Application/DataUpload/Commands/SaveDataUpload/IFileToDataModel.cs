@@ -6,7 +6,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
 {
     public interface IFileToDataModel
     {
-        IEnumerable<CustomerDataModel> ReadFileData(SaveDataModel saveDataModel);
+        (IEnumerable<CustomerDataModel>, int) ReadFileData(SaveDataModel saveDataModel);
 
     }
 }

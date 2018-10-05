@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Application.DataUpload.Commands.SaveDataUpload
 {
-    public interface IUploadProcess
-    {
-        int UploadType { get; }
-        UploadSaveStatus Upload(SaveDataModel saveDataModel);
-    }
+    //public interface IUploadProcess
+    //{
+    //    int UploadType { get; }
+    //    UploadSaveStatus Upload(SaveDataModel saveDataModel);
+    //}
 }

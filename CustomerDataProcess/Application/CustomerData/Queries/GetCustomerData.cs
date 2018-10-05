@@ -29,7 +29,9 @@ namespace Application.CustomerData.Queries
                     DateOfUse = x.DateOfUse.Value,
                     DBQuality = x.Dbquality,
                     Numbers = x.Numbers,
-                    Operator = x.Operator
+                    Operator = x.Operator,
+                    UpdatedBy = x.CreatedBy,
+                    UpdatedOn = x.CreatedDate.Value
                 }).AsEnumerable<CustomerDataModel>();
             return new CustomerListDataModel
             {
