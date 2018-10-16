@@ -7,6 +7,8 @@ using Application.BusinessToCustomers.Queries;
 using Application.CustomerData.Queries;
 using Application.DataUpload.Commands.SaveDataUpload;
 using Application.DataUpload.Queries.GetUpLoadDataType;
+using Application.NumberLookup.Command;
+using Application.NumberLookup.Query;
 using Application.UserAccount.Queries;
 using CustomerDataProcess.Models;
 using Microsoft.AspNetCore.Builder;
@@ -68,7 +70,14 @@ namespace CustomerDataProcess
             services.AddScoped < IGetCustomerCities, GetCustomerCities>();
             services.AddScoped<IGetFullFilePath, GetFullFilePath>();
             services.AddScoped<IGetFileName, GetFileName>();
-            services.AddScoped<IGetFileContent, GetFileContent>();  
+            services.AddScoped<IGetFileContent, GetFileContent>();
+            services.AddScoped<ILoopupProcess, LoopupProcess>();
+            services.AddScoped<IReadNumberLookup, ReadNumberLookup>();
+            services.AddScoped<IGetNumberLoopUpData, GetNumberLoopUpData>();
+            services.AddScoped<ISaveNumberLookUp, SaveNumberLookUp>();
+            services.AddScoped<IGetCustomerPhone, GetCustomerPhone>();
+            services.AddScoped<IGetBusinessToCustomerPhone, GetBusinessToCustomerPhone>();
+            services.AddScoped<IGetBusinesstoBusinessPhone, GetBusinesstoBusinessPhone>();            
             services.AddMvc();
         }
 

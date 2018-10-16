@@ -10,4 +10,11 @@ $(document).ready(function (eve) {
         }
         window.location = '/Home/DownloadSampleTemplate/?templateId=' + $selectedTypeId; 
     });
+
+    $("#btnsample").on('click', function (eve) {
+        var fileName = $('#hndLookupId').val();
+        window.location = '/Home/DownLoadNumberLookup/?fileName=' + fileName;
+    });
+
+
 });

@@ -1,4 +1,7 @@
-﻿using Application.Common;
+﻿using Application.BusinessToBusiness.Queries;
+using Application.BusinessToCustomers.Queries;
+using Application.Common;
+using Application.CustomerData.Queries;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -19,18 +22,24 @@ namespace Application.DataUpload.Commands.SaveDataUpload
         private readonly IValidateEntiry _validateEntiry;
         private readonly IValidateBusinessCategoruEntiry _validateBusinessCategoruEntiry;
         private readonly ISaveBusinessToCustomer _saveBusinessToCustomer;
+        private readonly IGetCustomerPhone _getCustomerPhone;
+        private readonly IGetBusinessToCustomerPhone _getBusinessToCustomerPhone;
+        private readonly IGetBusinesstoBusinessPhone _getBusinesstoBusinessPhone;
         //private IUploadProcess[] uploadProcesses = new IUploadProcess[] {
         //    new BusinessToCustomerUploadProcess(new BusinessToCustomerFileToDataModel(),        //new SaveCustomerData()),
 
         //};
-        public SaveUploadDataCommand(IFileToDataModel fileToDataModel, 
+        public SaveUploadDataCommand(IFileToDataModel fileToDataModel,
             ISaveCustomerData saveCustomerData,
-            IBusinessToBusinessFileToDataModel businessToBusinessFileToDataModel, 
+            IBusinessToBusinessFileToDataModel businessToBusinessFileToDataModel,
             IBusinessToCustomerFileToDataModel businessToCustomerFileToDataModel,
-            ISaveBusinessToBusiness saveBusinessToBusiness, 
+            ISaveBusinessToBusiness saveBusinessToBusiness,
             IValidateEntiry validateEntiry,
             IValidateBusinessCategoruEntiry validateBusinessCategoruEntiry,
-            ISaveBusinessToCustomer saveBusinessToCustomer)
+            ISaveBusinessToCustomer saveBusinessToCustomer,
+            IGetCustomerPhone getCustomerPhone,
+            IGetBusinessToCustomerPhone getBusinessToCustomerPhone,
+            IGetBusinesstoBusinessPhone getBusinesstoBusinessPhone)
         {
             _CustomerDataFileToDataModel = fileToDataModel;
             _saveCustomerData = saveCustomerData;
@@ -40,62 +49,147 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             _validateEntiry = validateEntiry;
             _validateBusinessCategoruEntiry = validateBusinessCategoruEntiry;
             _saveBusinessToCustomer = saveBusinessToCustomer;
+            _getCustomerPhone = getCustomerPhone;
+            _getBusinessToCustomerPhone = getBusinessToCustomerPhone;
+            _getBusinesstoBusinessPhone = getBusinesstoBusinessPhone;
         }
-       
+
         public UploadSaveStatus Upload(SaveDataModel saveDataModel)
         {
             var uploadStatus = new UploadSaveStatus();
-            if(saveDataModel.UploadTypeId == (int)UploadType.BusinessToBusiness)
+            if (saveDataModel.UploadTypeId == (int)UploadType.BusinessToBusiness)
             {
                 var businessToBusinessData = _businessToBusinessFileToDataModel.ReadFileData(saveDataModel);
                 var businessToBusiness = businessToBusinessData.Item1;
                 uploadStatus.TotalRows = businessToBusinessData.Item2;
-                uploadStatus.UploadedRows = businessToBusiness.Count(); // number of rows going to update
+                
                 // Check business category validation
                 // Ceck phone number validation 
-                var phone = businessToBusiness.Select(x => x.Phone1).AsEnumerable<string>();
-                if (true || _validateEntiry.Validate(phone).Count() == uploadStatus.UploadedRows)
+                //var phone = businessToBusiness.Select(x => x.Phone1).Where(x => !string.IsNullOrWhiteSpace(x)).AsEnumerable<string>();
+                var numbers = _getBusinesstoBusinessPhone.Get();
+                businessToBusiness = businessToBusiness.Except(numbers, x => x.MobileNew, y => y).ToList();
+                numbers = null;
+                if(businessToBusiness.Count() > 0)
                 {
+                    // validate Business category 
                     var categoryName = businessToBusiness.Select(x => x.CategoryId.Value).AsEnumerable<int>();
                     var unmappedCategory = _validateBusinessCategoruEntiry.Validate(categoryName).ToList<int>();
-                    var validBusinessToBusiness = businessToBusiness.Where(x =>
-                                                    !unmappedCategory.Any(y => y == x.CategoryId)).AsEnumerable<BusinessToBusinesModel>();
-                    if (true || unmappedCategory.Count()<1)
-                    {
-                        var status = _saveBusinessToBusiness.Save(validBusinessToBusiness);
-                        uploadStatus.IsUploaded = status;
-                    }
-                    else
-                    {
-                        uploadStatus.StatusMessage = "Some business category doesn't mapped.";
-                    }
-                }else
-                {
-                    uploadStatus.StatusMessage = "Phone number dublicate";
+                    var validBusinessToBusiness = businessToBusiness.Join(unmappedCategory,
+                        x => x.CategoryId,
+                        y => y,
+                        (x, y) => x).AsEnumerable<BusinessToBusinesModel>();
+                    uploadStatus.UploadedRows = validBusinessToBusiness.Count(); // number of rows going to update
+                    if (validBusinessToBusiness.Count() > 0)
+                        uploadStatus.IsUploaded = _saveBusinessToBusiness.Save(validBusinessToBusiness);
                 }
+                // status message update 
+                if(uploadStatus.TotalRows > uploadStatus.UploadedRows)
+                {
+                    uploadStatus.StatusMessage = "Some business category doesn't mapped or duplicate phone numers exist";
+                }                
             }
-            else if(saveDataModel.UploadTypeId == (int)UploadType.BusinessToCustomer)
+            else if (saveDataModel.UploadTypeId == (int)UploadType.BusinessToCustomer)
             {
                 var businessToCustomer = _businessToCustomerFileToDataModel.ReadFileData(saveDataModel);
-
-                uploadStatus.UploadedRows = businessToCustomer.Item1.Count(); // number of rows going to update
-                var saveStatus = _saveBusinessToCustomer.Save(businessToCustomer.Item1);
                 uploadStatus.TotalRows = businessToCustomer.Item2;
-                uploadStatus.IsUploaded = saveStatus;
+                var dbNumbers = _getBusinessToCustomerPhone.Get();
+                var filteredData = businessToCustomer.Item1.Except(dbNumbers, x => x.MobileNew, y => y).ToList();
+                dbNumbers = null;
+                uploadStatus.UploadedRows = filteredData.Count(); // number of rows going to update
+                if(uploadStatus.UploadedRows > 0)
+                    uploadStatus.IsUploaded = _saveBusinessToCustomer.Save(filteredData);
+                // status message update 
+                if (uploadStatus.TotalRows > uploadStatus.UploadedRows)
+                {
+                    uploadStatus.StatusMessage = "Duplicate phone numers exist";
+                }
             }
-            else if(saveDataModel.UploadTypeId == (int)UploadType.CustomerData)
+            else if (saveDataModel.UploadTypeId == (int)UploadType.CustomerData)
             {
                 var customerData = _CustomerDataFileToDataModel.ReadFileData(saveDataModel);
                 uploadStatus.TotalRows = customerData.Item2;
-                uploadStatus.UploadedRows = customerData.Item1.Count(); // number of rows going to update
-                var saveStatus = _saveCustomerData.Save(customerData.Item1);
-                uploadStatus.IsUploaded = saveStatus;
-            } else
+
+                // Mobile number filter
+                var dbNumbers = _getCustomerPhone.Get();
+                var filteredData = customerData.Item1.Except(dbNumbers, x => x.Numbers, y => y).ToList();
+                dbNumbers = null; // Make it as empty
+                uploadStatus.UploadedRows = filteredData.Count(); // number of rows going to update
+                if(uploadStatus.UploadedRows>0)                
+                    uploadStatus.IsUploaded = _saveCustomerData.Save(filteredData);
+                // status message update 
+                if (uploadStatus.TotalRows > uploadStatus.UploadedRows)
+                {
+                    uploadStatus.StatusMessage = "Duplicate phone numers exist";
+                }
+            }
+            else
             {
                 uploadStatus.IsUploaded = false;
                 uploadStatus.StatusMessage = "Please upload valid file";
             }
             return uploadStatus;
+        }
+    }
+
+    public static class LinqExtensions
+    {
+        public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TSource, bool> comparer)
+        {
+            return first.Where(x => second.Count(y => comparer(x, y)) == 0);
+        }
+
+        public static IEnumerable<TSource> Intersect<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TSource, bool> comparer)
+        {
+            return first.Where(x => second.Count(y => comparer(x, y)) == 1);
+        }
+        public static IEnumerable<TSource> Except<TSource, TThat, TKey>(
+            this IEnumerable<TSource> first,
+            IEnumerable<TThat> second,
+            Func<TSource, TKey> firstKey,
+            Func<TThat, TKey> secondKey)
+        {
+            if (first == null) throw new ArgumentNullException("first");
+            if (second == null) throw new ArgumentNullException("second");
+
+            var set = new HashSet<TKey>();
+            foreach (var element in second)
+            {
+                set.Add(secondKey(element));
+            }
+
+            foreach (var element in first)
+            {
+                if (set.Add(firstKey(element)))
+                {
+                    set.Remove(firstKey(element));
+                    yield return element;
+                }
+            }
+        }
+
+        public static IEnumerable<TSource> Intersect<TSource, TThat, TKey>(
+            this IEnumerable<TSource> first,
+            IEnumerable<TThat> second,
+            Func<TSource, TKey> firstKey,
+            Func<TThat, TKey> secondKey)
+        {
+            if (first == null) throw new ArgumentNullException("first");
+            if (second == null) throw new ArgumentNullException("second");
+
+            var set = new HashSet<TKey>();
+            foreach (var element in second)
+            {
+                set.Add(secondKey(element));
+            }
+
+            foreach (var element in first)
+            {
+                if (!set.Add(firstKey(element)))
+                {
+                    set.Remove(firstKey(element));
+                    yield return element;
+                }
+            }
         }
     }
 }

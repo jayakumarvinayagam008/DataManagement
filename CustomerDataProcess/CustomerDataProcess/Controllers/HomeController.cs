@@ -16,6 +16,7 @@ using Application.BusinessToBusiness.Queries;
 using Application.BusinessToCustomers.Queries;
 using Microsoft.Extensions.Options;
 using System.Threading;
+using Application.NumberLookup.Command;
 
 namespace CustomerDataProcess.Controllers
 {
@@ -28,11 +29,13 @@ namespace CustomerDataProcess.Controllers
         private readonly IGetBusinessToCustomer _getBusinessToCustomer;
         private readonly IOptions<CustomerDataProcessingSetting> _appSettings;
         private readonly IGetFileContent _getFileContent;
+        private readonly ILoopupProcess _loopupProcess;
         public HomeController(IGetUpLoadDataTypeList getUpLoadDataTypeList, ISaveUploadDataCommand saveUploadDataCommand,
                               IGetCustomerData getCustomerData, IGetBusinessToBusiness getBusinessToBusiness,
                               IGetBusinessToCustomer getBusinessToCustomer,
                               IOptions<CustomerDataProcessingSetting> appSettings,
-                              IGetFileContent getFileContent)
+                              IGetFileContent getFileContent,
+                              ILoopupProcess loopupProcess)
         {
             _getUpLoadDataTypeList = getUpLoadDataTypeList;
             _saveUploadDataCommand = saveUploadDataCommand;
@@ -41,6 +44,7 @@ namespace CustomerDataProcess.Controllers
             _getBusinessToCustomer = getBusinessToCustomer;
             _appSettings = appSettings;
             _getFileContent = getFileContent;
+            _loopupProcess = loopupProcess;
         }
         public IActionResult Index()
         {
@@ -64,6 +68,12 @@ namespace CustomerDataProcess.Controllers
         {
             var customerData = _getCustomerData.Get();
             return View(customerData);
+        }
+
+        public IActionResult CustomerDataLoad()
+        {
+            var customerData = _getCustomerData.Get();
+            return Json(customerData.CustomerDataModels);
         }
 
         public IActionResult UploadUserData()
@@ -106,22 +116,9 @@ namespace CustomerDataProcess.Controllers
                             await file.CopyToAsync(stream);
                         }
                     }
-
-                    //async Task SaveFileToServerAsync(string filePath)
-                    //{
-
-                    //    using (var stream = new FileStream(filePath, FileMode.Create))
-                    //    {
-                    //        await file.CopyToAsync(stream);
-                    //    }
-                    //}
-
-
                 }
                 saveUploadModel.FilePath = filePath;
             }
-            Thread.Sleep(1000);
-
             var saveStatus = _saveUploadDataCommand.Upload(saveUploadModel);
             uploadDataModel.StatusCode = (saveStatus.IsUploaded) ? 1 : 2;
             uploadDataModel.StatusMessage = saveStatus.StatusMessage;
@@ -151,5 +148,64 @@ namespace CustomerDataProcess.Controllers
             return File(sampleTempate.content, "application/vnd.ms-excel", $"{sampleTempate.TemplateType.Name}.xlsx");
         }
 
+        public ActionResult UploadSummary()
+        {
+            return View();
+        }
+
+
+        public ActionResult UploadNumberLookUp()
+        {
+            var createdFile = new NumberLookUp()
+            {
+                Status = false
+            };
+            return View(createdFile);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UploadNumberLookUp(IList<IFormFile> files)
+        {
+            var lookupFileName = string.Empty;
+            var rootFilePath = _appSettings.Value.NumberLookup;
+            // full path to file in temp location
+            var filePath = Path.GetFullPath(rootFilePath);
+            foreach (var file in files)
+            {
+                var fileName = ContentDispositionHeaderValue
+                    .Parse(file.ContentDisposition)
+                    .FileName
+                    .Trim('"');
+                
+                // checked file types
+                if (fileName.EndsWith(".xlsx") || fileName.EndsWith(".csv"))
+                {
+                    var dateTime = DateTime.Now;
+                    filePath = $"{filePath}{GetGUID()}_{fileName}";
+                    await SaveFileToServerAsync(filePath);
+
+                    async Task SaveFileToServerAsync(string fileFullPath)
+                    {
+                        using (var stream = new FileStream(fileFullPath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+                    }
+                    lookupFileName = filePath;
+                }
+            }
+            var fileContent = _loopupProcess.Process(lookupFileName, rootFilePath);
+            var createdFile = new NumberLookUp() {
+                FileName = fileContent,
+                Status = !string.IsNullOrWhiteSpace(fileContent)
+            };
+            return View(createdFile);
+        }
+
+        public ActionResult DownLoadNumberLookup(string fileName)
+        {
+            var sampleTempate = _getFileContent.Get(fileName, _appSettings.Value.NumberLookup);
+            return File(sampleTempate.content, "application/vnd.ms-excel", $"{sampleTempate.TemplateType.Name}.xlsx");
+        }
     }
 }

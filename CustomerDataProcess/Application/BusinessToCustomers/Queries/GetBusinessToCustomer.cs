@@ -33,7 +33,9 @@ namespace Application.BusinessToCustomers.Queries
             var filterArea = _getArea.Get();
             var filterCountry = _getCountry.Get();
             //var filterDestination = _getDestination.Get();
-            var customer = _customerDataManagementContext.BusinessToCustomer.Select(cust => new BusinessToCustomerModel
+            var customer = _customerDataManagementContext.BusinessToCustomer
+                .OrderByDescending(x => x.CreatedDate)
+                .Take(5000).Select(cust => new BusinessToCustomerModel
             {
                 Address = cust.Address,
                 Address2 = cust.Address2,

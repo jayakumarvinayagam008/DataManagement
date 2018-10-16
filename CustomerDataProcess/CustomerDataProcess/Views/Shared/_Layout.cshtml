@@ -4,10 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CustomerDataProcess</title>
-
+    
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
+        <link href="~/css/fixedHeader.bootstrap.min.css" rel="stylesheet" />
         <link href="~/css/jquery.dropdown.min.css" rel="stylesheet" />
         <link href="~/css/tableexport.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -154,6 +155,68 @@
             /*display: none;*/
             width: 30%;
         }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            color: #0099cc !important;
+            padding: 0.4em 0.8em;
+            border: #eaeaea 1px solid;
+            
+        }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                color: #0099cc !important;
+                border-color: #eaeaea !important;
+                background-color: #eaeaea !important;
+                background: unset;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+                color: #fff !important;
+                background: unset !important;
+                border: #0099cc 1px solid !important;
+                background-color: #0099cc !important;
+                cursor: default;
+            }
+
+        table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.dataTable.display tbody th, table.dataTable.display tbody td {
+            border: 1px solid #ddd;
+            border-left: none;
+            border-top: none;
+        }
+
+        table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd {
+            background-color: #fff;
+        }
+
+        table.dataTable.display tbody tr.even > .sorting_1, table.dataTable.order-column.stripe tbody tr.even > .sorting_1 {
+            background-color: #f3f3f3;
+        }
+
+        table.dataTable.display tbody tr.odd > .sorting_1, table.dataTable.order-column.stripe tbody tr.odd > .sorting_1 {
+            background-color: #fff;
+        }
+
+        table.dataTable thead th, table.dataTable thead td {
+            border: 1px solid #ddd;
+            border-left: none;
+        }
+
+        table.dataTable.stripe tbody tr.even, table.dataTable.display tbody tr.even {
+            background-color: #f3f3f3;
+        }
+
+        .datatables_length {
+            padding-bottom: 15px;
+        }
+
+        table.dataTable {
+            border-left: 1px solid #ddd;
+        }
+
+        .dataTables_wrapper select, .dataTables_wrapper input {
+            border: 1px solid #ddd;
+            padding: 0.4em;
+        }
     </style>
 </head>
 <body>
@@ -205,6 +268,9 @@
                 <a asp-area="" asp-controller="Home" asp-action="BusinessToCustomers"><span class="glyphicon glyphicon-cog"></span><span class="nav-label">Business To Customers</span></a>
                 <a asp-area="" asp-controller="Home" asp-action="CustomerData"><span class="glyphicon glyphicon-film"></span><span class="nav-label">Customer Data</span></a>
                 <a asp-area="" asp-controller="Home" asp-action="UploadUserData"><span class="glyphicon glyphicon-upload"></span><span class="nav-label">Data Upload</span></a>
+                <a asp-area="" asp-controller="Home" asp-action="UploadSummary"><span class="glyphicon glyphicon-film"></span><span class="nav-label">DataUpload Summary</span></a>
+                <a asp-area="" asp-controller="Home" asp-action="UploadNumberLookUp"><span class="glyphicon glyphicon-upload"></span><span class="nav-label">Number Looup</span></a>
+
             </li>
         </ul>
     </nav>
@@ -229,7 +295,7 @@
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        
+
         @*<script src="~/js/site.js" asp-append-version="true"></script>*@
     </environment>
     <environment exclude="Development">
@@ -248,7 +314,12 @@
     </environment>
     <script src="~/js/jquery.dataTables.min.js"></script>
     <script src="~/js/jquery.dropdown.min.js"></script>
-    <script src="~/js/tableexport.min.js" type="text/javascript"></script>
+    @*<script src="~/js/tableexport.min.js" type="text/javascript"></script>*@
+
+
+    <script src="~/js/dataTables.buttons.min.js"></script>
+    <script src="~/js/jszip.min.js"></script>
+    <script src="~/js/buttons.html5.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
     <script>
@@ -266,15 +337,96 @@
         });
 
         $(document).ready(function (eve) {
+
+            //$.ajax({
+            //    url: '/Home/CustomerDataLoad/',
+            //    success: function (data) {
+            //        alert(JSON.stringify( data));
+            //    }
+            //});
             var customerDataTable = $('#customerDataGrid').DataTable({
+                
+                fixedHeader: true,               
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'csv',
+                        filename: 'CustomerData'
+                    },
+                    {
+                        extend: 'excel',
+                        filename: 'CustomerData'
+                    }
+                ],
+                "dom": '<"top"Bf>rt<"bottom"lip><"clear">',
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
             });
+
+            //t = $("#customerDataGrid").DataTable({
+            //    fixedHeader: true,
+            //    processing: true,
+            //    serverSide: true,
+            //    info: true,
+            //    ajax: {
+            //        url: '/Home/CustomerDataLoad/',
+            //        data: function (data) {
+            //            delete data.columns;
+            //        }
+            //    },
+            //    scrollY: 300,
+            //    deferRender: true,
+            //    scroller: true,
+            //    columns: [
+            //        { "data": "operator" }
+
+            //    ],
+            //    order: [[0, 'desc']],
+            //    select: true,
+            //    dom: 'lfrtip',
+            //    responsive: true,
+            //    buttons: true
+            //});
+
+            //t.on('order.dt search.dt', function () {
+            //    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            //        cell.innerHTML = i + 1;
+            //    });
+            //}).draw();
+
+
             //customerDataGrid
             var business2BusinessTable = $('#tblB2B').DataTable({
-                
+                fixedHeader: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'csv',
+                        filename: 'BusinessToBusiness'
+                    },
+                    {
+                        extend: 'excel',
+                        filename: 'BusinessToBusiness'
+                    }
+                ],
+                "dom": '<"top"Bf>rt<"bottom"lip><"clear">',
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
             });
 
             var business2CustomerTable = $('#tblB2C').DataTable({
-                
+                fixedHeader: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'csv',
+                        filename: 'BusinessToCustomer'
+                    },
+                    {
+                        extend: 'excel',
+                        filename: 'BusinessToCustomer'
+                    }
+                ],
+                "dom": '<"top"Bf>rt<"bottom"lip><"clear">',
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
             });
 
             $('.sltArea, .sltState, .sltCountry, .sltCity,.sltbusinessCateg, .sltDesigination, .sltCustomerFilterCity, .sltb2cCountry, .sltb2cCity, .sltb2cState, .sltb2cArea').dropdown({

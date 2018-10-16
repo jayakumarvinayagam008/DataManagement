@@ -12,27 +12,23 @@ namespace Persistance
         public virtual DbSet<Cdmrole> Cdmrole { get; set; }
         public virtual DbSet<Cdmuser> Cdmuser { get; set; }
         public virtual DbSet<CustomerDataManagement> CustomerDataManagement { get; set; }
+        public virtual DbSet<NumberLookup> NumberLookup { get; set; }
         public virtual DbSet<UploadHistoryDetail> UploadHistoryDetail { get; set; }
         public virtual DbSet<UploadStatus> UploadStatus { get; set; }
 
         public CustomerDataManagementContext(DbContextOptions<CustomerDataManagementContext> options)
-            :base(options)
+    : base(options)
         {
 
         }
-//        public CustomerDataManagementContext(string connectionString)
-//        {
-
-//        }
-
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseSqlServer(@"Server=DESKTOP-OS2RV1K;Database=CustomerDataManagement;Trusted_Connection=True;");
-//            }
-//        }
+        //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //        {
+        //            if (!optionsBuilder.IsConfigured)
+        //            {
+        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+        //                optionsBuilder.UseSqlServer(@"Server=DESKTOP-OS2RV1K;Database=CustomerDataManagement;Trusted_Connection=True;");
+        //            }
+        //        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -178,7 +174,7 @@ namespace Persistance
                     .IsUnicode(false);
 
                 entity.Property(e => e.Web)
-                    .HasMaxLength(100)
+                    .HasMaxLength(500)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Category)
@@ -191,6 +187,7 @@ namespace Persistance
             modelBuilder.Entity<BusinessToCustomer>(entity =>
             {
                 entity.HasKey(e => e.B2cid);
+
                 entity.ToTable("BusinessToCustomer", "dm");
 
                 entity.Property(e => e.B2cid).HasColumnName("B2CId");
@@ -247,8 +244,8 @@ namespace Persistance
                     .IsUnicode(false);
 
                 entity.Property(e => e.Experience)
-                   .HasMaxLength(10)
-                   .IsUnicode(false);
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Gender)
                     .HasMaxLength(10)
@@ -451,6 +448,43 @@ namespace Persistance
 
                 entity.Property(e => e.Operator)
                     .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<NumberLookup>(entity =>
+            {
+                entity.HasKey(e => e.LookupId);
+
+                entity.ToTable("NumberLookup", "dm");
+
+                entity.Property(e => e.Circle)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('ADMIN')");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ModifiedDate).HasColumnType("date");
+
+                entity.Property(e => e.Operator)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Series)
+                    .IsRequired()
+                    .HasMaxLength(10)
                     .IsUnicode(false);
             });
 

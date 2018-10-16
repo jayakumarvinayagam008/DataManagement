@@ -19,7 +19,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             IQueryable<int> businessCategory = _customerDataManagementContext.B2bcategory
                .Select(x => x.CategoryId).AsQueryable<int>();
 
-            var businesCate = categoryId.Where(x => !businessCategory.Any(y=> y == x) ).AsEnumerable<int>();
+            var businesCate = categoryId.Intersect(businessCategory).AsEnumerable<int>();
             return businesCate;
         }
     }

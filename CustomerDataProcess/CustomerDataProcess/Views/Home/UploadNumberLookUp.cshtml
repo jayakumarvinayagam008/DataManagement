@@ -1,0 +1,60 @@
+﻿@{
+    @model CustomerDataProcess.Models.NumberLookUp;
+    ViewData["Title"] = "NumberLookup";
+}
+
+<h2>Number Lookup</h2>
+<style>
+    .centerDiv {
+        width: 60%;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .file {
+        visibility: hidden;
+        position: absolute;
+    }
+
+    .uploadSummary {
+        padding-top: 10px;
+        width: 70%;
+        height: auto;
+        margin: 0 auto;
+    }
+</style>
+
+<div class="centerDiv">
+    <form asp-action="UploadNumberLookUp" method="post" enctype="multipart/form-data">
+        <div class="row">
+
+        </div>
+        <div class="form-group">
+            <label>Upload Data File for Number Lookup(excel, csv only)</label>
+            <input type="file" name="files" id="files" class="file" />
+            <div class="input-group col-xs-12">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-upload"></i></span>
+                <input type="text" class="form-control input-lg" disabled placeholder="Select a file">
+                <span class="input-group-btn">
+                    <button class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-search"></i> Browse</button>
+                </span>
+            </div>
+        </div>
+
+        <div style="text-align:center">
+            <button type="submit" class="btn">Cancel</button>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+    </form>
+</div>
+<div class="uploadSummary">
+    @{
+        if (Model.Status)
+        {
+            <input type="hidden" id="hndLookupId" value="@Model.FileName"/>
+            <button class="btn btn-link" type="button" id="btnsample">
+                Download Number Loopup Response
+            </button>
+        }
+    }
+</div>

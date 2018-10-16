@@ -37,5 +37,30 @@
                 }
             };
         }
+        public SampleTemplate Get(string fileName, string accessPath)
+        {
+            var filePath = _getFullFilePath.Get(accessPath, fileName);
+            if (!string.IsNullOrWhiteSpace(fileName))
+            {
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                var template = new SampleTemplate
+                {
+                    content = fileBytes,
+                    TemplateType = new UploadDataType
+                    {                        
+                        Name = "NumberLookup"
+                    }
+                };
+                return template;
+            }
+            return new SampleTemplate
+            {
+                content = new byte[4],
+                TemplateType = new UploadDataType
+                {
+                    Name = "Dummy"
+                }
+            };
+        }
     }
 }

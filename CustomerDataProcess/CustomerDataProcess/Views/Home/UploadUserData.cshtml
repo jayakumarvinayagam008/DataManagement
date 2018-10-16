@@ -51,7 +51,7 @@
                 <input type="file" name="files" id="files" class="file" />
                 <div class="input-group col-xs-12">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-upload"></i></span>
-                    <input type="text" class="form-control input-lg" disabled placeholder="Upload Image">
+                    <input type="text" class="form-control input-lg" disabled placeholder="Select a file">
                     <span class="input-group-btn">
                         <button class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-search"></i> Browse</button>
                     </span>
@@ -103,7 +103,7 @@
                     @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
                     {
                         <li>
-                            <label>@Model.StatusMessage"</label>
+                            <label>@Model.StatusMessage</label>
                         </li>
                     }
                     @if (!string.IsNullOrWhiteSpace(Model.Summary))

@@ -32,8 +32,8 @@ namespace Application.BusinessToBusiness.Queries
             var filterArea = _getArea.Get();
             var filterCountry = _getCountry.Get();
             var filterDestination = _getDestination.Get();
-
-            var customer = _customerDataManagementContext.BusinessToBusiness
+            
+            var customer = _customerDataManagementContext.BusinessToBusiness.OrderByDescending(x=>x.CreatedDate ).Take(5000)
                                                          .Select(cust =>
                                                                       new BusinessToBusinesModel
                                                                       {

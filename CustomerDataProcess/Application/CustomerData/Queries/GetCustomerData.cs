@@ -20,6 +20,7 @@ namespace Application.CustomerData.Queries
         {
             var cities = _getCustomerCities.Get();
             var customerData = _customerDataManagementContext.CustomerDataManagement
+                .OrderByDescending(x => x.CreatedDate).Take(5000)
                 .Select(x => new CustomerDataModel
                 {
                     Circle = x.Circle,
