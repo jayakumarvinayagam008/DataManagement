@@ -6,7 +6,30 @@
 
 <h2>CustomerDate</h2>
 <style>
-    .mainTableBlock {
+    .btn-space {
+        margin-right: 5%;
+    }
+
+    .row-space {
+        margin-top: 3%;
+    }
+    .badge-primary {
+        color: #fff;
+        background-color: #007bff;
+    }
+    .dashBoard {
+        max-height: 200px;
+        overflow-y: scroll;
+        display:none;
+    }
+    .caption {
+        font-size: 100%;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+    }
+    /*.mainTableBlock {
         min-height: 100px;
         max-height: 600px;
         width: 100%;
@@ -73,8 +96,145 @@
     #middle {
         height: 30px;
         width: 100%;
-    }
+    }*/
 </style>
+
+<div class="container">
+    <form asp-controller="Home" asp-action="CustomerData" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Country</label>
+                    <div class="sltCustomerFilterCity">
+                        <select asp-for="Filter.CityId" id="countryId"
+                                class=form-control multiple placeholder="Please select"
+                                asp-items="@Model.Filter.Cities"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">City</label>
+                    <div class="sltCustomerFilterCity">
+                        <select asp-for="Filter.CityId" id="cityId"
+                                class=form-control multiple placeholder="Please select"
+                                asp-items="@Model.Filter.Cities"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Business Vertical</label>
+                    <div class="sltCustomerFilterCity">
+                        <select asp-for="Filter.BusinessVerticalId" id="businessVerticalId"
+                                class=form-control multiple placeholder="Please select"
+                                asp-items="@Model.Filter.BusinessVertical"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Data Quality</label>
+                    <div class="sltCustomerFilterCity">
+                        <select asp-for="Filter.DataQualityId" id="dataQualityId"
+                                class=form-control multiple placeholder="Please select"
+                                asp-items="@Model.Filter.DataQuality"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">State</label>
+                    <div class="sltCustomerFilterCity">
+                        <select asp-for="Filter.CityId" id="stateId"
+                                class=form-control multiple placeholder="Please select"
+                                asp-items="@Model.Filter.Cities"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Network</label>
+                    <div class="sltCustomerFilterCity">
+                        <select asp-for="Filter.NetworkId" id="networkId"
+                                class=form-control multiple placeholder="Please select"
+                                asp-items="@Model.Filter.Networks"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Customer Name</label>
+                    <div class="sltCustomerFilterCity">
+                        <select asp-for="Filter.CityId" id="customerName"
+                                class=form-control multiple placeholder="Please select"
+                                asp-items="@Model.Filter.Cities"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Tags</label>
+
+                    <input type="email" class="form-control" id="tags" placeholder="Email">
+                </div>
+            </div>
+            <div class="col-lg-12" style="text-align:center;">
+
+                <button type="button" class="btn btn-primary btn-space">Cancel</button>
+
+
+                <button type="button" id="btnCustomerDataSearch" class="btn btn-success btn-space">Search</button>
+
+
+            </div>
+        </div>
+    </form>
+
+    <div class="row row-space">
+        <div class="col-xs-6 col-md-8">
+            <div class="card" style="width: 90%; height:30%;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6" style="text-align:center">
+                            <h4 class="card-title">Customer Data</h4>
+                        </div>
+                        <div class="col-md-6" style="text-align:center">
+                            <h4 class="card-title"Total: ><span id="spnTotal"></span></h4>
+                        </div>
+                    </div>
+                    <p class="card-text">
+                        <div id="dashboardBlock" class="dashBoard">
+                            <ul class="list-group" id="dashBoardItem">
+                                
+                            </ul>
+                        </div>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-6 col-md-4">
+
+            <div class="btn-group">
+
+                <div class="btn-group">
+                    <input type="hidden" id="downloadLink" />
+                    <button type="button" class="btn btn-primary" id="btnCustomerExcelExport">
+                        Download(Excel) <span class="caret"></span>
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnCustomeCSVExport">
+                        Download(CSV) <span class="caret"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+
+----Country-------      |   --------State-----
+-----City  ------------ |   ---Network  ----
+---Business Vertical--- |   -----Customer Name------
+-------Data Quality---- |   --------Tags------------
+
+
+City  - Multiselect
+Network  - Multiselect
+Business Vertical  - Multiselect
+Customer Name  - Multiselect
+Data Quality  - Multiselect
+
+
 <div class="mainTableBlock">
     <div class="accordion" id="accordionExample">
 
@@ -130,7 +290,7 @@
                     <th>ClientCity</th>
                 </tr>
             </thead>
-            
+
             <tbody>
         @{
             int i = 0;
@@ -154,4 +314,6 @@
         </table>
 </div>
 </div>
+
+    -->
 

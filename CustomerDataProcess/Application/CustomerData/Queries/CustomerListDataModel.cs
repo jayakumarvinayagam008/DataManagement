@@ -1,8 +1,6 @@
 ﻿using Application.Common;
 using Application.DataUpload.Commands.SaveDataUpload;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Application.CustomerData.Queries
 {
@@ -10,6 +8,6 @@ namespace Application.CustomerData.Queries
     {
         public DataFilter Filter { get; set; }
         public IEnumerable<CustomerDataModel> CustomerDataModels { get; set; }
-        
+        public int Total { get; set; }
     }
 }

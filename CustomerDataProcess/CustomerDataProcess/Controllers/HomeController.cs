@@ -17,6 +17,8 @@ using Application.BusinessToCustomers.Queries;
 using Microsoft.Extensions.Options;
 using System.Threading;
 using Application.NumberLookup.Command;
+using Microsoft.Extensions.Logging;
+using Application.CustomerData.Commands;
 
 namespace CustomerDataProcess.Controllers
 {
@@ -30,12 +32,19 @@ namespace CustomerDataProcess.Controllers
         private readonly IOptions<CustomerDataProcessingSetting> _appSettings;
         private readonly IGetFileContent _getFileContent;
         private readonly ILoopupProcess _loopupProcess;
+        private ILogger<HomeController> _log;
+        private readonly IGetCustomerDataDashBoard _getCustomerDataDashBoard;
+        private readonly IExportCustomerDataByExcel _exportCustomerDataByExcel;
+        
         public HomeController(IGetUpLoadDataTypeList getUpLoadDataTypeList, ISaveUploadDataCommand saveUploadDataCommand,
                               IGetCustomerData getCustomerData, IGetBusinessToBusiness getBusinessToBusiness,
                               IGetBusinessToCustomer getBusinessToCustomer,
                               IOptions<CustomerDataProcessingSetting> appSettings,
                               IGetFileContent getFileContent,
-                              ILoopupProcess loopupProcess)
+                              ILoopupProcess loopupProcess,
+                              ILogger<HomeController> log,
+                              IGetCustomerDataDashBoard getCustomerDataDashBoard,
+                              IExportCustomerDataByExcel exportCustomerDataByExcel)
         {
             _getUpLoadDataTypeList = getUpLoadDataTypeList;
             _saveUploadDataCommand = saveUploadDataCommand;
@@ -45,6 +54,8 @@ namespace CustomerDataProcess.Controllers
             _appSettings = appSettings;
             _getFileContent = getFileContent;
             _loopupProcess = loopupProcess;
+            _getCustomerDataDashBoard = getCustomerDataDashBoard;
+            _exportCustomerDataByExcel = exportCustomerDataByExcel;
         }
         public IActionResult Index()
         {
@@ -68,6 +79,25 @@ namespace CustomerDataProcess.Controllers
         {
             var customerData = _getCustomerData.Get();
             return View(customerData);
+        }
+        [HttpPost]
+        public IActionResult CustomerData(CustomerDataSearch customerDataSearch)
+        {
+            var rootPath = _appSettings.Value.SearchExport;
+            int rowRange = _appSettings.Value.RowRange;
+            CustomerDataFilter customerDataFilter = new CustomerDataFilter()
+            {
+                BusinessVertical = customerDataSearch.BusinessVertical.Any() ? 
+                    customerDataSearch.BusinessVertical.Where(x=> !string.IsNullOrWhiteSpace(x)).ToArray():null,
+                Cities = customerDataSearch.Cities.Any() ? customerDataSearch.Cities.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray() : null,
+                DataQuantities = customerDataSearch.DataQuantities.Any() ? customerDataSearch.DataQuantities.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray() : null,
+                Network = customerDataSearch.Network.Any() ? customerDataSearch.Network.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray() : null
+            };
+            var customerData = _getCustomerData.Get(customerDataFilter);
+            var response = _getCustomerDataDashBoard.CalculateDashBoard(customerData);
+            var fileName = _exportCustomerDataByExcel.CreateExcel(customerData.CustomerDataModels, rootPath, rowRange);
+            response.DownloadLink = fileName;
+            return Json(response);
         }
 
         public IActionResult CustomerDataLoad()
@@ -204,7 +234,15 @@ namespace CustomerDataProcess.Controllers
 
         public ActionResult DownLoadNumberLookup(string fileName)
         {
-            var sampleTempate = _getFileContent.Get(fileName, _appSettings.Value.NumberLookup);
+            var sampleTempate = _getFileContent.Get(fileName, _appSettings.Value.NumberLookup, "Number LookUp");
+            return File(sampleTempate.content, "application/vnd.ms-excel", $"{sampleTempate.TemplateType.Name}.xlsx");
+        }
+
+        public ActionResult Export(string fileName, string type)
+        {
+            fileName = $"{fileName}";
+            var rootPath = _appSettings.Value.SearchExport;
+            var sampleTempate = _getFileContent.Get(fileName, rootPath, "CustomerData");
             return File(sampleTempate.content, "application/vnd.ms-excel", $"{sampleTempate.TemplateType.Name}.xlsx");
         }
     }

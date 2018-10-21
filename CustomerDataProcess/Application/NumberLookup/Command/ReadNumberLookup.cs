@@ -27,8 +27,10 @@ namespace Application.NumberLookup.Command
         private IEnumerable<Numbers> ReadExcelPackageToString(ExcelPackage package, ExcelWorksheet worksheet)
         {
             var rowCount = worksheet.Dimension?.Rows;
+            // check the excel has header or not, if header exist it start reading from row 2, ot start 1
+            var startRow = CheckTheHeaderHasColumnOrNot($"{worksheet.Cells[1, 1].Value}");
             IList<Numbers> numberLookups = new List<Numbers>();
-                for (int row = 2; row <= rowCount.Value; row++)
+                for (int row = startRow; row <= rowCount.Value; row++)
                 {
                     var cellValue = $"{worksheet.Cells[row, 1].Value}";
                     if(CellIsValidCheck(cellValue))
@@ -40,6 +42,12 @@ namespace Application.NumberLookup.Command
         private bool CellIsValidCheck(string cellValue)
         {
             return !string.IsNullOrWhiteSpace(cellValue);
+        }
+        private int CheckTheHeaderHasColumnOrNot(string header)
+        {
+            if (!string.IsNullOrWhiteSpace(header) && long.TryParse(header, out long val))
+                return 1;
+            return 2;
         }
     }
 }

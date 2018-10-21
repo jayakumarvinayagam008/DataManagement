@@ -19,5 +19,17 @@ namespace Application.Common
         public IEnumerable<SelectListItem> BusinessCategories { get; set; }
         public int DesiginationId { get; set; }
         public IEnumerable<SelectListItem> Desigination { get; set; }
+
+        public int NetworkId { get; set; }
+        public IEnumerable<SelectListItem> Networks { get; set; }
+
+        public int DataQualityId { get; set; }
+        public IEnumerable<SelectListItem> DataQuality { get; set; }
+
+        public int BusinessVerticalId { get; set; }
+        public IEnumerable<SelectListItem> BusinessVertical { get; set; }
+
+        public int TagsId { get; set; }
+        public IEnumerable<SelectListItem> Tags { get; set; }
     }
 }

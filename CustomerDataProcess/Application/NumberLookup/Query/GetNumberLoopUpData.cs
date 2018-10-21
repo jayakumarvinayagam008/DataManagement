@@ -18,13 +18,15 @@ namespace Application.NumberLookup.Query
         public IEnumerable<NumberLookUpDetail> FilterNumberLookUp(IEnumerable<Numbers> numberLookups)
         {
 
-          var numbersDetail =  _customerDataManagementContext.NumberLookup.Join(numberLookups, x => x.Series, y => y.Series,
-                (x, y) => new NumberLookUpDetail
-                {
-                    Circle = x.Circle,
-                    Operator = x.Operator,
-                    Phone = y.PhoneNumber
-                }).ToList();
+            var numbersDetail = numberLookups.GroupJoin(_customerDataManagementContext.NumberLookup,
+                x => x.Series,
+                y => y.Series,
+                  (x, y) => new NumberLookUpDetail
+                  {
+                      Circle = y.Any() ? y.FirstOrDefault().Circle : string.Empty,
+                      Operator = y.Any() ? y.FirstOrDefault().Operator : string.Empty,
+                      Phone = x.PhoneNumber
+                  }).ToList();
             return numbersDetail.AsEnumerable();
         }
     }

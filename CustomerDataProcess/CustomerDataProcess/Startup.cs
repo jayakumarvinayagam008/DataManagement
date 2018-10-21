@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.BusinessToBusiness.Queries;
 using Application.BusinessToCustomers.Queries;
+using Application.CustomerData.Commands;
 using Application.CustomerData.Queries;
 using Application.DataUpload.Commands.SaveDataUpload;
 using Application.DataUpload.Queries.GetUpLoadDataType;
@@ -16,6 +17,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Persistance;
 
 namespace CustomerDataProcess
@@ -67,7 +69,7 @@ namespace CustomerDataProcess
             services.AddScoped<IGetBusinessArea, GetBusinessArea>();
             services.AddScoped<IGetBusinessStates, GetBusinessStates>();
             services.AddScoped<IGetBusinessDestination, GetBusinessDestination>();
-            services.AddScoped < IGetCustomerCities, GetCustomerCities>();
+            services.AddScoped<IGetCustomerCities, GetCustomerCities>();
             services.AddScoped<IGetFullFilePath, GetFullFilePath>();
             services.AddScoped<IGetFileName, GetFileName>();
             services.AddScoped<IGetFileContent, GetFileContent>();
@@ -77,12 +79,19 @@ namespace CustomerDataProcess
             services.AddScoped<ISaveNumberLookUp, SaveNumberLookUp>();
             services.AddScoped<IGetCustomerPhone, GetCustomerPhone>();
             services.AddScoped<IGetBusinessToCustomerPhone, GetBusinessToCustomerPhone>();
-            services.AddScoped<IGetBusinesstoBusinessPhone, GetBusinesstoBusinessPhone>();            
+            services.AddScoped<IGetBusinesstoBusinessPhone, GetBusinesstoBusinessPhone>();
+            services.AddScoped<IGetCustomerDataQuality, GetCustomerDataQuality>();
+            services.AddScoped<IGetCustomerTags, GetCustomerTags>();
+            services.AddScoped<IGetCustomerNetwork, GetCustomerNetwork>();
+            services.AddScoped<IGetCustomerBusinessVertical, GetCustomerBusinessVertical>();
+            services.AddScoped<IGetCustomerDataDashBoard, GetCustomerDataDashBoard>();
+            services.AddScoped<IExportCustomerDataByExcel, ExportCustomerDataByExcel>();
+            
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -93,6 +102,10 @@ namespace CustomerDataProcess
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            app.UseExceptionHandler("/Home/Error");
+            var loggerFile = Configuration["Logging:Log"];
+
+            loggerFactory.AddFile(loggerFile);
 
             app.UseStaticFiles();
 

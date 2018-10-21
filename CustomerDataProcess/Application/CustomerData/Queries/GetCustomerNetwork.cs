@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace Application.CustomerData.Queries
 {
-    public class GetCustomerCities : IGetCustomerCities
+    public class GetCustomerNetwork : IGetCustomerNetwork
     {
         private readonly CustomerDataManagementContext _customerDataManagementContext;
 
-        public GetCustomerCities(CustomerDataManagementContext dbContext)
+        public GetCustomerNetwork(CustomerDataManagementContext dbContext)
         {
             _customerDataManagementContext = dbContext;
         }
@@ -18,7 +18,7 @@ namespace Application.CustomerData.Queries
         {
             var cities = _customerDataManagementContext.CustomerDataManagement
 
-                .Select(x => x.ClientCity)
+                .Select(x => x.Operator)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .Distinct<string>()
                 .OrderBy(x => x).ToArray();
