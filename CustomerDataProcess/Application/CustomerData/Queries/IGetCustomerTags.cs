@@ -5,6 +5,6 @@ namespace Application.CustomerData.Queries
 {
     public interface IGetCustomerTags
     {
-        IEnumerable<SelectListItem> Get();
+        IEnumerable<Tag> Get();
     }
 }

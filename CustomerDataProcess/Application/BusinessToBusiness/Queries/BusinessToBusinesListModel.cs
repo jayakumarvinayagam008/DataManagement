@@ -9,5 +9,7 @@ namespace Application.BusinessToBusiness.Queries
     {
         public DataFilter Filter { get; set; }
         public IEnumerable<BusinessToBusinesModel> BusinessToBusiness { get; set; }
+        public int SearchCount { get; set; }
+        public int Total { get; set; }
     }
 }

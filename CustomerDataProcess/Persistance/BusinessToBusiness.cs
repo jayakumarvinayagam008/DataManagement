@@ -36,6 +36,7 @@ namespace Persistance
         public string CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
+        public int? RequestId { get; set; }
 
         public B2bcategory Category { get; set; }
     }

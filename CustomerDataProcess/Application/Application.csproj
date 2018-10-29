@@ -11,14 +11,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="BusinessToBusiness\Commands\" />
-    <Folder Include="BusinessToCustomers\Commands\" />
     <Folder Include="UserAccount\Commands\" />
     <Folder Include="UserAccount\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
   <ItemGroup>

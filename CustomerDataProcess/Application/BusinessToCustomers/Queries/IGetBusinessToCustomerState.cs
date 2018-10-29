@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Application.BusinessToCustomers.Queries
 {
-    public interface IGetCountry
+    public interface IGetBusinessToCustomerState
     {
         IEnumerable<SelectListItem> Get();
     }

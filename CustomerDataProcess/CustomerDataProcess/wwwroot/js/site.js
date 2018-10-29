@@ -1,5 +1,26 @@
 ﻿// Write your JavaScript code.
 $(document).ready(function (eve) {
+    var tagsContainer = [];
+    var tags = [];
+    if ($('#hdnTags').val() !== undefined) {
+        tags = JSON.parse($('#hdnTags').val());
+    }   
+    
+    $.each(tags, function (index, value) {
+        title = $.trim(value);
+        var country = { 'id': value.Id, 'title': value.Title };
+        tagsContainer.push(country);
+    });
+    console.log(tagsContainer);
+    $('#tags').selectize({
+        maxItems: null,
+        valueField: 'id',
+        labelField: 'title',
+        searchField: 'title',
+        options: tagsContainer,
+        create: false
+    });
+
     $("#btnsample").on('click', function (eve) {
         var $selectedTypeId = parseInt($('#UploadTypeId').prop('selectedIndex'));
         if ($selectedTypeId === 0) {
@@ -21,19 +42,30 @@ $(document).ready(function (eve) {
         var networks = $('#networkId').val();
         var dataQualities = $('#dataQualityId').val();
         var businessVerticalIds = $('#businessVerticalId').val();
-        var tags = $('#tags').val();
+        var customers = $('#customerId').val();
+        var states = $('#stateId').val();
+        var countries = $('#countryId').val();
+
+        var tags = $('#tags').val().split(',');
+
         if (selectedCities !== null
             || networks !== null
             || dataQualities !== null
             || businessVerticalIds !== null
-            || (tags !== null && tags !== '')
+            || customerId !== null
+            || states !== null
+            || countries !== null
+            || tags !== null && tags !== ''
         ) {
             var customerDataSearch = {
                 'Cities': selectedCities,
                 'DataQuantities': dataQualities,
                 'Tags': tags,
                 'Network': networks,
-                'BusinessVertical': businessVerticalIds
+                'BusinessVertical': businessVerticalIds,
+                'CustomerNames': customers,
+                'Contries': countries,
+                'States': states
             };
 
             $.ajax({
@@ -52,10 +84,10 @@ $(document).ready(function (eve) {
     $("#btnCustomerExcelExport").on('click', function (eve) {
         var $fileName = $('#downloadLink').val();
         if ($fileName !== '') {
-            window.location = '/Home/Export/?fileName=' + $fileName +'&type=xlsx';
+            window.location = '/Home/Export/?fileName=' + $fileName +'&type=xlsx&templateType=2';
            
         } else {
-           alert('file does not exist')
+            alert('file does not exist');
         }
         
     });
@@ -65,7 +97,10 @@ $(document).ready(function (eve) {
 function UpdateDashBoard(customerData) {
     $('#dashBoardItem').empty();
     $('#spnTotal').text(customerData.total);
+    $('#spnSearchTotal').text(customerData.searchCount);
     $('#downloadLink').val(customerData.downloadLink);
+    console.log(JSON.stringify(customerData));
+
     var listItems = '';
     for (var key in customerData) {
         if (customerData.hasOwnProperty(key)) {
@@ -87,7 +122,9 @@ var dashBoardItem = {
     'dbquality': 'DB Quality',
     'clientName': 'Client Name',
     'dateOfUse': 'Date Of Use',
-    'numbers': 'Numbers'
+    'numbers': 'Numbers',
+    'stateCount': 'State',
+    'countryCount':'Country'
 };
 function ConstructDashboardItem(name, value) {
     return '<li  class="list-group-item d-flex justify-content-between align-items-center"><span class="caption">' + name + '</span><span class="badge badge-primary badge-pill">' + value.toFixed(2) + '%</span></li >';

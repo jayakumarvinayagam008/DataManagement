@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Application.Common;
 
 namespace Application.CustomerData.Queries
 {
-    public class CustomerDataFilter
+    public class CustomerDataFilter:SearchRequest
     {
-        public string[] Cities { get; set; }
         public string[] DataQuantities { get; set; }
-        public string[] Tags { get; set; }
         public string[] Network { get; set; }
         public string[] BusinessVertical { get; set; }
+        public string[] CustomerNames { get; set; }
     }
 }

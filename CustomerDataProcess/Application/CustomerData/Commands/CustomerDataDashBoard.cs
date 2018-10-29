@@ -15,5 +15,8 @@ namespace Application.CustomerData.Commands
         public decimal DateOfUse { get; set; }
         public decimal Numbers { get; set; }
         public string DownloadLink { get; set; }
+        public int SearchCount { get; set; }
+        public decimal CountryCount { get; set; }
+        public decimal StateCount { get; set; }
     }
 }

@@ -1,30 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Persistance;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Application.BusinessToCustomers.Queries
 {
-    public class GetCity : IGetCity
+    public class GetBusinessToCustomerDestination : IGetBusinessToCustomerDistinctName
     {
         private readonly CustomerDataManagementContext _customerDataManagementContext;
-        public GetCity(CustomerDataManagementContext dbContext)
+
+        public GetBusinessToCustomerDestination(CustomerDataManagementContext dbContext)
         {
             _customerDataManagementContext = dbContext;
         }
+
         public IEnumerable<SelectListItem> Get()
         {
-            var area = _customerDataManagementContext.BusinessToCustomer
-                .Select(x => x.City.Trim())
+            var area = _customerDataManagementContext.BusinessToBusiness
+                .Select(x => x.Designation.Trim())
                 .Distinct<string>()
                 .OrderBy(x => x).ToArray();
+            int areaId = 0;
 
-            return area.Where(x=> !string.IsNullOrWhiteSpace(x)).Select(x =>
+            return area.Select(x =>
             new SelectListItem()
             {
-                Value = x,
+                Value = $"{++areaId}",
                 Text = x
             }).AsEnumerable<SelectListItem>();
         }

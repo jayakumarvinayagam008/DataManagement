@@ -16,5 +16,8 @@ namespace Application.DataUpload.Commands.SaveDataUpload
         public string ClientCity { get; set; }
         public DateTime UpdatedOn { get; set; }
         public string UpdatedBy { get; set; }
+        public int CustomerDataManagementId { get; set; }
+        public string Country { get; set; }
+        public string State { get; set; }
     }
 }

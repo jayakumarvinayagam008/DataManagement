@@ -8,19 +8,17 @@ namespace Persistance
     {
         public virtual DbSet<B2bcategory> B2bcategory { get; set; }
         public virtual DbSet<BusinessToBusiness> BusinessToBusiness { get; set; }
+        public virtual DbSet<BusinessToBusinessTags> BusinessToBusinessTags { get; set; }
         public virtual DbSet<BusinessToCustomer> BusinessToCustomer { get; set; }
+        public virtual DbSet<BusinessToCustomerTags> BusinessToCustomerTags { get; set; }
         public virtual DbSet<Cdmrole> Cdmrole { get; set; }
         public virtual DbSet<Cdmuser> Cdmuser { get; set; }
         public virtual DbSet<CustomerDataManagement> CustomerDataManagement { get; set; }
+        public virtual DbSet<CustomerDataManagementTags> CustomerDataManagementTags { get; set; }
         public virtual DbSet<NumberLookup> NumberLookup { get; set; }
         public virtual DbSet<UploadHistoryDetail> UploadHistoryDetail { get; set; }
         public virtual DbSet<UploadStatus> UploadStatus { get; set; }
 
-        public CustomerDataManagementContext(DbContextOptions<CustomerDataManagementContext> options)
-    : base(options)
-        {
-
-        }
         //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //        {
         //            if (!optionsBuilder.IsConfigured)
@@ -30,6 +28,12 @@ namespace Persistance
         //            }
         //        }
 
+
+        public CustomerDataManagementContext(DbContextOptions<CustomerDataManagementContext> options)
+            : base(options)
+        {
+
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<B2bcategory>(entity =>
@@ -184,6 +188,31 @@ namespace Persistance
                     .HasConstraintName("FK__BusinessT__Categ__412EB0B6");
             });
 
+            modelBuilder.Entity<BusinessToBusinessTags>(entity =>
+            {
+                entity.HasKey(e => e.BusinessToBusinessTagId);
+
+                entity.ToTable("BusinessToBusinessTags", "dm");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('ADMIN')");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('ADMIN')");
+
+                entity.Property(e => e.ModifiedDate).HasColumnType("date");
+
+                entity.Property(e => e.Tag).IsUnicode(false);
+            });
+
             modelBuilder.Entity<BusinessToCustomer>(entity =>
             {
                 entity.HasKey(e => e.B2cid);
@@ -310,6 +339,31 @@ namespace Persistance
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<BusinessToCustomerTags>(entity =>
+            {
+                entity.HasKey(e => e.BusinessToCustomerTagId);
+
+                entity.ToTable("BusinessToCustomerTags", "dm");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('ADMIN')");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('ADMIN')");
+
+                entity.Property(e => e.ModifiedDate).HasColumnType("date");
+
+                entity.Property(e => e.Tag).IsUnicode(false);
+            });
+
             modelBuilder.Entity<Cdmrole>(entity =>
             {
                 entity.HasKey(e => e.RoleId);
@@ -420,6 +474,10 @@ namespace Persistance
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Country)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(50)
                     .IsUnicode(false)
@@ -449,6 +507,35 @@ namespace Persistance
                 entity.Property(e => e.Operator)
                     .HasMaxLength(20)
                     .IsUnicode(false);
+
+                entity.Property(e => e.State)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<CustomerDataManagementTags>(entity =>
+            {
+                entity.HasKey(e => e.CustomerDataTagId);
+
+                entity.ToTable("CustomerDataManagementTags", "dm");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('ADMIN')");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('ADMIN')");
+
+                entity.Property(e => e.ModifiedDate).HasColumnType("date");
+
+                entity.Property(e => e.Tag).IsUnicode(false);
             });
 
             modelBuilder.Entity<NumberLookup>(entity =>
@@ -546,6 +633,10 @@ namespace Persistance
                 entity.Property(e => e.CreatedDate)
                     .HasColumnType("date")
                     .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.FileName)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.ModifiedBy)
                     .HasMaxLength(50)

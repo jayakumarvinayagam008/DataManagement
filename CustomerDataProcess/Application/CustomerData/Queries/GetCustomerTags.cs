@@ -14,20 +14,14 @@ namespace Application.CustomerData.Queries
             _customerDataManagementContext = dbContext;
         }
 
-        public IEnumerable<SelectListItem> Get()
+        public IEnumerable<Tag> Get()
         {
-            var cities = _customerDataManagementContext.CustomerDataManagement
-
-                .Select(x => x.Dbquality)
-                .Where(x => !string.IsNullOrWhiteSpace(x))
-                .Distinct<string>()
-                .OrderBy(x => x).ToArray();
-
-            return cities.Select(x => new SelectListItem()
-            {
-                Value = x,
-                Text = x
-            }).AsEnumerable<SelectListItem>();
+            var tags = _customerDataManagementContext.CustomerDataManagementTags
+                .GroupBy(x => x.Tag)
+                .Select(x => x.First())
+                .Select(x => new Tag { Id = x.CustomerDataTagId, Title = x.Tag })
+                .OrderBy(x => x.Id).ToArray();
+            return tags;
         }
     }
 }

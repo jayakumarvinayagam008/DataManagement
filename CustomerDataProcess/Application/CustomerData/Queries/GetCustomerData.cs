@@ -1,4 +1,5 @@
 ﻿using Application.DataUpload.Commands.SaveDataUpload;
+using Newtonsoft.Json;
 using Persistance;
 using System.Linq;
 
@@ -16,13 +17,22 @@ namespace Application.CustomerData.Queries
         private readonly IGetCustomerNetwork _getCustomerNetwork;
         private readonly IGetCustomerTags _getCustomerTags;
         private readonly IGetCustomerDataQuality _getCustomerDataQuality;
-
+        private readonly IGetCustomerClientNames _getCustomerClientNames;
+        private readonly IFilterCustomerTags _filterCustomerTags;
+        private readonly IGetStates _getStates ;
+        private readonly IGetCustomerCountry _getCustomerCountry;
+        
+            
         public GetCustomerData(CustomerDataManagementContext dbContext,
             IGetCustomerCities getCustomerCities,
             IGetCustomerBusinessVertical getCustomerBusinessVertical,
             IGetCustomerNetwork getCustomerNetwork,
             IGetCustomerTags getCustomerTags,
-            IGetCustomerDataQuality getCustomerDataQuality)
+            IGetCustomerDataQuality getCustomerDataQuality,
+            IGetCustomerClientNames getCustomerClientNames,
+            IFilterCustomerTags filterCustomerTags,
+            IGetStates getStates,
+            IGetCustomerCountry getCustomerCountry)
         {
             _customerDataManagementContext = dbContext;
             _getCustomerCities = getCustomerCities;
@@ -30,41 +40,51 @@ namespace Application.CustomerData.Queries
             _getCustomerNetwork = getCustomerNetwork;
             _getCustomerTags = getCustomerTags;
             _getCustomerDataQuality = getCustomerDataQuality;
+            _getCustomerClientNames = getCustomerClientNames;
+            _filterCustomerTags = filterCustomerTags;
+            _getStates = getStates;
+            _getCustomerCountry = getCustomerCountry;
         }
 
         public CustomerListDataModel Get()
         {
+
             var cities = _getCustomerCities.Get();
             var businessValues = _getCustomerBusinessVertical.Get();
             var network = _getCustomerNetwork.Get();
             var dataQuality = _getCustomerDataQuality.Get();
             var tags = _getCustomerTags.Get();
+            var clientNames = _getCustomerClientNames.Get();
+            var countries = _getCustomerCountry.Get();
+            var staties = _getStates.Get();
 
-            var customerData = _customerDataManagementContext.CustomerDataManagement
-                .OrderByDescending(x => x.CreatedDate).Take(5000)
-                .Select(x => new CustomerDataModel
-                {
-                    Circle = x.Circle,
-                    ClientBusinessVertical = x.ClientBusinessVertical,
-                    ClientCity = x.ClientCity,
-                    ClientName = x.ClientName,
-                    DateOfUse = x.DateOfUse.Value,
-                    DBQuality = x.Dbquality,
-                    Numbers = x.Numbers,
-                    Operator = x.Operator,
-                    UpdatedBy = x.CreatedBy,
-                    UpdatedOn = x.CreatedDate.Value
-                }).AsEnumerable<CustomerDataModel>();
+            //var customerData = _customerDataManagementContext.CustomerDataManagement
+            //    .OrderByDescending(x => x.CreatedDate).Take(5000)
+            //    .Select(x => new CustomerDataModel
+            //    {
+            //        Circle = x.Circle,
+            //        ClientBusinessVertical = x.ClientBusinessVertical,
+            //        ClientCity = x.ClientCity,
+            //        ClientName = x.ClientName,
+            //        DateOfUse = x.DateOfUse.Value,
+            //        DBQuality = x.Dbquality,
+            //        Numbers = x.Numbers,
+            //        Operator = x.Operator,
+            //        UpdatedBy = x.CreatedBy,
+            //        UpdatedOn = x.CreatedDate.Value
+            //    }).AsEnumerable<CustomerDataModel>();
             return new CustomerListDataModel
-            {
-                CustomerDataModels = customerData,
+            {                
                 Filter = new Common.DataFilter
                 {
                     Cities = cities,
                     BusinessVertical = businessValues,
                     DataQuality = dataQuality,
                     Networks = network,
-                    Tags = tags,
+                    Tags = JsonConvert.SerializeObject(tags),
+                    Customers = clientNames,
+                    Countries = countries,
+                    States = staties
                 }
             };
         }
@@ -72,6 +92,20 @@ namespace Application.CustomerData.Queries
         public CustomerListDataModel Get(CustomerDataFilter customerDataFilter)
         {
             var customerData = _customerDataManagementContext.CustomerDataManagement.AsQueryable();
+            if(customerDataFilter.Countries.Any())
+            {
+                customerData = customerData
+                                 .Where(x => customerDataFilter.Countries.Any(y => y == x.Country))
+                                 .AsQueryable();
+            }
+
+            if (customerDataFilter.States.Any())
+            {
+                customerData = customerData
+                                 .Where(x => customerDataFilter.States.Any(y => y == x.State))
+                                 .AsQueryable();
+            }
+
             if (customerDataFilter.Cities.Any())
             {
                 customerData = customerData
@@ -97,25 +131,43 @@ namespace Application.CustomerData.Queries
                                   .Where(x => customerDataFilter.Network.Any(y => y == x.Operator))
                                   .AsQueryable();
             }
-           
+
+            if (customerDataFilter.CustomerNames.Any())
+            {
+                customerData = customerData
+                                  .Where(x => customerDataFilter.CustomerNames.Any(y => y == x.ClientName))
+                                  .AsQueryable();
+            }
+
+            // tag filter
+            var tags = _filterCustomerTags.Filter(customerDataFilter.Tags).ToList();
+            if (tags.Any())
+            {
+                customerData = customerData.Where(x => tags.Any(y => y == x.RequestId)).AsQueryable();
+            }
+
             var filteredData = customerData.Select(x => new CustomerDataModel
-                                    {
-                                        Circle = x.Circle,
-                                        ClientBusinessVertical = x.ClientBusinessVertical,
-                                        ClientCity = x.ClientCity,
-                                        ClientName = x.ClientName,
-                                        DateOfUse = x.DateOfUse.Value,
-                                        DBQuality = x.Dbquality,
-                                        Numbers = x.Numbers,
-                                        Operator = x.Operator,
-                                        UpdatedBy = x.CreatedBy,
-                                        UpdatedOn = x.CreatedDate.Value
-                                    }).ToList();
+            {
+                Circle = x.Circle,
+                ClientBusinessVertical = x.ClientBusinessVertical,
+                ClientCity = x.ClientCity,
+                ClientName = x.ClientName,
+                DateOfUse = x.DateOfUse.Value,
+                DBQuality = x.Dbquality,
+                Numbers = x.Numbers,
+                Operator = x.Operator,
+                CustomerDataManagementId = x.Cdmid,
+                Country = x.Country,
+                State = x.State
+            }).ToList();
+
+            
 
             return new CustomerListDataModel
             {
                 CustomerDataModels = filteredData,
                 Filter = null,
+                SearchCount = filteredData.Count(),
                 Total = _customerDataManagementContext.CustomerDataManagement.Count()
             };
         }

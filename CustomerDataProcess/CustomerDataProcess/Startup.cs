@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Application.BusinessToBusiness.Commands;
 using Application.BusinessToBusiness.Queries;
+using Application.BusinessToCustomers.Commands;
 using Application.BusinessToCustomers.Queries;
 using Application.CustomerData.Commands;
 using Application.CustomerData.Queries;
@@ -58,11 +56,11 @@ namespace CustomerDataProcess
             services.AddScoped<IValidateBusinessCategoruEntiry, ValidateBusinessCategory>();
             services.AddScoped<ISaveBusinessToCustomer, SaveBusinessToCustomer>();
 
-            services.AddScoped<IGetArea, GetArea>();
-            services.AddScoped<IGetState, GetState>();
-            services.AddScoped<IGetCity, GetCity>();
-            services.AddScoped<IGetCountry, GetCountry>();
-            services.AddScoped<IGetDistinctName, GetDestination>();
+            services.AddScoped<IGetBusinessToCustomerArea, GetBusinessToCustomerArea>();
+            services.AddScoped<IGetBusinessToCustomerState, GetBusinessToCustomerState>();
+            services.AddScoped<IGetBusinessToCustomerCity, GetBusinessToCustomerCity>();
+            services.AddScoped<IGetBusinessToCustomerCountry, GetBusinessToCustomerCountry>();
+            services.AddScoped<IGetBusinessToCustomerDistinctName, GetBusinessToCustomerDestination>();
 
             services.AddScoped<IGetBusinessCities, GetBusinessCities>();
             services.AddScoped<IGetBusinessCountry, GetBusinessCountry>();
@@ -86,7 +84,25 @@ namespace CustomerDataProcess
             services.AddScoped<IGetCustomerBusinessVertical, GetCustomerBusinessVertical>();
             services.AddScoped<IGetCustomerDataDashBoard, GetCustomerDataDashBoard>();
             services.AddScoped<IExportCustomerDataByExcel, ExportCustomerDataByExcel>();
-            
+            services.AddScoped<IGetCustomerClientNames, GetCustomerClientNames>();
+            services.AddScoped<IFilterCustomerTags, FilterCustomerTags>();
+            services.AddScoped<IGetStates, GetStates>();
+            services.AddScoped<IGetCustomerCountry, GetCustomerCountry>();
+            services.AddScoped<IGetBusinessToCustomerSalary, GetBusinessToCustomerSalary>();
+            services.AddScoped<IGetBusinessToCustomerAge, GetBusinessToCustomerAge>();
+            services.AddScoped<IGetBusinessToCustomerRoles, GetBusinessToCustomerRoles>();
+            services.AddScoped<IGetBusinessToCustomerExperience, GetBusinessToCustomerExperience>();
+            services.AddScoped<IGetBusinessToCustomerTags, GetBusinessToCustomerTags>();
+            services.AddScoped<IFilterBusinessToCustomer, FilterBusinessToCustomer>();
+            services.AddScoped<IFilterBusinessToCustomerTags, FilterBusinessToCustomerTags>();
+            services.AddScoped<IPrepareB2CDashBoard, PrepareB2CDashBoard>();
+            services.AddScoped<IExportBusinessToCustomerFilter, ExportBusinessToCustomerFilter>();
+            services.AddScoped<IGetBusinessCategory, GetBusinessCategory>();
+            services.AddScoped<IGetBusinessToBusinessTags, GetBusinessToBusinessTags>();
+            services.AddScoped<IFilterBusinessToBusinessTags, FilterBusinessToBusinessTags>();
+            services.AddScoped<IFilterBusinessToBusiness, FilterBusinessToBusiness>();
+            services.AddScoped<IPrepareB2BDashBoard, PrepareB2BDashBoard>(); 
+            services.AddScoped<IBusinessToBusinessExport, BusinessToBusinessExport>(); 
             services.AddMvc();
         }
 

@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Application.BusinessToCustomers.Queries
+namespace Application.BusinessToBusiness.Queries
 {
-    public interface IGetState
+    public interface IGetBusinessCategory
     {
         IEnumerable<SelectListItem> Get();
     }

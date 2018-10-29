@@ -1,8 +1,7 @@
-﻿using System;
-namespace Application.BusinessToCustomers.Queries
+﻿namespace Application.BusinessToCustomers.Queries
 {
     public interface IGetBusinessToCustomer
     {
-       BusinessToCustomerListModel Get();
+        BusinessToCustomerListModel Get();
     }
 }

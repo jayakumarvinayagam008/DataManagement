@@ -1,4 +1,5 @@
-﻿using Application.DataUpload.Commands.SaveDataUpload;
+﻿using Application.Common;
+using Application.DataUpload.Commands.SaveDataUpload;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,9 @@ namespace Application.CustomerData.Commands
                                                 "Client Business Vertical",
                                                 "DB Quality",
                                                 "Date Of Use",
-                                                "Client City" };
+                                                "Client City",
+                                                "Country",
+                                                "State"};
         public string CreateExcel(IEnumerable<CustomerDataModel> customerDatas, string fileRootPath, int rowRange)
         {
             var sheetContainer = customerDatas.Batch(rowRange);
@@ -65,6 +68,8 @@ namespace Application.CustomerData.Commands
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.DBQuality;
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.DateOfUse;
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.ClientCity;
+                excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Country;
+                excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.State;
                 rowIndex++;
             });
             return excelWorksheet;
@@ -77,25 +82,5 @@ namespace Application.CustomerData.Commands
 
     }
 
-    public static class LinqExtensions
-    {
-        public static IEnumerable<IEnumerable<T>> Batch<T>(this IEnumerable<T> collection, int batchSize)
-        {
-            var nextbatch = new List<T>(batchSize);
-            foreach (T item in collection)
-            {
-                nextbatch.Add(item);
-                if (nextbatch.Count == batchSize)
-                {
-                    yield return nextbatch;
-                    nextbatch = new List<T>(batchSize);
-                }
-            }
-
-            if (nextbatch.Count > 0)
-            {
-                yield return nextbatch;
-            }
-        }
-    }
+    
 }

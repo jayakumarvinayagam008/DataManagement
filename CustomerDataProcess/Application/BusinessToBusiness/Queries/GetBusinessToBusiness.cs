@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Application.Common;
+using Newtonsoft.Json;
 using Persistance;
 
 namespace Application.BusinessToBusiness.Queries
@@ -13,9 +14,13 @@ namespace Application.BusinessToBusiness.Queries
         private readonly IGetBusinessArea _getArea;
         private readonly IGetBusinessStates _getState;
         private readonly IGetBusinessDestination _getDestination;
+        private readonly IGetBusinessCategory _getBusinessCategory;
+        private readonly IGetBusinessToBusinessTags _getBusinessToBusinessTags;
+        
         public GetBusinessToBusiness(CustomerDataManagementContext dbContext,
             IGetBusinessCities getCity, IGetBusinessCountry getCountry, IGetBusinessArea getArea,
-            IGetBusinessStates getState, IGetBusinessDestination getDestination)
+            IGetBusinessStates getState, IGetBusinessDestination getDestination,
+            IGetBusinessCategory getBusinessCategory, IGetBusinessToBusinessTags getBusinessToBusinessTags)
         {
             _customerDataManagementContext = dbContext;
             _getCity = getCity;
@@ -23,6 +28,8 @@ namespace Application.BusinessToBusiness.Queries
             _getArea = getArea;
             _getState = getState;
             _getDestination = getDestination;
+            _getBusinessCategory = getBusinessCategory;
+            _getBusinessToBusinessTags = getBusinessToBusinessTags;
         }
 
         public BusinessToBusinesListModel Get()
@@ -32,7 +39,9 @@ namespace Application.BusinessToBusiness.Queries
             var filterArea = _getArea.Get();
             var filterCountry = _getCountry.Get();
             var filterDestination = _getDestination.Get();
-            
+            var filterBusinesscategory = _getBusinessCategory.Get();
+            var filterTags = _getBusinessToBusinessTags.Get();
+
             var customer = _customerDataManagementContext.BusinessToBusiness.OrderByDescending(x=>x.CreatedDate ).Take(5000)
                                                          .Select(cust =>
                                                                       new BusinessToBusinesModel
@@ -75,7 +84,9 @@ namespace Application.BusinessToBusiness.Queries
                     Cities = filterCity,
                     Countries = filterCountry,
                     Desigination = filterDestination,
-                    States = filterState
+                    States = filterState,
+                    BusinessCategories = filterBusinesscategory,
+                    Tags = JsonConvert.SerializeObject(filterTags)
                 }
             };
         }

@@ -1,0 +1,257 @@
+ Volume in drive F has no label.
+ Volume Serial Number is 1874-1425
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Application\BusinessToBusiness\Queries
+
+11/08/2018  19:08               357 BusinessToBusinesListModel.cs
+13/08/2018  00:56             1,083 GetBusinessArea.cs
+13/08/2018  00:55             1,087 GetBusinessCities.cs
+13/08/2018  00:54             1,129 GetbusinessCountry.cs
+12/08/2018  17:58             1,111 GetBusinessDestination.cs
+13/08/2018  00:55             1,126 GetBusinessStates.cs
+16/10/2018  09:04             5,168 GetBusinessToBusiness.cs
+16/10/2018  07:23               749 GetBusinesstoBusinessPhone.cs
+11/08/2018  19:47               234 IGetBusinessArea.cs
+11/08/2018  19:51               236 IGetBusinessCities.cs
+11/08/2018  19:47               237 IGetBusinessCountry.cs
+11/08/2018  19:47               241 IGetBusinessDestination.cs
+11/08/2018  19:47               236 IGetBusinessStates.cs
+07/08/2018  21:50               176 IGetBusinessToBusiness.cs
+16/10/2018  07:21               224 IGetBusinesstoBusinessPhone.cs
+              15 File(s)         13,394 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Application\BusinessToCustomers\Queries
+
+10/08/2018  09:07               361 BusinessToCustomerListModel.cs
+13/08/2018  01:02               997 GetArea.cs
+16/10/2018  09:14             3,104 GetBusinessToCustomer.cs
+16/10/2018  07:06               750 GetBusinessToCustomerPhone.cs
+13/08/2018  01:01             1,002 GetCity.cs
+13/08/2018  01:02             1,014 GetCountry.cs
+10/08/2018  09:32             1,031 GetDestination.cs
+13/08/2018  01:01             1,005 GetState.cs
+11/08/2018  19:21               227 IGetArea.cs
+07/08/2018  21:50               177 IGetBusinessToCustomer.cs
+16/10/2018  07:04               225 IGetBusinessToCustomerPhone.cs
+11/08/2018  19:25               227 IGetCity.cs
+11/08/2018  19:27               230 IGetCountry.cs
+10/08/2018  09:24               299 IGetDistinctName.cs
+11/08/2018  19:24               228 IGetState.cs
+              15 File(s)         10,877 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Application\Common
+
+07/08/2018  21:50             1,566 BusinessToBusinesModel.cs
+08/08/2018  11:21             1,648 BusinessToBusinessColumnMapping.cs
+08/08/2018  00:10             1,555 BusinessToCustomerColumnMapping.cs
+11/08/2018  18:11             1,249 BusinessToCustomerModel.cs
+03/08/2018  01:49               946 CustomerDataColumnMapping.cs
+23/10/2018  09:15             1,407 DataFilter.cs
+10/08/2018  09:20               237 DropDownFilter.cs
+30/09/2018  19:25               778 UploadFileSource.cs
+08/08/2018  01:05               173 UploadType.cs
+               9 File(s)          9,559 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Application\CustomerData\Commands
+
+22/10/2018  00:28               612 CustomerDataDashBoard.cs
+22/10/2018  01:15             4,101 ExportCustomerDataByExcel.cs
+21/10/2018  20:00             2,241 GetCustomerDataDashBoard.cs
+22/10/2018  00:44               371 GetFile.cs
+22/10/2018  01:12               354 IExportCustomerDataByExcel.cs
+21/10/2018  19:40               325 IGetCustomerDataDashBoard.cs
+22/10/2018  00:41               287 IGetFile.cs
+               7 File(s)          8,291 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Application\CustomerData\Queries
+
+23/10/2018  08:40               486 CustomerDataFilter.cs
+21/10/2018  19:24               392 CustomerListDataModel.cs
+21/10/2018  18:18             1,049 GetCustomerBusinessVertical.cs
+21/10/2018  18:18             1,007 GetCustomerCities.cs
+22/10/2018  22:05             1,058 GetCustomerClientNames.cs
+23/10/2018  08:49             7,004 GetCustomerData.cs
+21/10/2018  18:18             1,021 GetCustomerDataQuality.cs
+21/10/2018  18:18             1,008 GetCustomerNetwork.cs
+21/10/2018  18:18               682 GetCustomerPhone.cs
+23/10/2018  09:14               858 GetCustomerTags.cs
+21/10/2018  18:18               240 IGetCustomerBusinessVertical.cs
+21/10/2018  18:18               230 IGetCustomerCities.cs
+23/10/2018  09:14               272 IGetCustomerClientNames.cs
+21/10/2018  18:39               219 IGetCustomerData.cs
+21/10/2018  18:18               235 IGetCustomerDataQuality.cs
+21/10/2018  18:18               231 IGetCustomerNetwork.cs
+21/10/2018  18:18               171 IGetCustomerPhone.cs
+23/10/2018  09:14               209 IGetCustomerTags.cs
+              18 File(s)         16,372 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Application\DataUpload\Commands\SaveDataUpload
+
+01/10/2018  23:55             5,638 BusinessToBusinessFileToDataModel.cs
+01/10/2018  23:38             1,422 BusinessToBusinessUploadProcess.cs
+02/10/2018  00:01             5,435 BusinessToCustomerFileToDataModel.cs
+01/10/2018  23:39             1,455 BusinessToCustomerUploadProcess.cs
+30/09/2018  07:20               672 CustomerDataModel.cs
+01/10/2018  23:39             1,242 CustomerDataUploadProcess.cs
+02/10/2018  00:05             4,489 FileToDataModel.cs
+01/10/2018  07:24               332 IBusinessToBusinessFileToDataModel.cs
+01/10/2018  07:32               334 IBusinessToCustomerFileToDataModel.cs
+01/10/2018  07:05               284 IFileToDataModel.cs
+07/08/2018  23:44               302 ISaveBusinessToBusiness.cs
+07/08/2018  23:47               303 ISaveBusinessToCustomer.cs
+07/08/2018  22:45               264 ISaveCustomerData.cs
+03/08/2018  09:23               263 ISaveUploadDataCommand.cs
+01/10/2018  23:39               296 IUploadProcess.cs
+11/08/2018  00:50               274 IValidateBusinessCategoruEntiry.cs
+11/08/2018  17:10               208 IValidateBusinessToCustomerPhone.cs
+11/08/2018  00:33               264 IValidateEntiry.cs
+08/08/2018  12:19             2,114 SaveBusinessToBusiness.cs
+11/08/2018  19:01             2,295 SaveBusinessToCustomer.cs
+30/09/2018  07:20             1,700 SaveCustomerData.cs
+03/08/2018  01:09               278 SaveDataModel.cs
+16/10/2018  09:11             9,675 SaveUploadDataCommand.cs
+10/08/2018  23:26               376 UploadSaveStatus.cs
+11/10/2018  10:28               934 ValidateBusinessCategory.cs
+11/08/2018  00:33               926 ValidatePhone.cs
+              26 File(s)         41,775 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Application\DataUpload\Queries\GetUpLoadDataType
+
+22/10/2018  00:56             2,341 GetFileContent.cs
+30/09/2018  09:07               307 GetFileName.cs
+22/10/2018  01:09               314 GetFullFilePath.cs
+02/08/2018  08:29               573 GetUpLoadDataTypeList.cs
+22/10/2018  00:56               267 IGetFileContent.cs
+30/09/2018  09:07               223 IGetFileName.cs
+22/10/2018  01:09               251 IGetFullFilePath.cs
+02/08/2018  08:27               238 IGetUpLoadDataTypeList.cs
+30/09/2018  09:03               291 SampleTemplate.cs
+02/08/2018  23:39               315 UploadData.cs
+02/08/2018  08:27               267 UploadDataType.cs
+              11 File(s)          5,387 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Application\NumberLookup\Command
+
+15/10/2018  08:31               187 IGetnumberLookUpContent.cs
+16/10/2018  06:20               163 ILoopupProcess.cs
+14/10/2018  15:37               232 IReadNumberLookup.cs
+16/10/2018  06:20               280 ISaveNumberLookUp.cs
+16/10/2018  06:20             1,148 LoopupProcess.cs
+14/10/2018  15:21               309 NumberLookUpDetail.cs
+14/10/2018  15:37               258 Numbers.cs
+20/10/2018  11:55             2,115 ReadNumberLookup.cs
+16/10/2018  06:19             1,836 SaveNumberLookUp.cs
+               9 File(s)          6,528 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Application\NumberLookup\Query
+
+20/10/2018  11:37             1,238 GetNumberLoopUpData.cs
+14/10/2018  15:24               318 IGetNumberLoopUpData.cs
+               2 File(s)          1,556 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Application\obj\Debug\netstandard2.0
+
+22/10/2018  22:06             1,006 Application.AssemblyInfo.cs
+               1 File(s)          1,006 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Application\obj\Release\netstandard2.0
+
+27/09/2018  23:37             1,008 Application.AssemblyInfo.cs
+               1 File(s)          1,008 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Application\UserAccount\Queries
+
+31/07/2018  09:25               178 IUserValidation.cs
+31/07/2018  09:25               221 UserLogin.cs
+28/09/2018  10:12               697 UserValidation.cs
+31/07/2018  09:25               259 ValidationResponse.cs
+               4 File(s)          1,355 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\CustomerDataProcess
+
+28/07/2018  13:50               636 Program.cs
+22/10/2018  22:05             5,920 Startup.cs
+               2 File(s)          6,556 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\CustomerDataProcess\Controllers
+
+31/07/2018  09:25             1,313 AccountController.cs
+23/10/2018  08:42            11,517 HomeController.cs
+               2 File(s)         12,830 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\CustomerDataProcess\Models
+
+30/07/2018  22:49               361 AccountModel.cs
+22/10/2018  01:12               458 CustomerDataProcessingSetting.cs
+22/10/2018  21:53               501 CustomerDataSearch.cs
+28/07/2018  13:50               227 ErrorViewModel.cs
+15/10/2018  00:31               283 NumberLookUp.cs
+10/08/2018  23:38               559 UploadDataModel.cs
+10/08/2018  23:10               435 UploadSummary.cs
+30/07/2018  22:46               289 UserLoginModel.cs
+30/07/2018  22:46               501 UserRegisterModel.cs
+               9 File(s)          3,614 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\CustomerDataProcess\obj\Debug\netcoreapp2.0
+
+22/10/2018  22:06             1,030 CustomerDataProcess.AssemblyInfo.cs
+               1 File(s)          1,030 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\CustomerDataProcess\obj\Release\netcoreapp2.0
+
+27/09/2018  23:37             1,032 CustomerDataProcess.AssemblyInfo.cs
+               1 File(s)          1,032 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\DataManagement.Business\obj\Debug\netstandard2.0
+
+22/10/2018  22:06             1,042 DataManagement.Business.AssemblyInfo.cs
+               1 File(s)          1,042 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\DataManagement.Business\obj\Release\netstandard2.0
+
+27/09/2018  23:37             1,044 DataManagement.Business.AssemblyInfo.cs
+               1 File(s)          1,044 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\DataManagement.Data
+
+07/08/2018  21:50               490 CustomerDataDb.cs
+07/08/2018  21:50               364 CustomerDataMock.cs
+               2 File(s)            854 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\DataManagement.Data\obj\Debug\netstandard2.0
+
+22/10/2018  22:06             1,030 DataManagement.Data.AssemblyInfo.cs
+               1 File(s)          1,030 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\DataManagement.Data\obj\Release\netstandard2.0
+
+27/09/2018  23:37             1,032 DataManagement.Data.AssemblyInfo.cs
+               1 File(s)          1,032 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Persistance
+
+23/10/2018  00:13               629 B2bcategory.cs
+23/10/2018  00:13             1,603 BusinessToBusiness.cs
+23/10/2018  00:13             1,467 BusinessToCustomer.cs
+23/10/2018  00:13               616 Cdmrole.cs
+23/10/2018  00:13               731 Cdmuser.cs
+23/10/2018  00:13               817 CustomerDataManagement.cs
+23/10/2018  00:13            19,864 CustomerDataManagementContext.cs
+23/10/2018  00:13               514 NumberLookup.cs
+23/10/2018  00:13               676 UploadHistoryDetail.cs
+23/10/2018  00:13               635 UploadStatus.cs
+              10 File(s)         27,552 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Persistance\obj\Debug\netstandard2.0
+
+22/10/2018  22:06             1,006 Persistance.AssemblyInfo.cs
+               1 File(s)          1,006 bytes
+
+ Directory of F:\DataManagement\DataManagement\CustomerDataProcess\Persistance\obj\Release\netstandard2.0
+
+27/09/2018  23:37             1,008 Persistance.AssemblyInfo.cs
+               1 File(s)          1,008 bytes
+
+     Total Files Listed:
+             151 File(s)        176,738 bytes
+               0 Dir(s)  40,125,960,192 bytes free

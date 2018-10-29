@@ -1,32 +1,32 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Persistance;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Persistance;
 
 namespace Application.BusinessToCustomers.Queries
 {
-    public class GetArea : IGetArea
+    public class GetBusinessToCustomerState : IGetBusinessToCustomerState
     {
         private readonly CustomerDataManagementContext _customerDataManagementContext;
-        public GetArea(CustomerDataManagementContext dbContext)
+
+        public GetBusinessToCustomerState(CustomerDataManagementContext dbContext)
         {
             _customerDataManagementContext = dbContext;
         }
+
         public IEnumerable<SelectListItem> Get()
         {
             var area = _customerDataManagementContext.BusinessToCustomer
-                .Select(x => x.Area.Trim())
+                .Select(x => x.State.Trim())
                 .Distinct<string>()
                 .OrderBy(x => x).ToArray();
 
-            return area.Where(x=> !string.IsNullOrEmpty(x)).Select(x =>
-            new SelectListItem()
-            {
-                Value = x,
-                Text = x
-            }).AsEnumerable<SelectListItem>();
+            return area.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x =>
+             new SelectListItem()
+             {
+                 Value = x,
+                 Text = x
+             }).AsEnumerable<SelectListItem>();
         }
     }
 }

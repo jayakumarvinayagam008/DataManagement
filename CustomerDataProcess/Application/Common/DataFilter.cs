@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Application.CustomerData.Queries;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,7 +30,16 @@ namespace Application.Common
         public int BusinessVerticalId { get; set; }
         public IEnumerable<SelectListItem> BusinessVertical { get; set; }
 
-        public int TagsId { get; set; }
-        public IEnumerable<SelectListItem> Tags { get; set; }
+        public string Tags { get; set; }
+        public int CustomerId { get; set; }
+        public IEnumerable<SelectListItem> Customers { get; set; }
+        public int AgeId { get; set; }
+        public IEnumerable<SelectListItem> Ages { get; set; }
+        public int RoleId { get; set; }
+        public IEnumerable<SelectListItem> Roles { get; set; }
+        public int SalaryId { get; set; }
+        public IEnumerable<SelectListItem> Salaries { get; set; }
+        public int ExpercinceId { get; set; }
+        public IEnumerable<SelectListItem> Expercince { get; set; }
     }
 }

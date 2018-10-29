@@ -1,70 +1,132 @@
-﻿$(window).on('load', function () {
-    // code here
-    $("#divLoading").hide();
-    $.fn.dataTable.ext.search.push(
-        /*
-        function (setting, data, dataIndex) {
-            var countries = data[26] || '';
-            var selectedCountry = $('#Filter_CountryId').val() || [];
-            var matchedItems = [];
-            var result = $.grep(selectedCountry, function (n, i) {
-                if (countries.indexOf(n) > -1) {
-                    matchedItems.push(n);
-                }
-            });
-            if (selectedCountry != null && selectedCountry.length === 0 || matchedItems.length > 0) {
-                return true;
-            }
-            return false;
-        },
-        function (setting, data, dataIndex) {
-            var cities = data[4] || '';
-            var selectedCities = $('#Filter_CityId').val() || [];
-            var matchedItems = [];
-            var result = $.grep(selectedCities, function (n, i) {
-                if (cities.indexOf(n) > -1) {
-                    matchedItems.push(n);
-                }
-            });
-            if (selectedCities != null && selectedCities.length === 0 || matchedItems.length > 0) {
-                return true;
-            }
-            return false;
-        },
-        function (settings, data, dataIndex) {
-            var businesscategory = data[23] || '';
-            var selectedBusinessCategory = $('#Filter_BusinessCategoryId').val() || [];
-            var matchedItems = [];
-            var result = $.grep(selectedBusinessCategory, function (n, i) {
-                if (businesscategory.indexOf(n) > -1) {
-                    matchedItems.push(n);
-                }
-            });
-            if (selectedBusinessCategory != null && selectedBusinessCategory.length === 0 || matchedItems.length > 0) {
-                return true;
-            }
-            return false
-        },
-        function (setting, data, dataIndex) {
-            var state = data[7] || '';
-            var selectedState = $('#Filter_StateId').val() || [];
-            var matchedItems = [];
-            var result = $.grep(selectedState, function (n, i) {
-                if (state.indexOf(n) > -1) {
-                    matchedItems.push(n);
-                }
-            });
-            if (selectedState != null && selectedState.length === 0 || matchedItems.length > 0) {
-                return true;
-            }
-            return false;
-        }
-        */
-    );
-});
+﻿$(document).ready(function (eve) {
 
-$(document).ready(function (eve) {
-    $("#btnApply").on('click', function (eve) {
-        business2BusinessTable.draw();
+    var tagsContainer = [];
+    var tags = [];
+    if ($('#hdnB2CTags').val() !== undefined) {
+        tags = JSON.parse($('#hdnB2CTags').val());
+    }
+
+    $.each(tags, function (index, value) {
+        title = $.trim(value);
+        var country = { 'id': value.Id, 'title': value.Title };
+        tagsContainer.push(country);
+    });
+    console.log(tagsContainer);
+    $('#b2ctags').selectize({
+        maxItems: null,
+        valueField: 'id',
+        labelField: 'title',
+        searchField: 'title',
+        options: tagsContainer,
+        create: false
+    });
+
+    $('#btnBusinessToCustomerSearch').on('click', function (eve) {
+
+        var cities = $('#b2cCityId').val();
+        var states = $('#b2cStateId').val();
+        var countries = $('#b2cCuntryId').val();
+        var area = $('#b2cAreaId').val();
+        var roles = $('#b2cRoleId').val();
+        var ages = $('#b2cAgeId').val();
+        var salaries = $('#b2cSalaryId').val();
+        var expercince = $('#b2cExpercinceId').val();
+        var tags = $('#b2ctags').val().split(',');
+        if (cities !== null
+            || states !== null
+            || countries !== null
+            || area !== null
+            || roles !== null
+            || ages !== null
+            || salaries !== null
+            || expercince !== null
+            || tags !== null) {
+
+            var b2CSearch = {
+                'Cities': cities,
+                'Tags': tags,
+                'Contries': countries,
+                'States': states,
+                'Ages': ages,
+                'Area': area,
+                'Roles': roles,
+                'Experience': expercince,
+                'Salaries': salaries
+            };
+            console.log(JSON.stringify(b2CSearch));
+
+            $.ajax({
+                url: '/Home/BusinessToCustomerSearch/',
+                type: 'post',
+                dataType: 'json',
+                data: { customerDataSearch: b2CSearch },
+                success: function (data) {
+                    UpdateB2CDashBoard(data);
+                }
+            });
+        } else {
+            alert('selectedCities');
+        }
+    });
+
+    $("#btnb2cDownloadExport").on('click', function (eve) {
+        var $fileName = $('#downloadb2cLink').val();
+        if ($fileName !== '') {
+            window.location = '/Home/Export/?fileName=' + $fileName + '&type=xlsx&templateType=1';
+
+        } else {
+            alert('file does not exist');
+        }
+
     });
 });
+function UpdateB2CDashBoard(customerData) {
+    console.log(JSON.stringify(customerData));
+    $('#dashBoardb2cItem').empty();
+    $('#spnb2cTotal').text(customerData.total);
+    $('#spnb2cSearchTotal').text(customerData.searchCount);
+    $('#downloadb2cLink').val(customerData.downloadLink);
+    
+    var listItems = '';
+    for (var key in customerData) {
+        if (customerData.hasOwnProperty(key)) {
+
+            if (b2CDashBoardItem[key] !== null
+                && b2CDashBoardItem[key] !== undefined
+                && b2CDashBoardItem[key] !== 'undefined') {
+                $('#dashBoardb2cItem').append(ConstructDashboardItem(b2CDashBoardItem[key], customerData[key]));
+            }
+        }
+    }
+    $('#dashboardb2cBlock').show();
+
+}
+var b2CDashBoardItem = {
+    'name': 'Name',
+    'dob': 'Dob',
+    'qualification': 'Qualification',
+    'experience': 'Experience',
+    'employer': 'Employer',
+    'keySkills': 'KeySkills',
+    'location': 'Location',
+    'roles': 'Roles',
+    'industry': 'Industry',
+    'address': 'Address',
+    'address2': 'Address2',
+    'email': 'Email',
+    'phoneNew': 'PhoneNew',
+    'mobileNew': 'MobileNew',
+    'mobile2': 'Mobile2',
+    'annualSalary': 'AnnualSalary',
+    'pincode': 'Pincode',
+    'area': 'Area',
+    'city': 'City',
+    'state': 'State',
+    'country': 'Country',
+    'network': 'Network',
+    'gender': 'Gender',
+    'caste': 'Caste'
+};
+function ConstructDashboardItem(name, value) {
+    return '<li  class="list-group-item d-flex justify-content-between align-items-center"><span class="caption">' + name + '</span><span class="badge badge-primary badge-pill">' + value.toFixed(2) + '%</span></li >';
+}

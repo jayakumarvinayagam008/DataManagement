@@ -29,74 +29,12 @@
         text-align: center;
         white-space: nowrap;
     }
-    /*.mainTableBlock {
-        min-height: 100px;
-        max-height: 600px;
-        width: 100%;
+    .dashboardHeader {
+        color: #fff;
+        background-color: #6c757d;
+        border-color: #6c757d;
     }
-
-    .gridBlock {
-        min-height: 100px;
-        max-height: 500px;
-        overflow-y: auto;
-        overflow-x: auto;
-        width: 100%;
-    }
-
-    .table-fixed tbody {
-        min-height:200px;
-        max-height:300px;
-        overflow-y: scroll;
-        width: 100%;
-    }
-
-    .table-fixed thead,
-    .table-fixed tbody,
-    .table-fixed tr,
-    .table-fixed td,
-    .table-fixed th {
-        display: flex;
-    }
-
-        .table-fixed tr:after {
-            content: "";
-            display: block;
-            visibility: hidden;
-            clear: both;
-        }
-
-        .table-fixed tbody td,
-        .table-fixed thead > tr > th {
-            float: left;
-        }
-
-    .table > thead > tr > th,
-    .table > thead > tr > td {
-        font-size: .9em;
-        font-weight: 400;
-        border-bottom: 0;
-        letter-spacing: 1px;
-        vertical-align: top;
-        padding: 8px;
-        background: #51596a;
-        text-transform: uppercase;
-        color: #ffffff;
-    }
-
-    .card-header {
-        background-color: #119292;
-        cursor: pointer;
-    }
-
-    .filterText {
-        color: whitesmoke;
-        background-color: #119292;
-    }
-
-    #middle {
-        height: 30px;
-        width: 100%;
-    }*/
+   
 </style>
 
 <div class="container">
@@ -104,11 +42,11 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Country</label>
+                    <label for="exampleInputPassword1">Country</label>
                     <div class="sltCustomerFilterCity">
-                        <select asp-for="Filter.CityId" id="countryId"
+                        <select asp-for="Filter.CountryId" id="countryId"
                                 class=form-control multiple placeholder="Please select"
-                                asp-items="@Model.Filter.Cities"></select>
+                                asp-items="@Model.Filter.Countries"></select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -138,13 +76,14 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">State</label>
+                    <label for="exampleInputPassword1">State</label>
                     <div class="sltCustomerFilterCity">
-                        <select asp-for="Filter.CityId" id="stateId"
+                        <select asp-for="Filter.StateId" id="stateId"
                                 class=form-control multiple placeholder="Please select"
-                                asp-items="@Model.Filter.Cities"></select>
+                                asp-items="@Model.Filter.States"></select>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label for="exampleInputPassword1">Network</label>
                     <div class="sltCustomerFilterCity">
@@ -156,26 +95,22 @@
                 <div class="form-group">
                     <label for="exampleInputPassword1">Customer Name</label>
                     <div class="sltCustomerFilterCity">
-                        <select asp-for="Filter.CityId" id="customerName"
+                        <select asp-for="Filter.CustomerId" id="customerId"
                                 class=form-control multiple placeholder="Please select"
-                                asp-items="@Model.Filter.Cities"></select>
+                                asp-items="@Model.Filter.Customers"></select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Tags</label>
-
-                    <input type="email" class="form-control" id="tags" placeholder="Email">
+                    <input type="hidden" id="hdnTags" value="@Model.Filter.Tags" />
+                    <input type="email" class="form-control" id="tags" placeholder="Email" />
                 </div>
             </div>
-            <div class="col-lg-12" style="text-align:center;">
 
-                <button type="button" class="btn btn-primary btn-space">Cancel</button>
-
-
-                <button type="button" id="btnCustomerDataSearch" class="btn btn-success btn-space">Search</button>
-
-
-            </div>
+        </div>
+        <div class="col-lg-12" style="text-align:center;">
+            <button type="button" class="btn btn-primary btn-space">Cancel</button>
+            <button type="button" id="btnCustomerDataSearch" class="btn btn-success btn-space">Search</button>
         </div>
     </form>
 
@@ -183,12 +118,15 @@
         <div class="col-xs-6 col-md-8">
             <div class="card" style="width: 90%; height:30%;">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6" style="text-align:center">
+                    <div class="row dashboardHeader">
+                        <div class="col-6 col-md-4" " style="text-align:center">
                             <h4 class="card-title">Customer Data</h4>
                         </div>
-                        <div class="col-md-6" style="text-align:center">
-                            <h4 class="card-title"Total: ><span id="spnTotal"></span></h4>
+                        <div class="col-6 col-md-4" " style="text-align:center">
+                            <h4 class="card-title">Total: <span id="spnTotal"></span></h4>
+                        </div>
+                        <div class="col-6 col-md-4" " style="text-align:center">
+                            <h4 class="card-title">Search: <span id="spnSearchTotal"></span></h4>
                         </div>
                     </div>
                     <p class="card-text">
@@ -220,100 +158,4 @@
     </div>
 </div>
 
-<!--
-
-----Country-------      |   --------State-----
------City  ------------ |   ---Network  ----
----Business Vertical--- |   -----Customer Name------
--------Data Quality---- |   --------Tags------------
-
-
-City  - Multiselect
-Network  - Multiselect
-Business Vertical  - Multiselect
-Customer Name  - Multiselect
-Data Quality  - Multiselect
-
-
-<div class="mainTableBlock">
-    <div class="accordion" id="accordionExample">
-
-        <div class="card">
-            <div class="card-header" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                <button class="btn collapsed filterText" type="button">
-                    Filter Option
-                </button>
-            </div>
-            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                <div class="card-body">
-                    <div class="form-group">
-                        <p>
-                            <div class="form-group">
-                                <div class="col-sm-6">
-                                    <div>City</div>
-                                    <div>
-                                        <div class="sltCustomerFilterCity">
-                                            <select asp-for="Filter.CityId" id="CustomerFilterCityId"
-                                                    class=form-control multiple placeholder="Please select"
-                                                    asp-items="@Model.Filter.Cities"></select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="form-group" style="text-align:center; margin-top:20px;margin-bottom:20px;">
-                                            <input type="button" class="btn" value="Clear" />
-                                            <input type="button" class="btn btn-primary" value="Apply" id="btnCustomerFilterApply" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="middle"></div>
-    <div class="gridBlock">
-        <table id="customerDataGrid">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Numbers</th>
-                    <th>Operator</th>
-                    <th>Circle</th>
-                    <th>ClientName</th>
-                    <th>ClientBusinessVertical</th>
-                    <th>DBQuality</th>
-                    <th>DateOfUse</th>
-                    <th>ClientCity</th>
-                </tr>
-            </thead>
-
-            <tbody>
-        @{
-            int i = 0;
-            foreach (var item in Model.CustomerDataModels.ToList())
-            {
-                i = i + 1;
-        <tr>
-            <td>@i</td>
-            <td>@item.Numbers</td>
-            <td>@item.Operator</td>
-            <td>@item.Circle</td>
-            <td>@item.ClientName</td>
-            <td>@item.ClientBusinessVertical</td>
-            <td>@item.DBQuality</td>
-            <td>@item.DateOfUse.ToString()</td>
-            <td>@item.ClientCity</td>
-        </tr>
-            }
-        }
-            </tbody>
-        </table>
-</div>
-</div>
-
-    -->
 
