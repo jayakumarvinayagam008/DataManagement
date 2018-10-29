@@ -2,7 +2,7 @@
 
 namespace Application.CustomerData.Queries
 {
-    public class CustomerDataFilter:SearchRequest
+    public class CustomerDataFilter : SearchRequest
     {
         public string[] DataQuantities { get; set; }
         public string[] Network { get; set; }

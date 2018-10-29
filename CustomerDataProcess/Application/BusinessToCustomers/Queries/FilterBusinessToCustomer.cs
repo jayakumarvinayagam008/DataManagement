@@ -1,9 +1,6 @@
 ﻿using Application.Common;
 using Persistance;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Application.BusinessToCustomers.Queries
 {
@@ -11,20 +8,21 @@ namespace Application.BusinessToCustomers.Queries
     {
         private readonly CustomerDataManagementContext _customerDataManagementContext;
         private readonly IFilterBusinessToCustomerTags _getBusinessToCustomerTags;
+
         public FilterBusinessToCustomer(CustomerDataManagementContext customerDataManagementContext,
             IFilterBusinessToCustomerTags getBusinessToCustomerTags)
         {
             _customerDataManagementContext = customerDataManagementContext;
             _getBusinessToCustomerTags = getBusinessToCustomerTags;
         }
+
         public BusinessToCustomerListModel Search(BusinessToCustomerFilter businessToCustomerFilter)
         {
-                        
-           var b2cFilter =  _customerDataManagementContext.BusinessToCustomer.AsQueryable();
+            var b2cFilter = _customerDataManagementContext.BusinessToCustomer.AsQueryable();
             // 1.Country
-            if(businessToCustomerFilter.Countries.Any())
+            if (businessToCustomerFilter.Countries.Any())
             {
-                b2cFilter = b2cFilter.Where(x=> businessToCustomerFilter.Countries.Any(y=> y == x.Country)).AsQueryable();
+                b2cFilter = b2cFilter.Where(x => businessToCustomerFilter.Countries.Any(y => y == x.Country)).AsQueryable();
             }
             //2./State
             if (businessToCustomerFilter.States.Any())
@@ -54,7 +52,7 @@ namespace Application.BusinessToCustomers.Queries
             //7.Age
             if (businessToCustomerFilter.Age.Any())
             {
-               //b2cFilter = b2cFilter.Where(x => businessToCustomerFilter.Age.Any(y => y == x.AnnualSalary)).AsQueryable();
+                //b2cFilter = b2cFilter.Where(x => businessToCustomerFilter.Age.Any(y => y == x.AnnualSalary)).AsQueryable();
             }
             //8.Experience
             if (businessToCustomerFilter.Experience.Any())

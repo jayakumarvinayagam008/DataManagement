@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Application.Common
 {
     public class BusinessToBusinessColumnMapping
     {
         private Dictionary<string, int> ColumnName { get; set; }
-      
+
         public BusinessToBusinessColumnMapping()
         {
             ColumnName = new Dictionary<string, int>();

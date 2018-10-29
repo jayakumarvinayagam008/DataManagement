@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Application.DataUpload.Commands.SaveDataUpload
+﻿namespace Application.DataUpload.Commands.SaveDataUpload
 {
     //class BusinessToBusinessUploadProcess : IUploadProcess
     //{
@@ -26,6 +21,6 @@ namespace Application.DataUpload.Commands.SaveDataUpload
     //        var saveStatus = _saveBusinessToBusiness.Save(customerData.Item1);
     //        uploadStatus.IsUploaded = saveStatus;
     //        return uploadStatus;
-       // }
-   // }
+    // }
+    // }
 }

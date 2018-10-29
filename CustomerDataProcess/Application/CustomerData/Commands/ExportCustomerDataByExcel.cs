@@ -5,13 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Application.CustomerData.Commands
 {
     public class ExportCustomerDataByExcel : IExportCustomerDataByExcel
     {
-        private string[] columns = new string[] { 
+        private string[] columns = new string[] {
                                                 "Numbers",
                                                 "Operator",
                                                 "Circle",
@@ -22,17 +21,18 @@ namespace Application.CustomerData.Commands
                                                 "Client City",
                                                 "Country",
                                                 "State"};
+
         public string CreateExcel(IEnumerable<CustomerDataModel> customerDatas, string fileRootPath, int rowRange)
         {
             var sheetContainer = customerDatas.Batch(rowRange);
             int sheetIndex = 1;
             string fileType = "xlsx";
             string fileName = GetGUID();
-            var filePath =  $"{fileRootPath}{fileName}.{fileType}";
+            var filePath = $"{fileRootPath}{fileName}.{fileType}";
 
             FileInfo fileInfo = new FileInfo(filePath);
             foreach (var item in sheetContainer)
-            {               
+            {
                 using (ExcelPackage excelPackage = new ExcelPackage(fileInfo))
                 {
                     var workSheet = excelPackage.Workbook.Worksheets.Add("CustomerData - " + sheetIndex++);
@@ -44,8 +44,7 @@ namespace Application.CustomerData.Commands
             return fileName;
         }
 
-        
-        private ExcelWorksheet AddHeader(ExcelWorksheet excelWorksheet )
+        private ExcelWorksheet AddHeader(ExcelWorksheet excelWorksheet)
         {
             int rowIndex = 1;
             for (int columnIndex = 1; columnIndex <= columns.Length; columnIndex++)
@@ -54,6 +53,7 @@ namespace Application.CustomerData.Commands
             }
             return excelWorksheet;
         }
+
         private ExcelWorksheet AddRows(ExcelWorksheet excelWorksheet, IEnumerable<CustomerDataModel> customerDatas)
         {
             int rowIndex = 2;
@@ -74,13 +74,11 @@ namespace Application.CustomerData.Commands
             });
             return excelWorksheet;
         }
+
         private string GetGUID()
         {
             Guid guid = Guid.NewGuid();
             return $"{guid.ToString()}{DateTime.Now.ToString("yyyyMMddhhmmss")}";
         }
-
     }
-
-    
 }

@@ -2,17 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Application.DataUpload.Commands.SaveDataUpload
 {
     public class SaveCustomerData : ISaveCustomerData
     {
         private readonly CustomerDataManagementContext customerDataManagementContext;
+
         public SaveCustomerData(CustomerDataManagementContext dbContext)
         {
             customerDataManagementContext = dbContext;
         }
+
         public bool Save(IEnumerable<CustomerDataModel> customerDataModels)
         {
             bool saveStatus = false;
@@ -38,7 +39,6 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             }
             catch (Exception)
             {
-
                 throw;
             }
             return saveStatus;

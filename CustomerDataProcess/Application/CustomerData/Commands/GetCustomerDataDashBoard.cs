@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Application.CustomerData.Queries;
 using System.Linq;
-using System.Text;
-using Application.CustomerData.Queries;
 
 namespace Application.CustomerData.Commands
 {
@@ -10,7 +7,6 @@ namespace Application.CustomerData.Commands
     {
         public CustomerDataDashBoard CalculateDashBoard(CustomerListDataModel customerListDataModel)
         {
-
             CustomerDataDashBoard customerDataDashBoard = new CustomerDataDashBoard()
             {
                 Total = customerListDataModel.Total,
@@ -43,7 +39,7 @@ namespace Application.CustomerData.Commands
                 Numbers = (customerListDataModel.CustomerDataModels
                 .Where(x => !string.IsNullOrWhiteSpace(x.Numbers))
                 .Select(x => x.Numbers).Count() / (decimal)customerListDataModel.Total) * 100,
-                                
+
                 CountryCount = (customerListDataModel.CustomerDataModels
                 .Where(x => !string.IsNullOrWhiteSpace(x.Country))
                 .Select(x => x.Country).Count() / (decimal)customerListDataModel.Total) * 100,

@@ -2,13 +2,9 @@
 using Application.BusinessToCustomers.Queries;
 using Application.Common;
 using Application.CustomerData.Queries;
-using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 
 namespace Application.DataUpload.Commands.SaveDataUpload
 {
@@ -62,16 +58,16 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 var businessToBusinessData = _businessToBusinessFileToDataModel.ReadFileData(saveDataModel);
                 var businessToBusiness = businessToBusinessData.Item1;
                 uploadStatus.TotalRows = businessToBusinessData.Item2;
-                
+
                 // Check business category validation
-                // Ceck phone number validation 
+                // Ceck phone number validation
                 //var phone = businessToBusiness.Select(x => x.Phone1).Where(x => !string.IsNullOrWhiteSpace(x)).AsEnumerable<string>();
                 var numbers = _getBusinesstoBusinessPhone.Get();
                 businessToBusiness = businessToBusiness.Except(numbers, x => x.MobileNew, y => y).ToList();
                 numbers = null;
-                if(businessToBusiness.Count() > 0)
+                if (businessToBusiness.Count() > 0)
                 {
-                    // validate Business category 
+                    // validate Business category
                     var categoryName = businessToBusiness.Select(x => x.CategoryId.Value).AsEnumerable<int>();
                     var unmappedCategory = _validateBusinessCategoruEntiry.Validate(categoryName).ToList<int>();
                     var validBusinessToBusiness = businessToBusiness.Join(unmappedCategory,
@@ -82,11 +78,11 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                     if (validBusinessToBusiness.Count() > 0)
                         uploadStatus.IsUploaded = _saveBusinessToBusiness.Save(validBusinessToBusiness);
                 }
-                // status message update 
-                if(uploadStatus.TotalRows > uploadStatus.UploadedRows)
+                // status message update
+                if (uploadStatus.TotalRows > uploadStatus.UploadedRows)
                 {
                     uploadStatus.StatusMessage = "Some business category doesn't mapped or duplicate phone numers exist";
-                }                
+                }
             }
             else if (saveDataModel.UploadTypeId == (int)UploadType.BusinessToCustomer)
             {
@@ -96,9 +92,9 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 var filteredData = businessToCustomer.Item1.Except(dbNumbers, x => x.MobileNew, y => y).ToList();
                 dbNumbers = null;
                 uploadStatus.UploadedRows = filteredData.Count(); // number of rows going to update
-                if(uploadStatus.UploadedRows > 0)
+                if (uploadStatus.UploadedRows > 0)
                     uploadStatus.IsUploaded = _saveBusinessToCustomer.Save(filteredData);
-                // status message update 
+                // status message update
                 if (uploadStatus.TotalRows > uploadStatus.UploadedRows)
                 {
                     uploadStatus.StatusMessage = "Duplicate phone numers exist";
@@ -114,9 +110,9 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 var filteredData = customerData.Item1.Except(dbNumbers, x => x.Numbers, y => y).ToList();
                 dbNumbers = null; // Make it as empty
                 uploadStatus.UploadedRows = filteredData.Count(); // number of rows going to update
-                if(uploadStatus.UploadedRows>0)                
+                if (uploadStatus.UploadedRows > 0)
                     uploadStatus.IsUploaded = _saveCustomerData.Save(filteredData);
-                // status message update 
+                // status message update
                 if (uploadStatus.TotalRows > uploadStatus.UploadedRows)
                 {
                     uploadStatus.StatusMessage = "Duplicate phone numers exist";
@@ -142,6 +138,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
         {
             return first.Where(x => second.Count(y => comparer(x, y)) == 1);
         }
+
         public static IEnumerable<TSource> Except<TSource, TThat, TKey>(
             this IEnumerable<TSource> first,
             IEnumerable<TThat> second,

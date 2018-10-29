@@ -1,19 +1,19 @@
 ﻿using Application.Common;
 using Persistance;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Application.DataUpload.Commands.SaveDataUpload
 {
     public class SaveBusinessToBusiness : ISaveBusinessToBusiness
     {
         private readonly CustomerDataManagementContext _customerDataManagementContext;
+
         public SaveBusinessToBusiness(CustomerDataManagementContext customerDataManagementContext)
         {
             _customerDataManagementContext = customerDataManagementContext;
         }
+
         public bool Save(IEnumerable<BusinessToBusinesModel> customerToBusiness)
         {
             bool status = false;

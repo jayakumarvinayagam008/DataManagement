@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Application.DataUpload.Commands.SaveDataUpload
 {
@@ -13,6 +12,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
         private Dictionary<string, int> columnIndex;
         private IDictionary<string, int> columnArray;
         private int totalRows;
+
         public (IEnumerable<CustomerDataModel>, int) ReadFileData(SaveDataModel saveDataModel)
         {
             FileInfo fileInfo = new FileInfo(saveDataModel.FilePath);
@@ -32,10 +32,10 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 {
                     throw;
                 }
-            
             }
             return (customerDataModels, totalRows);
         }
+
         private IEnumerable<CustomerDataModel> ReadExcelPackageToString(ExcelPackage package, ExcelWorksheet worksheet)
         {
             var rowCount = worksheet.Dimension?.Rows;
@@ -55,7 +55,6 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 }
                 // Check tempalate columns exist in requested customer data input
                 {
-
                 }
 
                 //Featch all remain rows
@@ -79,7 +78,6 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             }
             else
             {
-
             }
             return customerDataModel.AsEnumerable<CustomerDataModel>();
         }
@@ -92,6 +90,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
 
             src.GetType().GetProperty(propName).SetValue(src, value);
         }
+
         private int GetColumnIndex(string keyName)
         {
             if (columnArray.Keys.Any(x => x.Trim() == keyName.Trim()))

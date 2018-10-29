@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Application.DataUpload.Commands.SaveDataUpload
+﻿namespace Application.DataUpload.Commands.SaveDataUpload
 {
     //class CustomerDataUploadProcess : IUploadProcess
     //{

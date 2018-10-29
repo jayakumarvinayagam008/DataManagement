@@ -1,8 +1,6 @@
 ﻿using Persistance;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Application.BusinessToCustomers.Queries
 {
@@ -14,6 +12,7 @@ namespace Application.BusinessToCustomers.Queries
         {
             _customerDataManagementContext = dbContext;
         }
+
         public IEnumerable<int> Filter(int[] tagIds)
         {
             if (tagIds.Any())

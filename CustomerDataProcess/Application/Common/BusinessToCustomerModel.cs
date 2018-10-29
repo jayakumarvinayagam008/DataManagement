@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Application.Common
 {
     public class BusinessToCustomerModel

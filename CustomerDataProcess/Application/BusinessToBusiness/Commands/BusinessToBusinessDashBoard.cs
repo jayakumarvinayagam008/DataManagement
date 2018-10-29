@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Application.BusinessToBusiness.Commands
+﻿namespace Application.BusinessToBusiness.Commands
 {
     public class BusinessToBusinessDashBoard
     {
@@ -31,7 +27,7 @@ namespace Application.BusinessToBusiness.Commands
         public decimal CategoryId { get; set; }
         public decimal LandMark { get; set; }
         public decimal NoOfEmp { get; set; }
-        public decimal Country { get; set; }       
+        public decimal Country { get; set; }
         public decimal CategoryName { get; set; }
         public int Total { get; set; }
         public int SearchCount { get; set; }

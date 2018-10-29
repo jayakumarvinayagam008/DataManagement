@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Application.DataUpload.Commands.SaveDataUpload
 {
@@ -12,6 +11,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
     {
         private Dictionary<string, int> columnIndex;
         private int totalRowCount;
+
         public (IEnumerable<BusinessToCustomerModel>, int) ReadFileData(SaveDataModel saveDataModel)
         {
             FileInfo fileInfo = new FileInfo(saveDataModel.FilePath);
@@ -27,7 +27,9 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             }
             return (businessToCustomerModels, totalRowCount);
         }
+
         private IDictionary<string, int> columnArray;
+
         private IEnumerable<BusinessToCustomerModel> ReadExcelPackageToString(ExcelPackage package, ExcelWorksheet worksheet)
         {
             var rowCount = worksheet.Dimension?.Rows;
@@ -83,7 +85,6 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             }
             else
             {
-
             }
             return businessToCustomerModels.AsEnumerable<BusinessToCustomerModel>();
         }

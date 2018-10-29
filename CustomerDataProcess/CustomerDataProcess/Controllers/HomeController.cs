@@ -1,27 +1,26 @@
-﻿using System;
+﻿using Application.BusinessToBusiness.Commands;
+using Application.BusinessToBusiness.Queries;
+using Application.BusinessToCustomers.Commands;
+using Application.BusinessToCustomers.Queries;
+using Application.Common;
+using Application.CustomerData.Commands;
+using Application.CustomerData.Queries;
+using Application.DataUpload.Commands.SaveDataUpload;
+using Application.DataUpload.Queries.GetUpLoadDataType;
+using Application.NumberLookup.Command;
+using CustomerDataProcess.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using CustomerDataProcess.Models;
-using Application.DataUpload.Queries.GetUpLoadDataType;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.IO;
+using System.Linq;
 using System.Net.Http.Headers;
-using Application.DataUpload.Commands.SaveDataUpload;
-using Application.CustomerData.Queries;
-using Application.BusinessToBusiness.Queries;
-using Application.BusinessToCustomers.Queries;
-using Microsoft.Extensions.Options;
-using System.Threading;
-using Application.NumberLookup.Command;
-using Microsoft.Extensions.Logging;
-using Application.CustomerData.Commands;
-using Application.BusinessToCustomers.Commands;
-using Application.Common;
-using Application.BusinessToBusiness.Commands;
+using System.Threading.Tasks;
 
 namespace CustomerDataProcess.Controllers
 {
@@ -44,6 +43,7 @@ namespace CustomerDataProcess.Controllers
         private readonly IFilterBusinessToBusiness _filterBusinessToBusiness;
         private readonly IPrepareB2BDashBoard _prepareB2BDashBoard;
         private readonly IBusinessToBusinessExport _businessToBusinessExport;
+
         public HomeController(IGetUpLoadDataTypeList getUpLoadDataTypeList, ISaveUploadDataCommand saveUploadDataCommand,
                               IGetCustomerData getCustomerData, IGetBusinessToBusiness getBusinessToBusiness,
                               IGetBusinessToCustomer getBusinessToCustomer,
@@ -77,11 +77,11 @@ namespace CustomerDataProcess.Controllers
             _prepareB2BDashBoard = prepareB2BDashBoard;
             _businessToBusinessExport = businessToBusinessExport;
         }
+
         public IActionResult Index()
         {
             return View();
         }
-
 
         public IActionResult BusinessToBusiness()
         {
@@ -100,6 +100,7 @@ namespace CustomerDataProcess.Controllers
             var customerData = _getCustomerData.Get();
             return View(customerData);
         }
+
         [HttpPost]
         public IActionResult CustomerData(CustomerDataSearch customerDataSearch)
         {
@@ -107,17 +108,17 @@ namespace CustomerDataProcess.Controllers
             int rowRange = _appSettings.Value.RowRange;
             CustomerDataFilter customerDataFilter = new CustomerDataFilter()
             {
-                BusinessVertical = customerDataSearch.BusinessVertical.Any() ? 
-                    customerDataSearch.BusinessVertical.Where(x=> !string.IsNullOrWhiteSpace(x)).ToArray():null,
-                Cities = customerDataSearch.Cities.Any() ? 
+                BusinessVertical = customerDataSearch.BusinessVertical.Any() ?
+                    customerDataSearch.BusinessVertical.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray() : null,
+                Cities = customerDataSearch.Cities.Any() ?
                     customerDataSearch.Cities.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray() : null,
-                DataQuantities = customerDataSearch.DataQuantities.Any() ? 
+                DataQuantities = customerDataSearch.DataQuantities.Any() ?
                     customerDataSearch.DataQuantities.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray() : null,
-                Network = customerDataSearch.Network.Any() ? 
+                Network = customerDataSearch.Network.Any() ?
                     customerDataSearch.Network.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray() : null,
                 CustomerNames = customerDataSearch.CustomerNames.Any() ?
                     customerDataSearch.CustomerNames.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray() : null,
-                Tags = customerDataSearch.Tags.Any() ? 
+                Tags = customerDataSearch.Tags.Any() ?
                     customerDataSearch.Tags : new int[] { },
                 Countries = customerDataSearch.Contries.Any() ?
                     customerDataSearch.Contries.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray() : null,
@@ -160,7 +161,8 @@ namespace CustomerDataProcess.Controllers
         {
             var rootPath = _appSettings.Value.SearchExport;
             int rowRange = _appSettings.Value.RowRange;
-            BusinessToBusinessFilter businessToBusinessFilter = new BusinessToBusinessFilter() {
+            BusinessToBusinessFilter businessToBusinessFilter = new BusinessToBusinessFilter()
+            {
                 Areas = business2Business.Area.Any() ? business2Business.Area.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray() : null,
                 BusinessCategoryId = business2Business.BusinessCategoryId.Any() ? business2Business.BusinessCategoryId.ToArray() : new int[] { },
                 Cities = business2Business.Cities.Any() ? business2Business.Cities.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray() : null,
@@ -168,7 +170,6 @@ namespace CustomerDataProcess.Controllers
                 Designation = business2Business.Designation.Any() ? business2Business.Designation.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray() : null,
                 States = business2Business.States.Any() ? business2Business.States.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray() : null,
                 Tags = business2Business.Tags.Any() ? business2Business.Tags : new int[] { }
-
             };
             var businessToBusiness = _filterBusinessToBusiness.Search(businessToBusinessFilter);
             var b2bDashboard = _prepareB2BDashBoard.Prepare(businessToBusiness);
@@ -176,6 +177,7 @@ namespace CustomerDataProcess.Controllers
             b2bDashboard.DownloadLink = fileName;
             return Json(b2bDashboard);
         }
+
         public IActionResult CustomerDataLoad()
         {
             var customerData = _getCustomerData.Get();
@@ -233,17 +235,17 @@ namespace CustomerDataProcess.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-
-
         private bool IsInternetExplore(string browser)
         {
             return (browser.Trim().ToUpper() == "IE" || browser.Trim().ToUpper() == "INTERNETEXPLORER");
         }
+
         private string GetGUID()
         {
             Guid guid = Guid.NewGuid();
             return $"{guid.ToString()}{DateTime.Now.ToString("yyyyMMddhhmmss")}";
         }
+
         public ActionResult DownloadSampleTemplate(int templateId)
         {
             var sampleTempate = _getFileContent.Get(templateId, _appSettings.Value.SampleDownloadPath);
@@ -254,7 +256,6 @@ namespace CustomerDataProcess.Controllers
         {
             return View();
         }
-
 
         public ActionResult UploadNumberLookUp()
         {
@@ -278,7 +279,7 @@ namespace CustomerDataProcess.Controllers
                     .Parse(file.ContentDisposition)
                     .FileName
                     .Trim('"');
-                
+
                 // checked file types
                 if (fileName.EndsWith(".xlsx") || fileName.EndsWith(".csv"))
                 {
@@ -297,7 +298,8 @@ namespace CustomerDataProcess.Controllers
                 }
             }
             var fileContent = _loopupProcess.Process(lookupFileName, rootFilePath);
-            var createdFile = new NumberLookUp() {
+            var createdFile = new NumberLookUp()
+            {
                 FileName = fileContent,
                 Status = !string.IsNullOrWhiteSpace(fileContent)
             };

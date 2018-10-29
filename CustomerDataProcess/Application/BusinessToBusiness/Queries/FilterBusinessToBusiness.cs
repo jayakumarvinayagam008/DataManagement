@@ -8,12 +8,14 @@ namespace Application.BusinessToBusiness.Queries
     {
         private readonly CustomerDataManagementContext _customerDataManagementContext;
         private readonly IFilterBusinessToBusinessTags _getBusinessToBusinessTags;
+
         public FilterBusinessToBusiness(CustomerDataManagementContext customerDataManagementContext,
             IFilterBusinessToBusinessTags getBusinessToBusinessTags)
         {
             _customerDataManagementContext = customerDataManagementContext;
             _getBusinessToBusinessTags = getBusinessToBusinessTags;
         }
+
         public BusinessToBusinesListModel Search(BusinessToBusinessFilter businessToBusinessFilter)
         {
             var b2bFilter = _customerDataManagementContext.BusinessToBusiness.AsQueryable();
@@ -44,7 +46,7 @@ namespace Application.BusinessToBusiness.Queries
                 b2bFilter = b2bFilter.Where(x => businessToBusinessFilter.BusinessCategoryId.Any(y => y == x.CategoryId)).AsQueryable();
             }
 
-            //6.Designation  
+            //6.Designation
             if (businessToBusinessFilter.Areas.Any())
             {
                 b2bFilter = b2bFilter.Where(x => businessToBusinessFilter.Designation.Any(y => y == x.Designation)).AsQueryable();

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Application.DataUpload.Queries.GetUpLoadDataType;
+﻿using Application.DataUpload.Queries.GetUpLoadDataType;
+using System;
 
 namespace Application.CustomerData.Commands
 {

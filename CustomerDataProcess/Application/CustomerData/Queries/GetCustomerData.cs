@@ -19,10 +19,9 @@ namespace Application.CustomerData.Queries
         private readonly IGetCustomerDataQuality _getCustomerDataQuality;
         private readonly IGetCustomerClientNames _getCustomerClientNames;
         private readonly IFilterCustomerTags _filterCustomerTags;
-        private readonly IGetStates _getStates ;
+        private readonly IGetStates _getStates;
         private readonly IGetCustomerCountry _getCustomerCountry;
-        
-            
+
         public GetCustomerData(CustomerDataManagementContext dbContext,
             IGetCustomerCities getCustomerCities,
             IGetCustomerBusinessVertical getCustomerBusinessVertical,
@@ -48,7 +47,6 @@ namespace Application.CustomerData.Queries
 
         public CustomerListDataModel Get()
         {
-
             var cities = _getCustomerCities.Get();
             var businessValues = _getCustomerBusinessVertical.Get();
             var network = _getCustomerNetwork.Get();
@@ -74,7 +72,7 @@ namespace Application.CustomerData.Queries
             //        UpdatedOn = x.CreatedDate.Value
             //    }).AsEnumerable<CustomerDataModel>();
             return new CustomerListDataModel
-            {                
+            {
                 Filter = new Common.DataFilter
                 {
                     Cities = cities,
@@ -92,7 +90,7 @@ namespace Application.CustomerData.Queries
         public CustomerListDataModel Get(CustomerDataFilter customerDataFilter)
         {
             var customerData = _customerDataManagementContext.CustomerDataManagement.AsQueryable();
-            if(customerDataFilter.Countries.Any())
+            if (customerDataFilter.Countries.Any())
             {
                 customerData = customerData
                                  .Where(x => customerDataFilter.Countries.Any(y => y == x.Country))
@@ -112,8 +110,8 @@ namespace Application.CustomerData.Queries
                                   .Where(x => customerDataFilter.Cities.Any(y => y == x.ClientCity))
                                   .AsQueryable();
             }
-              
-            if(customerDataFilter.BusinessVertical.Any())
+
+            if (customerDataFilter.BusinessVertical.Any())
             {
                 customerData = customerData
                                     .Where(x => customerDataFilter.BusinessVertical.Any(y => y == x.ClientBusinessVertical))
@@ -161,8 +159,6 @@ namespace Application.CustomerData.Queries
                 State = x.State
             }).ToList();
 
-            
-
             return new CustomerListDataModel
             {
                 CustomerDataModels = filteredData,
@@ -171,11 +167,13 @@ namespace Application.CustomerData.Queries
                 Total = _customerDataManagementContext.CustomerDataManagement.Count()
             };
         }
+
         private IQueryable<CustomerDataManagement> Cities(string[] cities)
         {
             return _customerDataManagementContext.CustomerDataManagement
                  .Where(x => cities.Any(city => city == x.ClientCity));
         }
+
         private IQueryable<CustomerDataManagement> Network(string[] network)
         {
             return _customerDataManagementContext.CustomerDataManagement

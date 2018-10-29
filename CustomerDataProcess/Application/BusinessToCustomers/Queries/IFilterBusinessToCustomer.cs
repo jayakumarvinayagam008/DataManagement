@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Application.BusinessToCustomers.Queries
+﻿namespace Application.BusinessToCustomers.Queries
 {
     public interface IFilterBusinessToCustomer
     {

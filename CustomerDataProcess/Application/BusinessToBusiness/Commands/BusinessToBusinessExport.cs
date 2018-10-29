@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Application.Common;
+using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Application.Common;
-using OfficeOpenXml;
 
 namespace Application.BusinessToBusiness.Commands
 {
@@ -29,14 +28,15 @@ namespace Application.BusinessToBusiness.Commands
                                         "Web",
                                         "ContactPerson",
                                         "Contactperson1",
-                                        "Designation",                                       
+                                        "Designation",
                                         "Designation1",
                                         "EstYear",
                                         "CategoryId",
                                         "LandMark",
                                         "NoOfEmp",
-                                        "Country",                                        
+                                        "Country",
                                         "CompanyName"};
+
         public string ExportExcel(IEnumerable<BusinessToBusinesModel> businessToBusinesModels, string fileRootPath, int rowRange)
         {
             var sheetContainer = businessToBusinesModels.Batch(rowRange);
@@ -57,11 +57,13 @@ namespace Application.BusinessToBusiness.Commands
             }
             return fileName;
         }
+
         private string GetGUID()
         {
             Guid guid = Guid.NewGuid();
             return $"{guid.ToString()}{DateTime.Now.ToString("yyyyMMddhhmmss")}";
         }
+
         private ExcelWorksheet AddHeader(ExcelWorksheet excelWorksheet)
         {
             int rowIndex = 1;
@@ -71,9 +73,9 @@ namespace Application.BusinessToBusiness.Commands
             }
             return excelWorksheet;
         }
+
         private ExcelWorksheet AddRows(ExcelWorksheet excelWorksheet, IEnumerable<BusinessToBusinesModel> businessToCustomerModels)
         {
-     
             int rowIndex = 2;
             businessToCustomerModels.ToList().ForEach(x =>
             {
@@ -89,7 +91,7 @@ namespace Application.BusinessToBusiness.Commands
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Phone1; //Phone1
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Phone2; //Phone2
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Mobile1; //Mobile1
-                excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Mobile2; //Mobile2                   
+                excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Mobile2; //Mobile2
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Fax; // Fax
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Email; //Email
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Email1; //Email1

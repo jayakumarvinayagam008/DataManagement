@@ -1,8 +1,6 @@
 ﻿using Persistance;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Application.CustomerData.Queries
 {
@@ -14,9 +12,10 @@ namespace Application.CustomerData.Queries
         {
             _customerDataManagementContext = dbContext;
         }
+
         public IEnumerable<int> Filter(int[] tagIds)
         {
-            if(tagIds.Any())
+            if (tagIds.Any())
             {
                 var templateIds = _customerDataManagementContext.CustomerDataManagementTags
                 .Join(tagIds, x => x.CustomerDataTagId, y => y, (x, y) => x.RequestId.Value);

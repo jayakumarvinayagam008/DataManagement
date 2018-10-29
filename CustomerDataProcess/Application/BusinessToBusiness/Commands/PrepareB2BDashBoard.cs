@@ -1,5 +1,4 @@
 ﻿using Application.BusinessToBusiness.Queries;
-using System;
 using System.Linq;
 
 namespace Application.BusinessToBusiness.Commands
@@ -8,7 +7,8 @@ namespace Application.BusinessToBusiness.Commands
     {
         public BusinessToBusinessDashBoard Prepare(BusinessToBusinesListModel businessToBusinesListModel)
         {
-            BusinessToBusinessDashBoard businessToBusinessDashBoard = new BusinessToBusinessDashBoard() {
+            BusinessToBusinessDashBoard businessToBusinessDashBoard = new BusinessToBusinessDashBoard()
+            {
                 Total = businessToBusinesListModel.Total,
                 SearchCount = businessToBusinesListModel.SearchCount,
                 Add1 = (businessToBusinesListModel.BusinessToBusiness.Where(x => !string.IsNullOrWhiteSpace(x.Add1))
@@ -80,12 +80,11 @@ namespace Application.BusinessToBusiness.Commands
                 Pincode = (businessToBusinesListModel.BusinessToBusiness.Where(x => !string.IsNullOrWhiteSpace(x.Pincode))
                         .Select(x => x.Pincode).Count() / (decimal)businessToBusinesListModel.Total) * 100,
 
-                State =(businessToBusinesListModel.BusinessToBusiness.Where(x => !string.IsNullOrWhiteSpace(x.State))
+                State = (businessToBusinesListModel.BusinessToBusiness.Where(x => !string.IsNullOrWhiteSpace(x.State))
                         .Select(x => x.State).Count() / (decimal)businessToBusinesListModel.Total) * 100,
 
                 Web = (businessToBusinesListModel.BusinessToBusiness.Where(x => !string.IsNullOrWhiteSpace(x.Web))
                         .Select(x => x.Web).Count() / (decimal)businessToBusinesListModel.Total) * 100,
-
             };
             return businessToBusinessDashBoard;
         }

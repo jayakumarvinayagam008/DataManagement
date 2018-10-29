@@ -1,5 +1,4 @@
-﻿using System;
-namespace Application.UserAccount.Queries
+﻿namespace Application.UserAccount.Queries
 {
     public interface IUserValidation
     {

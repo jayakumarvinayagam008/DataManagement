@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Application.Common;
+using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Application.Common;
-using OfficeOpenXml;
 
 namespace Application.BusinessToCustomers.Commands
 {
@@ -35,6 +34,7 @@ namespace Application.BusinessToCustomers.Commands
                                                 "Network",
                                                 "Gender",
                                                 "Caste"};
+
         public string CreateExcel(IEnumerable<BusinessToCustomerModel> businessToCustomerModels, string fileRootPath, int rowRange)
         {
             var sheetContainer = businessToCustomerModels.Batch(rowRange);
@@ -55,11 +55,13 @@ namespace Application.BusinessToCustomers.Commands
             }
             return fileName;
         }
+
         private string GetGUID()
         {
             Guid guid = Guid.NewGuid();
             return $"{guid.ToString()}{DateTime.Now.ToString("yyyyMMddhhmmss")}";
         }
+
         private ExcelWorksheet AddHeader(ExcelWorksheet excelWorksheet)
         {
             int rowIndex = 1;
@@ -69,6 +71,7 @@ namespace Application.BusinessToCustomers.Commands
             }
             return excelWorksheet;
         }
+
         private ExcelWorksheet AddRows(ExcelWorksheet excelWorksheet, IEnumerable<BusinessToCustomerModel> businessToCustomerModels)
         {
             int rowIndex = 2;
@@ -98,7 +101,7 @@ namespace Application.BusinessToCustomers.Commands
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Country;
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Network;
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Gender;
-                excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Caste;                
+                excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Caste;
                 rowIndex++;
             });
             return excelWorksheet;

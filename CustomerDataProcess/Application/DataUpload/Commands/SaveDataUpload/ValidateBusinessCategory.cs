@@ -1,8 +1,6 @@
 ﻿using Persistance;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Application.DataUpload.Commands.SaveDataUpload
 {
@@ -14,6 +12,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
         {
             _customerDataManagementContext = customerDataManagementContext;
         }
+
         public IEnumerable<int> Validate(IEnumerable<int> categoryId)
         {
             IQueryable<int> businessCategory = _customerDataManagementContext.B2bcategory

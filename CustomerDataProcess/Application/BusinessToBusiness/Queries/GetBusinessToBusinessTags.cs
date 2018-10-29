@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Application.Common;
+using Persistance;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Application.Common;
-using Persistance;
 
 namespace Application.BusinessToBusiness.Queries
 {
@@ -15,6 +13,7 @@ namespace Application.BusinessToBusiness.Queries
         {
             _customerDataManagementContext = dbContext;
         }
+
         public IEnumerable<Tag> Get()
         {
             var tags = _customerDataManagementContext.BusinessToBusinessTags

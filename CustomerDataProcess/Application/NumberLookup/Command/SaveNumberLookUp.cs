@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Application.NumberLookup.Command
 {
@@ -25,9 +23,9 @@ namespace Application.NumberLookup.Command
                 worksheet.Cells[headerRange].LoadFromArrays(headerRow);
                 int rowIndex = 2;
                 foreach (var item in numberLookUpDetails)
-                {                    
-                    worksheet.Cells[rowIndex, 1].Value =(item.Phone);
-                    worksheet.Cells[rowIndex, 2].Value =(item.Circle);
+                {
+                    worksheet.Cells[rowIndex, 1].Value = (item.Phone);
+                    worksheet.Cells[rowIndex, 2].Value = (item.Circle);
                     worksheet.Cells[rowIndex, 3].Value = (item.Operator);
                     rowIndex++;
                 }

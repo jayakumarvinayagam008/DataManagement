@@ -1,10 +1,8 @@
 ﻿using Application.Common;
 using OfficeOpenXml;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Application.DataUpload.Commands.SaveDataUpload
 {
@@ -12,11 +10,12 @@ namespace Application.DataUpload.Commands.SaveDataUpload
     {
         private Dictionary<string, int> columnIndex;
         private int totalRows = 0;
+
         public (IEnumerable<BusinessToBusinesModel>, int) ReadFileData(SaveDataModel saveDataModel)
         {
             FileInfo fileInfo = new FileInfo(saveDataModel.FilePath);
             IEnumerable<BusinessToBusinesModel> businessToBusinessModels = null;
-            if(fileInfo != null)
+            if (fileInfo != null)
             {
                 using (ExcelPackage package = new ExcelPackage(fileInfo))
                 {
@@ -27,7 +26,9 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             }
             return (businessToBusinessModels, totalRows);
         }
+
         private IDictionary<string, int> columnArray;
+
         private IEnumerable<BusinessToBusinesModel> ReadExcelPackageToString(ExcelPackage package, ExcelWorksheet worksheet)
         {
             var rowCount = worksheet.Dimension?.Rows;
@@ -45,7 +46,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 {
                     columnHeader.Add($"{worksheet.Cells[firstRow, col].Value}", col);
                 }
-               
+
                 //Featch all remain rows
                 columnArray = columnHeader;
                 for (int row = 2; row <= rowCount.Value; row++)
@@ -81,13 +82,11 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                         Pincode = $"{worksheet.Cells[row, GetColumnIndex("Pincode")].Value}",
                         State = $"{worksheet.Cells[row, GetColumnIndex("State")].Value}",
                         Web = $"{worksheet.Cells[row, GetColumnIndex("Web")].Value}"
-
                     });
                 }
             }
             else
             {
-
             }
             return businessToBusinesModels.AsEnumerable<BusinessToBusinesModel>();
         }

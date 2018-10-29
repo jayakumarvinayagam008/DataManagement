@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Persistance;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Persistance;
 
 namespace Application.CustomerData.Queries
 {
@@ -15,6 +13,7 @@ namespace Application.CustomerData.Queries
         {
             _customerDataManagementContext = dbContext;
         }
+
         public IEnumerable<SelectListItem> Get()
         {
             var countries = _customerDataManagementContext.CustomerDataManagement

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Application.BusinessToCustomers.Queries;
 using System.Linq;
-using System.Text;
-using Application.BusinessToCustomers.Queries;
 
 namespace Application.BusinessToCustomers.Commands
 {

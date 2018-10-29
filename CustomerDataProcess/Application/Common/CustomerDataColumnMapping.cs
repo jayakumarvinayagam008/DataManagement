@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Application.Common
 {
     public class CustomerDataColumnMapping
     {
         private Dictionary<string, int> CustomerDataColumn { get; set; }
-      
+
         public CustomerDataColumnMapping()
         {
             CustomerDataColumn = new Dictionary<string, int>();

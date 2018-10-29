@@ -1,5 +1,4 @@
-﻿using System;
-namespace Application.BusinessToBusiness.Queries
+﻿namespace Application.BusinessToBusiness.Queries
 {
     public interface IGetBusinessToBusiness
     {

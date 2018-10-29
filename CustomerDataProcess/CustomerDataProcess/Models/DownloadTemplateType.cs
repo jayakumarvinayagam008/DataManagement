@@ -7,6 +7,7 @@
             "Business2Customer",
             "CustomerData"
         };
+
         public static string GetTemplateName(int index) => tempalteType[index];
     }
 }

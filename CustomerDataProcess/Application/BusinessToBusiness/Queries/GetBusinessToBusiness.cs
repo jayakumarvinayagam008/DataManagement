@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
-using Application.Common;
+﻿using Application.Common;
 using Newtonsoft.Json;
 using Persistance;
+using System.Linq;
 
 namespace Application.BusinessToBusiness.Queries
 {
-    public class GetBusinessToBusiness:IGetBusinessToBusiness
+    public class GetBusinessToBusiness : IGetBusinessToBusiness
     {
         private readonly CustomerDataManagementContext _customerDataManagementContext;
         private readonly IGetBusinessCities _getCity;
@@ -16,7 +15,7 @@ namespace Application.BusinessToBusiness.Queries
         private readonly IGetBusinessDestination _getDestination;
         private readonly IGetBusinessCategory _getBusinessCategory;
         private readonly IGetBusinessToBusinessTags _getBusinessToBusinessTags;
-        
+
         public GetBusinessToBusiness(CustomerDataManagementContext dbContext,
             IGetBusinessCities getCity, IGetBusinessCountry getCountry, IGetBusinessArea getArea,
             IGetBusinessStates getState, IGetBusinessDestination getDestination,
@@ -42,7 +41,7 @@ namespace Application.BusinessToBusiness.Queries
             var filterBusinesscategory = _getBusinessCategory.Get();
             var filterTags = _getBusinessToBusinessTags.Get();
 
-            var customer = _customerDataManagementContext.BusinessToBusiness.OrderByDescending(x=>x.CreatedDate ).Take(5000)
+            var customer = _customerDataManagementContext.BusinessToBusiness.OrderByDescending(x => x.CreatedDate).Take(5000)
                                                          .Select(cust =>
                                                                       new BusinessToBusinesModel
                                                                       {

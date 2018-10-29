@@ -10,6 +10,7 @@
             _getFileName = getFileName;
             _getFullFilePath = getFullFilePath;
         }
+
         public SampleTemplate Get(int typeId, string accessPath)
         {
             var fileName = _getFileName.Get(typeId);
@@ -37,7 +38,8 @@
                 }
             };
         }
-        public SampleTemplate Get(string fileName, string accessPath, string downloadName= "NumberLookup")
+
+        public SampleTemplate Get(string fileName, string accessPath, string downloadName = "NumberLookup")
         {
             var filePath = _getFullFilePath.Get(accessPath, fileName);
             if (!string.IsNullOrWhiteSpace(fileName))
@@ -47,7 +49,7 @@
                 {
                     content = fileBytes,
                     TemplateType = new UploadDataType
-                    {                        
+                    {
                         Name = downloadName
                     }
                 };

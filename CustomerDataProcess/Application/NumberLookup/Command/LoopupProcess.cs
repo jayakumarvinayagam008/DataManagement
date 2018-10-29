@@ -1,15 +1,13 @@
 ﻿using Application.NumberLookup.Query;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Application.NumberLookup.Command
 {
-    public class LoopupProcess: ILoopupProcess
+    public class LoopupProcess : ILoopupProcess
     {
         private readonly IReadNumberLookup _readNumberLookup = null;
         private readonly IGetNumberLoopUpData _getNumberLoopUpData = null;
         private readonly ISaveNumberLookUp _saveNumberLookUp = null;
+
         public LoopupProcess(IReadNumberLookup readNumberLookup,
             IGetNumberLoopUpData getNumberLoopUpData,
             ISaveNumberLookUp saveNumberLookUp)

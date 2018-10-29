@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using Application.Common;
 using System.Collections.Generic;
-using Application.Common;
 
 namespace Application.BusinessToBusiness.Queries
 {

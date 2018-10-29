@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Application.DataUpload.Commands.SaveDataUpload
 {
     public interface IFileToDataModel
     {
         (IEnumerable<CustomerDataModel>, int) ReadFileData(SaveDataModel saveDataModel);
-
     }
 }

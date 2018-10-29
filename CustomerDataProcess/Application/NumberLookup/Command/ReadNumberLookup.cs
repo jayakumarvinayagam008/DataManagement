@@ -1,8 +1,6 @@
 ﻿using OfficeOpenXml;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Application.NumberLookup.Command
 {
@@ -30,12 +28,12 @@ namespace Application.NumberLookup.Command
             // check the excel has header or not, if header exist it start reading from row 2, ot start 1
             var startRow = CheckTheHeaderHasColumnOrNot($"{worksheet.Cells[1, 1].Value}");
             IList<Numbers> numberLookups = new List<Numbers>();
-                for (int row = startRow; row <= rowCount.Value; row++)
-                {
-                    var cellValue = $"{worksheet.Cells[row, 1].Value}";
-                    if(CellIsValidCheck(cellValue))
-                        numberLookups.Add(new Numbers { PhoneNumber = cellValue, Series = cellValue.Substring(0, 4) });
-                }            
+            for (int row = startRow; row <= rowCount.Value; row++)
+            {
+                var cellValue = $"{worksheet.Cells[row, 1].Value}";
+                if (CellIsValidCheck(cellValue))
+                    numberLookups.Add(new Numbers { PhoneNumber = cellValue, Series = cellValue.Substring(0, 4) });
+            }
             return numberLookups;
         }
 
@@ -43,6 +41,7 @@ namespace Application.NumberLookup.Command
         {
             return !string.IsNullOrWhiteSpace(cellValue);
         }
+
         private int CheckTheHeaderHasColumnOrNot(string header)
         {
             if (!string.IsNullOrWhiteSpace(header) && long.TryParse(header, out long val))

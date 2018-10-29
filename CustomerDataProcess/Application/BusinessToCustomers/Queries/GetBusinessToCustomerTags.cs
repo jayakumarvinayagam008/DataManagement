@@ -22,8 +22,6 @@ namespace Application.BusinessToCustomers.Queries
               .Select(x => new Tag { Id = x.BusinessToCustomerTagId, Title = x.Tag })
               .OrderBy(x => x.Id).ToArray();
             return tags;
-
-           
         }
     }
 }

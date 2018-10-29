@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Application.CustomerData.Commands
+﻿namespace Application.CustomerData.Commands
 {
     public class CustomerDataDashBoard
     {

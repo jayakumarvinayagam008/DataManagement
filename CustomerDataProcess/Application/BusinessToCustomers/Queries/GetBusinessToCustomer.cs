@@ -1,7 +1,6 @@
 ﻿using Application.Common;
 using Newtonsoft.Json;
 using Persistance;
-using System.Linq;
 
 namespace Application.BusinessToCustomers.Queries
 {
@@ -18,8 +17,9 @@ namespace Application.BusinessToCustomers.Queries
         private readonly IGetBusinessToCustomerRoles _getRoles;
         private readonly IGetBusinessToCustomerExperience _getExperience;
         private readonly IGetBusinessToCustomerTags _getTags;
+
         public GetBusinessToCustomer(CustomerDataManagementContext dbContext, IGetBusinessToCustomerArea getArea,
-            IGetBusinessToCustomerCity getCity, IGetBusinessToCustomerCountry getCountry, 
+            IGetBusinessToCustomerCity getCity, IGetBusinessToCustomerCountry getCountry,
             IGetBusinessToCustomerState getState, IGetBusinessToCustomerDistinctName getDestination,
             IGetBusinessToCustomerSalary getSalary, IGetBusinessToCustomerAge getAge,
             IGetBusinessToCustomerRoles getRoles, IGetBusinessToCustomerExperience getExperience,

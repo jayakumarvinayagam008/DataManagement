@@ -1,5 +1,3 @@
-using System;
-
 namespace CustomerDataProcess.Models
 {
     public class ErrorViewModel

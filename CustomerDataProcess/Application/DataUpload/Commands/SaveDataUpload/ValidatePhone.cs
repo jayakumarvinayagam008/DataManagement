@@ -1,12 +1,10 @@
 ﻿using Persistance;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Application.DataUpload.Commands.SaveDataUpload
 {
-    public class ValidatePhone: IValidateEntiry
+    public class ValidatePhone : IValidateEntiry
     {
         private readonly CustomerDataManagementContext _customerDataManagementContext;
 

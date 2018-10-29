@@ -1,19 +1,19 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Persistance;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Persistance;
 
 namespace Application.BusinessToBusiness.Queries
 {
     public class GetBusinessCategory : IGetBusinessCategory
     {
         private readonly CustomerDataManagementContext _customerDataManagementContext;
+
         public GetBusinessCategory(CustomerDataManagementContext customerDataManagementContext)
         {
             _customerDataManagementContext = customerDataManagementContext;
         }
+
         public IEnumerable<SelectListItem> Get()
         {
             var categoryId = _customerDataManagementContext.BusinessToBusiness

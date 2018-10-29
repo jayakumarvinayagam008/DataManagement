@@ -1,8 +1,5 @@
-﻿using Application.CustomerData.Queries;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Application.Common
 {
