@@ -14,7 +14,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             customerDataManagementContext = dbContext;
         }
 
-        public bool Save(IEnumerable<CustomerDataModel> customerDataModels)
+        public bool Save(IEnumerable<CustomerDataModel> customerDataModels, int requestId)
         {
             bool saveStatus = false;
             try
@@ -33,7 +33,8 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                         CreatedBy = x.UpdatedBy,
                         CreatedDate = x.UpdatedOn,
                         ModifiedBy = x.UpdatedBy,
-                        ModifiedDate = x.UpdatedOn
+                        ModifiedDate = x.UpdatedOn,
+                        RequestId = requestId
                     }));
                 saveStatus = customerDataManagementContext.SaveChanges() > 0;
             }

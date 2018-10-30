@@ -14,7 +14,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             _customerDataManagementContext = customerDataManagementContext;
         }
 
-        public bool Save(IEnumerable<BusinessToBusinesModel> customerToBusiness)
+        public bool Save(IEnumerable<BusinessToBusinesModel> customerToBusiness, int requestId)
         {
             bool status = false;
             _customerDataManagementContext.BusinessToBusiness.AddRange(
@@ -45,7 +45,8 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                     PhoneNew = x.PhoneNew,
                     Pincode = x.Pincode,
                     State = x.State,
-                    Web = x.Web
+                    Web = x.Web,
+                    RequestId = requestId
                 }));
             status = _customerDataManagementContext.SaveChanges() > 0;
             return status;

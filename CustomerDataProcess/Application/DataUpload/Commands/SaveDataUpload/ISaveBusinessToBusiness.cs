@@ -5,6 +5,6 @@ namespace Application.DataUpload.Commands.SaveDataUpload
 {
     public interface ISaveBusinessToBusiness
     {
-        bool Save(IEnumerable<BusinessToBusinesModel> customerToBusiness);
+        bool Save(IEnumerable<BusinessToBusinesModel> customerToBusiness, int requestId);
     }
 }

@@ -199,7 +199,8 @@ namespace CustomerDataProcess.Controllers
             uploadDataModel.UploadTypeId = uploadDataModel.UploadTypeId;
             var saveUploadModel = new SaveDataModel()
             {
-                UploadTypeId = uploadDataModel.UploadTypeId
+                UploadTypeId = uploadDataModel.UploadTypeId,
+                Tags = uploadDataModel.Tags
             };
             foreach (var file in files)
             {
@@ -224,6 +225,7 @@ namespace CustomerDataProcess.Controllers
                 saveUploadModel.FilePath = filePath;
             }
             var saveStatus = _saveUploadDataCommand.Upload(saveUploadModel);
+            //update tags
             uploadDataModel.StatusCode = (saveStatus.IsUploaded) ? 1 : 2;
             uploadDataModel.StatusMessage = saveStatus.StatusMessage;
             uploadDataModel.Summary = $"{saveStatus.UploadedRows} rows uploaded out of {saveStatus.TotalRows}";

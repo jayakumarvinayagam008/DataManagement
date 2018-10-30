@@ -2,6 +2,7 @@
 using Application.BusinessToCustomers.Queries;
 using Application.Common;
 using Application.CustomerData.Queries;
+using Application.DataUpload.Queries.GetUpLoadDataType;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,10 @@ namespace Application.DataUpload.Commands.SaveDataUpload
         //    new BusinessToCustomerUploadProcess(new BusinessToCustomerFileToDataModel(),        //new SaveCustomerData()),
 
         //};
+        private readonly IGetNewRequestId _getNewRequestId;
+        private readonly ISaveBusinessToBusinessTags _saveBusinessToBusinessTags;
+        private readonly ISaveBusinessToCustomerTags _saveBusinessToCustomerTags;
+        private readonly ISaveCustomerDataTags _saveCustomerDataTags;
         public SaveUploadDataCommand(IFileToDataModel fileToDataModel,
             ISaveCustomerData saveCustomerData,
             IBusinessToBusinessFileToDataModel businessToBusinessFileToDataModel,
@@ -35,7 +40,11 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             ISaveBusinessToCustomer saveBusinessToCustomer,
             IGetCustomerPhone getCustomerPhone,
             IGetBusinessToCustomerPhone getBusinessToCustomerPhone,
-            IGetBusinesstoBusinessPhone getBusinesstoBusinessPhone)
+            IGetBusinesstoBusinessPhone getBusinesstoBusinessPhone,
+            IGetNewRequestId getNewRequestId,
+            ISaveBusinessToBusinessTags saveBusinessToBusinessTags,
+            ISaveBusinessToCustomerTags saveBusinessToCustomerTags,
+            ISaveCustomerDataTags saveCustomerDataTags)
         {
             _CustomerDataFileToDataModel = fileToDataModel;
             _saveCustomerData = saveCustomerData;
@@ -48,10 +57,17 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             _getCustomerPhone = getCustomerPhone;
             _getBusinessToCustomerPhone = getBusinessToCustomerPhone;
             _getBusinesstoBusinessPhone = getBusinesstoBusinessPhone;
+            _getNewRequestId = getNewRequestId;
+            _saveBusinessToBusinessTags = saveBusinessToBusinessTags;
+            _saveBusinessToCustomerTags = saveBusinessToCustomerTags;
+            _saveCustomerDataTags = saveCustomerDataTags;
         }
 
         public UploadSaveStatus Upload(SaveDataModel saveDataModel)
         {
+            var requestId = _getNewRequestId.Get(saveDataModel.UploadTypeId);
+            var tags = SplitSting.Split(saveDataModel.Tags, ',');
+
             var uploadStatus = new UploadSaveStatus();
             if (saveDataModel.UploadTypeId == (int)UploadType.BusinessToBusiness)
             {
@@ -76,7 +92,10 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                         (x, y) => x).AsEnumerable<BusinessToBusinesModel>();
                     uploadStatus.UploadedRows = validBusinessToBusiness.Count(); // number of rows going to update
                     if (validBusinessToBusiness.Count() > 0)
-                        uploadStatus.IsUploaded = _saveBusinessToBusiness.Save(validBusinessToBusiness);
+                    {
+                        uploadStatus.IsUploaded = _saveBusinessToBusiness.Save(validBusinessToBusiness, requestId);
+                        _saveBusinessToBusinessTags.Save(requestId, tags);
+                    }
                 }
                 // status message update
                 if (uploadStatus.TotalRows > uploadStatus.UploadedRows)
@@ -92,8 +111,10 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 var filteredData = businessToCustomer.Item1.Except(dbNumbers, x => x.MobileNew, y => y).ToList();
                 dbNumbers = null;
                 uploadStatus.UploadedRows = filteredData.Count(); // number of rows going to update
-                if (uploadStatus.UploadedRows > 0)
-                    uploadStatus.IsUploaded = _saveBusinessToCustomer.Save(filteredData);
+                if (uploadStatus.UploadedRows > 0) { 
+                    uploadStatus.IsUploaded = _saveBusinessToCustomer.Save(filteredData, requestId);
+                _saveBusinessToCustomerTags.Save(requestId, tags);
+            }
                 // status message update
                 if (uploadStatus.TotalRows > uploadStatus.UploadedRows)
                 {
@@ -111,7 +132,10 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 dbNumbers = null; // Make it as empty
                 uploadStatus.UploadedRows = filteredData.Count(); // number of rows going to update
                 if (uploadStatus.UploadedRows > 0)
-                    uploadStatus.IsUploaded = _saveCustomerData.Save(filteredData);
+                {
+                    uploadStatus.IsUploaded = _saveCustomerData.Save(filteredData, requestId);
+                    _saveCustomerDataTags.Save(requestId, tags);
+                }                   
                 // status message update
                 if (uploadStatus.TotalRows > uploadStatus.UploadedRows)
                 {

@@ -101,8 +101,15 @@ namespace CustomerDataProcess
             services.AddScoped<IGetBusinessToBusinessTags, GetBusinessToBusinessTags>();
             services.AddScoped<IFilterBusinessToBusinessTags, FilterBusinessToBusinessTags>();
             services.AddScoped<IFilterBusinessToBusiness, FilterBusinessToBusiness>();
-            services.AddScoped<IPrepareB2BDashBoard, PrepareB2BDashBoard>(); 
-            services.AddScoped<IBusinessToBusinessExport, BusinessToBusinessExport>(); 
+            services.AddScoped<IPrepareB2BDashBoard, PrepareB2BDashBoard>();
+            services.AddScoped<IBusinessToBusinessExport, BusinessToBusinessExport>();
+            services.AddScoped<IGetNewRequestId, GetNewRequestId>();
+            services.AddScoped<ISaveBusinessToBusinessTags, SaveBusinessToBusinessTags>();
+            services.AddScoped<ISaveBusinessToCustomerTags, SaveBusinessToCustomerTags>();
+            services.AddScoped<ISaveCustomerDataTags, SaveCustomerDataTags>();
+            services.AddScoped<IGetLastCustomerDataRequestId, GetCustomerDataRequestId>();
+            services.AddScoped<IGetLastCustomerRequestId, GetCustomerRequestId>();
+            services.AddScoped<IGetLastBusinessRequestId, GetBusinessRequestId>();
             services.AddMvc();
         }
 

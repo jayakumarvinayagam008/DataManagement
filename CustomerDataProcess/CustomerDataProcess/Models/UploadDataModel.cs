@@ -11,5 +11,6 @@ namespace CustomerDataProcess.Models
         public string StatusMessage { get; set; }
         public string Summary { get; set; }
         public string ValidationMessage { get; set; }
+        public string Tags { get; set; }
     }
 }

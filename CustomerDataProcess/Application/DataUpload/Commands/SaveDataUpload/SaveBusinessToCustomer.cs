@@ -15,7 +15,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             _customerDataManagementContext = customerDataManagementContext;
         }
 
-        public bool Save(IEnumerable<BusinessToCustomerModel> businessToCustomer)
+        public bool Save(IEnumerable<BusinessToCustomerModel> businessToCustomer, int requestId)
         {
             try
             {
@@ -47,7 +47,8 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                             Pincode = x.Pincode,
                             Qualification = x.Qualification,
                             Roles = x.Roles,
-                            State = x.State
+                            State = x.State,
+                            RequestId = requestId
                         }));
 
                 status = _customerDataManagementContext.SaveChanges() > 0;
