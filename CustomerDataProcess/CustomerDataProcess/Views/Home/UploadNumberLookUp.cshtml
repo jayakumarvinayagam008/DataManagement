@@ -25,7 +25,7 @@
 </style>
 
 <div class="centerDiv">
-    <form asp-action="UploadNumberLookUp" method="post" enctype="multipart/form-data">
+    <form asp-action="UploadNumberLookUp" id="frmNumberLookUp" method="post" enctype="multipart/form-data">
         <div class="row">
 
         </div>
@@ -42,8 +42,8 @@
         </div>
 
         <div style="text-align:center">
-            <button type="submit" class="btn">Cancel</button>
-            <button type="submit" class="btn btn-primary">Upload</button>
+            <button type="button" class="btn">Cancel</button>
+            <button type="button" id="btnNumberLookup" class="btn btn-primary">Upload</button>
         </div>
     </form>
 </div>

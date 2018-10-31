@@ -11,7 +11,7 @@
         var country = { 'id': value.Id, 'title': value.Title };
         tagsContainer.push(country);
     });
-    console.log(tagsContainer);
+
     $('#b2ctags').selectize({
         maxItems: null,
         valueField: 'id',
@@ -53,15 +53,20 @@
                 'Experience': expercince,
                 'Salaries': salaries
             };
-            console.log(JSON.stringify(b2CSearch));
 
             $.ajax({
                 url: '/Home/BusinessToCustomerSearch/',
                 type: 'post',
                 dataType: 'json',
                 data: { customerDataSearch: b2CSearch },
+                beforeSend: function (eve) {
+                    $("#divLoading").show();
+                },
                 success: function (data) {
                     UpdateB2CDashBoard(data);
+                },
+                complete: function () {
+                    $("#divLoading").hide();
                 }
             });
         } else {
@@ -81,7 +86,6 @@
     });
 });
 function UpdateB2CDashBoard(customerData) {
-    console.log(JSON.stringify(customerData));
     $('#dashBoardb2cItem').empty();
     $('#spnb2cTotal').text(customerData.total);
     $('#spnb2cSearchTotal').text(customerData.searchCount);

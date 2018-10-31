@@ -1,5 +1,7 @@
 ﻿// Write your JavaScript code.
 $(document).ready(function (eve) {
+   
+    $("#divLoading").show();
     var tagsContainer = [];
     var tags = [];
     if ($('#hdnTags').val() !== undefined) {
@@ -11,7 +13,7 @@ $(document).ready(function (eve) {
         var country = { 'id': value.Id, 'title': value.Title };
         tagsContainer.push(country);
     });
-    console.log(tagsContainer);
+
     $('#tags').selectize({
         maxItems: null,
         valueField: 'id',
@@ -73,8 +75,14 @@ $(document).ready(function (eve) {
                 type: 'post',
                 dataType: 'json',
                 data: { customerDataSearch: customerDataSearch },
+                beforeSend: function (eve) {
+                    $("#divLoading").show();  
+                },
                 success: function (data) {
                     UpdateDashBoard(data);
+                },
+                complete: function () {
+                    $("#divLoading").hide();  
                 }
             });
         } else {
@@ -92,14 +100,29 @@ $(document).ready(function (eve) {
         
     });
 
+    $("#btnUserDataUpload").on('click', function (eve) {
+        $("#divLoading").show();
+        $('#frmUserDataForm').submit();
+    });
+
+    $("#btnNumberLookup").on('click', function (eve) {
+        $("#divLoading").show();
+        $('#frmNumberLookUp').submit();
+    });
+
+    
 });
+
+$(window).on('load', function () {
+    $("#divLoading").hide();
+});
+
 //{"Cities":["Bangalore"],"DataQuantities":null,"Tags":"","Network":null,"BusinessVertical":null}
 function UpdateDashBoard(customerData) {
     $('#dashBoardItem').empty();
     $('#spnTotal').text(customerData.total);
     $('#spnSearchTotal').text(customerData.searchCount);
     $('#downloadLink').val(customerData.downloadLink);
-    console.log(JSON.stringify(customerData));
 
     var listItems = '';
     for (var key in customerData) {
@@ -129,23 +152,3 @@ var dashBoardItem = {
 function ConstructDashboardItem(name, value) {
     return '<li  class="list-group-item d-flex justify-content-between align-items-center"><span class="caption">' + name + '</span><span class="badge badge-primary badge-pill">' + value.toFixed(2) + '%</span></li >';
 }
-/*
- * city
-operator
-clientBusinessVertical
-dbquality
-clientName
-dateOfUse
-numbers
-
- {
-   "total":517,
-   "city":74.08123791102514,
-   "operator":74.08123791102514,
-   "clientBusinessVertical":74.08123791102514,
-   "dbquality":74.08123791102514,
-   "clientName":74.08123791102514,
-   "dateOfUse":74.08123791102514,
-   "numbers":74.08123791102514
-}
- */

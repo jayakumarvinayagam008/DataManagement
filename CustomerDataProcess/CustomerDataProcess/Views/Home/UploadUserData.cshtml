@@ -25,7 +25,7 @@
 </style>
 
 <div class="centerDiv">
-    <form asp-action="UploadUserData" method="post" enctype="multipart/form-data">
+    <form asp-action="UploadUserData" id="frmUserDataForm" method="post" enctype="multipart/form-data">
         <div class="row">
             <div class="col-sm-7">
                 <div class="form-group">
@@ -64,8 +64,8 @@
         </div>
 
         <div style="text-align:center">
-            <button type="submit" class="btn">Cancel</button>
-            <button type="submit" class="btn btn-primary">Upload</button>
+            <button type="button" class="btn">Cancel</button>
+            <button type="button" id="btnUserDataUpload" class="btn btn-primary">Upload</button>
         </div>
     </form>
 </div>
@@ -128,12 +128,6 @@
             </div>
         }
     }
-
-
-
-
-
-
 </div>
 
 

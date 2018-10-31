@@ -41,13 +41,13 @@ namespace Application.BusinessToBusiness.Queries
             }
 
             //5.Business Category
-            if (businessToBusinessFilter.Areas.Any())
+            if (businessToBusinessFilter.BusinessCategoryId.Any())
             {
                 b2bFilter = b2bFilter.Where(x => businessToBusinessFilter.BusinessCategoryId.Any(y => y == x.CategoryId)).AsQueryable();
             }
 
             //6.Designation
-            if (businessToBusinessFilter.Areas.Any())
+            if (businessToBusinessFilter.Designation.Any())
             {
                 b2bFilter = b2bFilter.Where(x => businessToBusinessFilter.Designation.Any(y => y == x.Designation)).AsQueryable();
             }

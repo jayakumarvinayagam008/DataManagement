@@ -1,5 +1,6 @@
 ﻿using Application.Common;
 using Persistance;
+using System;
 using System.Linq;
 
 namespace Application.BusinessToCustomers.Queries
@@ -18,6 +19,7 @@ namespace Application.BusinessToCustomers.Queries
 
         public BusinessToCustomerListModel Search(BusinessToCustomerFilter businessToCustomerFilter)
         {
+            var today = DateTime.Now;
             var b2cFilter = _customerDataManagementContext.BusinessToCustomer.AsQueryable();
             // 1.Country
             if (businessToCustomerFilter.Countries.Any())
@@ -52,7 +54,7 @@ namespace Application.BusinessToCustomers.Queries
             //7.Age
             if (businessToCustomerFilter.Age.Any())
             {
-                //b2cFilter = b2cFilter.Where(x => businessToCustomerFilter.Age.Any(y => y == x.AnnualSalary)).AsQueryable();
+                b2cFilter = b2cFilter.Where(x => businessToCustomerFilter.Age.Any(y => y == x.Dob.Value.Age(today))).AsQueryable();
             }
             //8.Experience
             if (businessToCustomerFilter.Experience.Any())

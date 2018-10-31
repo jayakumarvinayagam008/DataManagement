@@ -48,15 +48,20 @@ $(document).ready(function (eve) {
                 'Designation': destinations,
                 'BusinessCategoryId': businessCategory
             };
-            console.log(JSON.stringify(b2bSearch));
 
             $.ajax({
                 url: '/Home/BusinessToBusinessSearch/',
                 type: 'post',
                 dataType: 'json',
                 data: { business2Business: b2bSearch },
+                beforeSend: function (eve) {
+                    $("#divLoading").show();
+                },
                 success: function (data) {
                     UpdateB2BDashBoard(data);
+                },
+                complete: function () {
+                    $("#divLoading").hide();
                 }
             });
         } else {
@@ -67,7 +72,6 @@ $(document).ready(function (eve) {
 });
 
 function UpdateB2BDashBoard(customerData) {
-    console.log(JSON.stringify(customerData));
     $('#dashBoardb2bItem').empty();
     $('#spnb2bTotal').text(customerData.total);
     $('#spnb2bSearchTotal').text(customerData.searchCount);
