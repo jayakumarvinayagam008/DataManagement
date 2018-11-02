@@ -23,15 +23,15 @@ namespace Application.DataUpload.Queries.GetUpLoadDataType
         public int Get(int templateTypeId)
         {
             int requestId = 1;
-            if((int)UploadType.BusinessToBusiness == templateTypeId)
+            if((int)CustomerDataUploadType.BusinessToBusiness == templateTypeId)
             {
                 requestId = _getLastBusinessRequestId.LastRequestId();
             }
-            else if((int)UploadType.BusinessToCustomer == templateTypeId)
+            else if((int)CustomerDataUploadType.BusinessToCustomer == templateTypeId)
             {
                 requestId = _getLastCustomerRequestId.LastRequestId();
             }
-            else if((int)UploadType.CustomerData == templateTypeId)
+            else if((int)CustomerDataUploadType.CustomerData == templateTypeId)
             {
                 requestId = _getLastCustomerDataRequestId.LastRequestId();
             }

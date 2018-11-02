@@ -1,12 +1,121 @@
 ﻿@{
+    @model IEnumerable<CustomerDataProcess.Models.UploadSummary>
     ViewData["Title"] = "UploadSummary";
 }
 
+<style>
+    .mainTableBlock {
+        min-height: 100px;
+        max-height: 500px;
+        width: 100%;
+    }
+
+    .gridBlock {
+        min-height: 100px;
+        max-height: 600px;
+        overflow-y: auto;
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    .table-fixed tbody {
+        height: 200px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    .table-fixed thead,
+    .table-fixed tbody,
+    .table-fixed tr,
+    .table-fixed td,
+    .table-fixed th {
+        display: flex;
+    }
+
+        .table-fixed tr:after {
+            content: "";
+            display: block;
+            visibility: hidden;
+            clear: both;
+        }
+
+        .table-fixed tbody td,
+        .table-fixed thead > tr > th {
+            float: left;
+        }
+
+    .table > thead > tr > th,
+    .table > thead > tr > td {
+        font-size: .9em;
+        font-weight: 400;
+        border-bottom: 0;
+        letter-spacing: 1px;
+        vertical-align: top;
+        padding: 8px;
+        background: #51596a;
+        text-transform: uppercase;
+        color: #ffffff;
+    }
+
+    .card-header {
+        background-color: #119292;
+        cursor: pointer;
+    }
+
+    .filterText {
+        color: whitesmoke;
+        background-color: #119292;
+    }
+
+    #accordionExample {
+        background-color: #a2a2a2;
+    }
+
+    #middle {
+        height: 30px;
+        width: 100%;
+    }
+</style>
+
 <h2>Upload Summary</h2>
-
-
-
-
-
-
-
+<div class="gridBlock">
+    <table id="tblSummary">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>RequestId</th>
+                <th>Upload Type</th>
+                <th>Status</th>
+                <th>Requested Rows</th>
+                <th>Uploaded Rows</th>
+                <th>Client Name</th>
+                <th>Server Name</th>
+                <th>Path</th>
+                <th>Uploaded By</th>
+                <th>Uploaded On</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 0;
+                foreach (var item in Model)
+                {
+                    i = i + 1;
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.RequestId</td>
+                        <td>@item.UploadType</td>
+                        <td>@item.Status</td>
+                        <td>@item.RequestedRows</td>
+                        <td>@item.UplaodedRows</td>
+                        <td>@item.ClientFileName</td>
+                        <td>@item.ServerName</td>
+                        <td>@item.FilePath</td>
+                        <td>@item.UploadedBy</td>
+                        <td>@item.UploadedOn</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

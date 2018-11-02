@@ -15,7 +15,12 @@ namespace Persistance
         public string CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
+        public int? UploadTypeId { get; set; }
+        public int? RequestId { get; set; }
+        public int? TotalRows { get; set; }
+        public int? UpLoadedRows { get; set; }
 
         public UploadStatus Status { get; set; }
+        public UploadType UploadType { get; set; }
     }
 }

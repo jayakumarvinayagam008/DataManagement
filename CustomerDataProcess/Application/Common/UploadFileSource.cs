@@ -10,9 +10,9 @@ namespace Application.Common
         static UploadFileSource()
         {
             filePath = new Dictionary<int, string>();
-            filePath.Add((int)UploadType.BusinessToBusiness, "BusinessToBusiness");
-            filePath.Add((int)UploadType.BusinessToCustomer, "BusinessToCustomer");
-            filePath.Add((int)UploadType.CustomerData, "CustomerData");
+            filePath.Add((int)CustomerDataUploadType.BusinessToBusiness, "BusinessToBusiness");
+            filePath.Add((int)CustomerDataUploadType.BusinessToCustomer, "BusinessToCustomer");
+            filePath.Add((int)CustomerDataUploadType.CustomerData, "CustomerData");
         }
 
         public static string GetFileName(int typeId)

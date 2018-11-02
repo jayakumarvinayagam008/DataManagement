@@ -18,22 +18,23 @@ namespace Persistance
         public virtual DbSet<NumberLookup> NumberLookup { get; set; }
         public virtual DbSet<UploadHistoryDetail> UploadHistoryDetail { get; set; }
         public virtual DbSet<UploadStatus> UploadStatus { get; set; }
-
-        //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //        {
-        //            if (!optionsBuilder.IsConfigured)
-        //            {
-        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-        //                optionsBuilder.UseSqlServer(@"Server=DESKTOP-OS2RV1K;Database=CustomerDataManagement;Trusted_Connection=True;");
-        //            }
-        //        }
-
+        public virtual DbSet<UploadType> UploadType { get; set; }
 
         public CustomerDataManagementContext(DbContextOptions<CustomerDataManagementContext> options)
-            : base(options)
+          : base(options)
         {
 
         }
+
+//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//        {
+//            if (!optionsBuilder.IsConfigured)
+//            {
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//                optionsBuilder.UseSqlServer(@"Server=DESKTOP-OS2RV1K;Database=CustomerDataManagement;Trusted_Connection=True;");
+//            }
+//        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<B2bcategory>(entity =>
@@ -617,6 +618,12 @@ namespace Persistance
                     .WithMany(p => p.UploadHistoryDetail)
                     .HasForeignKey(d => d.StatusId)
                     .HasConstraintName("FK__UploadHis__Statu__6EF57B66");
+
+                entity.HasOne(d => d.UploadType)
+                    .WithMany(p => p.UploadHistoryDetail)
+                    .HasForeignKey(d => d.UploadTypeId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK__UploadHis__Uploa__5224328E");
             });
 
             modelBuilder.Entity<UploadStatus>(entity =>
@@ -646,6 +653,34 @@ namespace Persistance
 
                 entity.Property(e => e.Status)
                     .HasMaxLength(10)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<UploadType>(entity =>
+            {
+                entity.ToTable("UploadType", "dm");
+
+                entity.Property(e => e.UploadTypeId).ValueGeneratedNever();
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('ADMIN')");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('ADMIN')");
+
+                entity.Property(e => e.ModifiedDate).HasColumnType("date");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50)
                     .IsUnicode(false);
             });
         }

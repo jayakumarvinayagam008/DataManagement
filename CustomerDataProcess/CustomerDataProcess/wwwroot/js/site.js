@@ -110,7 +110,8 @@ $(document).ready(function (eve) {
         $('#frmNumberLookUp').submit();
     });
 
-    
+    var uplaodSummary = $('#tblSummary').DataTable().columns.adjust();
+   
 });
 
 $(window).on('load', function () {

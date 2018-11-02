@@ -3,8 +3,10 @@ using Application.BusinessToCustomers.Queries;
 using Application.Common;
 using Application.CustomerData.Queries;
 using Application.DataUpload.Queries.GetUpLoadDataType;
+using Application.UploadSummary.Command;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Application.DataUpload.Commands.SaveDataUpload
@@ -30,6 +32,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
         private readonly ISaveBusinessToBusinessTags _saveBusinessToBusinessTags;
         private readonly ISaveBusinessToCustomerTags _saveBusinessToCustomerTags;
         private readonly ISaveCustomerDataTags _saveCustomerDataTags;
+        private readonly ISaveUploadSummary _saveUploadSummary;
         public SaveUploadDataCommand(IFileToDataModel fileToDataModel,
             ISaveCustomerData saveCustomerData,
             IBusinessToBusinessFileToDataModel businessToBusinessFileToDataModel,
@@ -44,7 +47,8 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             IGetNewRequestId getNewRequestId,
             ISaveBusinessToBusinessTags saveBusinessToBusinessTags,
             ISaveBusinessToCustomerTags saveBusinessToCustomerTags,
-            ISaveCustomerDataTags saveCustomerDataTags)
+            ISaveCustomerDataTags saveCustomerDataTags,
+            ISaveUploadSummary saveUploadSummary)
         {
             _CustomerDataFileToDataModel = fileToDataModel;
             _saveCustomerData = saveCustomerData;
@@ -61,15 +65,17 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             _saveBusinessToBusinessTags = saveBusinessToBusinessTags;
             _saveBusinessToCustomerTags = saveBusinessToCustomerTags;
             _saveCustomerDataTags = saveCustomerDataTags;
+            _saveUploadSummary = saveUploadSummary;
         }
 
         public UploadSaveStatus Upload(SaveDataModel saveDataModel)
         {
             var requestId = _getNewRequestId.Get(saveDataModel.UploadTypeId);
-            var tags = SplitSting.Split(saveDataModel.Tags, ',');
+            var tags = !string.IsNullOrWhiteSpace(saveDataModel.Tags) ?
+                SplitSting.Split(saveDataModel.Tags, ',') : new string[] { };
 
             var uploadStatus = new UploadSaveStatus();
-            if (saveDataModel.UploadTypeId == (int)UploadType.BusinessToBusiness)
+            if (saveDataModel.UploadTypeId == (int)CustomerDataUploadType.BusinessToBusiness)
             {
                 var businessToBusinessData = _businessToBusinessFileToDataModel.ReadFileData(saveDataModel);
                 var businessToBusiness = businessToBusinessData.Item1;
@@ -103,7 +109,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                     uploadStatus.StatusMessage = "Some business category doesn't mapped or duplicate phone numers exist";
                 }
             }
-            else if (saveDataModel.UploadTypeId == (int)UploadType.BusinessToCustomer)
+            else if (saveDataModel.UploadTypeId == (int)CustomerDataUploadType.BusinessToCustomer)
             {
                 var businessToCustomer = _businessToCustomerFileToDataModel.ReadFileData(saveDataModel);
                 uploadStatus.TotalRows = businessToCustomer.Item2;
@@ -113,7 +119,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 uploadStatus.UploadedRows = filteredData.Count(); // number of rows going to update
                 if (uploadStatus.UploadedRows > 0) { 
                     uploadStatus.IsUploaded = _saveBusinessToCustomer.Save(filteredData, requestId);
-                _saveBusinessToCustomerTags.Save(requestId, tags);
+                     _saveBusinessToCustomerTags.Save(requestId, tags);
             }
                 // status message update
                 if (uploadStatus.TotalRows > uploadStatus.UploadedRows)
@@ -121,7 +127,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                     uploadStatus.StatusMessage = "Duplicate phone numers exist";
                 }
             }
-            else if (saveDataModel.UploadTypeId == (int)UploadType.CustomerData)
+            else if (saveDataModel.UploadTypeId == (int)CustomerDataUploadType.CustomerData)
             {
                 var customerData = _CustomerDataFileToDataModel.ReadFileData(saveDataModel);
                 uploadStatus.TotalRows = customerData.Item2;
@@ -147,8 +153,31 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 uploadStatus.IsUploaded = false;
                 uploadStatus.StatusMessage = "Please upload valid file";
             }
+
+            if(uploadStatus.IsUploaded)
+            {
+                var uploadSummary = new SaveSummaryModel
+                {
+                    ClientFileName = saveDataModel.ClientFileName,
+                    UploadTypeId = saveDataModel.UploadTypeId,
+                    TotalRows = uploadStatus.TotalRows,
+                    UploadedRows = uploadStatus.UploadedRows,
+                    Path = saveDataModel.FilePath,
+                    ServerFileName = ServerFileName(saveDataModel.FilePath),
+                    RequestId = requestId,
+                    SaveStatus = uploadStatus.IsUploaded
+                };
+                _saveUploadSummary.Save(uploadSummary);
+            }
+            
+
             return uploadStatus;
         }
+        private string ServerFileName(string path)
+        {
+            return Path.GetFileName(path);
+        }
+         
     }
 
     public static class LinqExtensions
@@ -212,5 +241,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 }
             }
         }
+
+        
     }
 }

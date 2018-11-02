@@ -12,11 +12,11 @@ namespace Application.Common
             CustomerDataColumn.Add("Numbers", 1);
             CustomerDataColumn.Add("Operator", 2);
             CustomerDataColumn.Add("Circle", 3);
-            CustomerDataColumn.Add("ClientName", 4);
-            CustomerDataColumn.Add("ClientBusinessVertical", 5);
-            CustomerDataColumn.Add("DBQuality", 6);
-            CustomerDataColumn.Add("DateOfUse", 7);
-            CustomerDataColumn.Add("ClientCity", 8);
+            CustomerDataColumn.Add("Client Name", 4);
+            CustomerDataColumn.Add("Client Business Vertical", 5);
+            CustomerDataColumn.Add("DB Quality", 6);
+            CustomerDataColumn.Add("Date of Use", 7);
+            CustomerDataColumn.Add("Client City", 8);
         }
 
         public Dictionary<string, int> GetCustomerColumnMapping()

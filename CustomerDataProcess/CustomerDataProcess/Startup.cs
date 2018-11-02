@@ -8,6 +8,8 @@ using Application.DataUpload.Commands.SaveDataUpload;
 using Application.DataUpload.Queries.GetUpLoadDataType;
 using Application.NumberLookup.Command;
 using Application.NumberLookup.Query;
+using Application.UploadSummary.Command;
+using Application.UploadSummary.Quires;
 using Application.UserAccount.Queries;
 using CustomerDataProcess.Models;
 using Microsoft.AspNetCore.Builder;
@@ -110,6 +112,8 @@ namespace CustomerDataProcess
             services.AddScoped<IGetLastCustomerDataRequestId, GetCustomerDataRequestId>();
             services.AddScoped<IGetLastCustomerRequestId, GetCustomerRequestId>();
             services.AddScoped<IGetLastBusinessRequestId, GetBusinessRequestId>();
+            services.AddScoped<IGetLatestUploadSummary, GetLatestUploadSummary>();
+            services.AddScoped<ISaveUploadSummary, SaveUploadSummary>();            
             services.AddMvc();
         }
 

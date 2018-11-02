@@ -44,8 +44,12 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             columnIndex = new CustomerDataColumnMapping().GetCustomerColumnMapping();
             IDictionary<string, int> columnHeader = new Dictionary<string, int>();
             IList<CustomerDataModel> customerDataModel = new List<CustomerDataModel>();
+
+            var requiredColumns = columnIndex.Select(x => x.Key.Trim()).ToArray();
+            var uploadedColumns = worksheet.GetHeaderColumns();
+            var allColumnExist = requiredColumns.Except(uploadedColumns).Count() == 0;
             // check column count
-            if (colCount.HasValue && columnIndex.Count == colCount)
+            if (colCount.HasValue && allColumnExist)
             {
                 // fetch first row for column header
                 int firstRow = 1;

@@ -37,8 +37,13 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             columnIndex = new BusinessToBusinessColumnMapping().GetCustomerColumnMapping();
             IDictionary<string, int> columnHeader = new Dictionary<string, int>();
             IList<BusinessToBusinesModel> businessToBusinesModels = new List<BusinessToBusinesModel>();
+
+            var requiredColumns = columnIndex.Select(x => x.Key.Trim()).ToArray();
+
+            var uploadedColumns = worksheet.GetHeaderColumns();
+            var allColumnExist = requiredColumns.Except(uploadedColumns).Count() == 0;
             // check column count
-            if (colCount.HasValue && columnIndex.Count == colCount)
+            if (colCount.HasValue && allColumnExist)
             {
                 // fetch first row for column header
                 int firstRow = 1;
@@ -100,4 +105,5 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             return 0;
         }
     }
+    
 }

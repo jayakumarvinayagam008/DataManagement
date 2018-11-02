@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace CustomerDataProcess.Models
+namespace Application.UploadSummary.Quires
 {
     public class UploadSummary
     {
@@ -13,6 +15,6 @@ namespace CustomerDataProcess.Models
         public string UploadedBy { get; set; }
         public DateTime UploadedOn { get; set; }
         public int RequestedRows { get; set; }
-        public int UplaodedRows { get; set; }
+        public int UploadedRows { get; set; }
     }
 }

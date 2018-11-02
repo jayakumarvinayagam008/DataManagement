@@ -8,6 +8,7 @@ using Application.CustomerData.Queries;
 using Application.DataUpload.Commands.SaveDataUpload;
 using Application.DataUpload.Queries.GetUpLoadDataType;
 using Application.NumberLookup.Command;
+using Application.UploadSummary.Quires;
 using CustomerDataProcess.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +44,8 @@ namespace CustomerDataProcess.Controllers
         private readonly IFilterBusinessToBusiness _filterBusinessToBusiness;
         private readonly IPrepareB2BDashBoard _prepareB2BDashBoard;
         private readonly IBusinessToBusinessExport _businessToBusinessExport;
+        private readonly IGetLatestUploadSummary _getLatestUploadSummary;
+        
 
         public HomeController(IGetUpLoadDataTypeList getUpLoadDataTypeList, ISaveUploadDataCommand saveUploadDataCommand,
                               IGetCustomerData getCustomerData, IGetBusinessToBusiness getBusinessToBusiness,
@@ -58,7 +61,8 @@ namespace CustomerDataProcess.Controllers
                               IExportBusinessToCustomerFilter exportBusinessToCustomerFilter,
                               IFilterBusinessToBusiness filterBusinessToBusiness,
                               IPrepareB2BDashBoard prepareB2BDashBoard,
-                              IBusinessToBusinessExport businessToBusinessExport)
+                              IBusinessToBusinessExport businessToBusinessExport,
+                              IGetLatestUploadSummary getLatestUploadSummary)
         {
             _getUpLoadDataTypeList = getUpLoadDataTypeList;
             _saveUploadDataCommand = saveUploadDataCommand;
@@ -76,6 +80,7 @@ namespace CustomerDataProcess.Controllers
             _filterBusinessToBusiness = filterBusinessToBusiness;
             _prepareB2BDashBoard = prepareB2BDashBoard;
             _businessToBusinessExport = businessToBusinessExport;
+            _getLatestUploadSummary = getLatestUploadSummary;
         }
 
         public IActionResult Index()
@@ -223,6 +228,7 @@ namespace CustomerDataProcess.Controllers
                     }
                 }
                 saveUploadModel.FilePath = filePath;
+                saveUploadModel.ClientFileName = fileName;
             }
             var saveStatus = _saveUploadDataCommand.Upload(saveUploadModel);
             //update tags
@@ -256,7 +262,22 @@ namespace CustomerDataProcess.Controllers
 
         public ActionResult UploadSummary()
         {
-            return View();
+            var uploadSummary = _getLatestUploadSummary.Get(60);
+            var uploadSummaryModel = uploadSummary.Select(x => new CustomerDataProcess.Models.UploadSummary
+            {
+                ClientFileName = x.ClientFileName,
+                FilePath = x.FilePath,
+                RequestId = x.RequestId,
+                ServerName = x.ServerName,
+                Status = x.Status,
+                UploadedBy = x.UploadedBy,
+                UploadedOn = x.UploadedOn,
+                UploadType = x.UploadType,
+                RequestedRows = x.RequestedRows,
+                UplaodedRows = x.UploadedRows
+            });
+
+            return View(uploadSummaryModel);
         }
 
         public ActionResult UploadNumberLookUp()
