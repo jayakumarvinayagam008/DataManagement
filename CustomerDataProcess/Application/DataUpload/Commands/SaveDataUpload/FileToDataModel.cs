@@ -55,7 +55,8 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 int firstRow = 1;
                 for (int col = 1; col <= colCount.Value; col++)
                 {
-                    columnHeader.Add($"{worksheet.Cells[firstRow, col].Value}".Trim(), col);
+                    if (!string.IsNullOrWhiteSpace($"{worksheet.Cells[firstRow, col].Value}"))
+                        columnHeader.Add($"{worksheet.Cells[firstRow, col].Value}".Trim(), col);
                 }
                 // Check tempalate columns exist in requested customer data input
                 {
@@ -76,7 +77,9 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                         DateOfUse = dateOfUse,
                         DBQuality = $"{worksheet.Cells[row, GetColumnIndex("DB Quality")].Value}",
                         Numbers = $"{worksheet.Cells[row, GetColumnIndex("Numbers")].Value}",
-                        Operator = $"{worksheet.Cells[row, GetColumnIndex("Operator")].Value}"
+                        Operator = $"{worksheet.Cells[row, GetColumnIndex("Operator")].Value}",
+                        State = $"{worksheet.Cells[row, GetColumnIndex("State")].Value}",
+                        Country = $"{worksheet.Cells[row, GetColumnIndex("Country")].Value}"
                     });
                 }
             }

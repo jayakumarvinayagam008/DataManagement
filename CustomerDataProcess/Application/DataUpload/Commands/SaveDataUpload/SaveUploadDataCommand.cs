@@ -4,11 +4,12 @@ using Application.Common;
 using Application.CustomerData.Queries;
 using Application.DataUpload.Queries.GetUpLoadDataType;
 using Application.UploadSummary.Command;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using MoreLinq;
 namespace Application.DataUpload.Commands.SaveDataUpload
 {
     public class SaveUploadDataCommand : ISaveUploadDataCommand
@@ -78,24 +79,29 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             if (saveDataModel.UploadTypeId == (int)CustomerDataUploadType.BusinessToBusiness)
             {
                 var businessToBusinessData = _businessToBusinessFileToDataModel.ReadFileData(saveDataModel);
-                var businessToBusiness = businessToBusinessData.Item1;
+
+                //var emptyPhone =businessToBusinessData.Item1.Where(x => !string.IsNullOrWhiteSpace(x.MobileNew));
+
+                var businessToBusiness = businessToBusinessData.Item1.DistinctBy(x => x.PhoneNew);
+                //var tt = businessToBusiness.Concat(emptyPhone);
                 uploadStatus.TotalRows = businessToBusinessData.Item2;
 
                 // Check business category validation
                 // Ceck phone number validation
                 //var phone = businessToBusiness.Select(x => x.Phone1).Where(x => !string.IsNullOrWhiteSpace(x)).AsEnumerable<string>();
                 var numbers = _getBusinesstoBusinessPhone.Get();
-                businessToBusiness = businessToBusiness.Except(numbers, x => x.MobileNew, y => y).ToList();
+                businessToBusiness = businessToBusiness.Except(numbers, x => x.PhoneNew, y => y).ToList();
                 numbers = null;
                 if (businessToBusiness.Count() > 0)
                 {
                     // validate Business category
-                    var categoryName = businessToBusiness.Select(x => x.CategoryId.Value).AsEnumerable<int>();
-                    var unmappedCategory = _validateBusinessCategoruEntiry.Validate(categoryName).ToList<int>();
-                    var validBusinessToBusiness = businessToBusiness.Join(unmappedCategory,
-                        x => x.CategoryId,
-                        y => y,
-                        (x, y) => x).AsEnumerable<BusinessToBusinesModel>();
+                    //var categoryName = businessToBusiness.Select(x => x.CategoryId.Value).AsEnumerable<int>();
+                    //var unmappedCategory = _validateBusinessCategoruEntiry.Validate(categoryName).ToList<int>();
+                    var validBusinessToBusiness = businessToBusiness;
+                        //businessToBusiness.Join(unmappedCategory,
+                        //x => x.CategoryId,
+                        //y => y,
+                        //(x, y) => x).AsEnumerable<BusinessToBusinesModel>();
                     uploadStatus.UploadedRows = validBusinessToBusiness.Count(); // number of rows going to update
                     if (validBusinessToBusiness.Count() > 0)
                     {
@@ -112,9 +118,11 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             else if (saveDataModel.UploadTypeId == (int)CustomerDataUploadType.BusinessToCustomer)
             {
                 var businessToCustomer = _businessToCustomerFileToDataModel.ReadFileData(saveDataModel);
+                var businessToCustomerData = businessToCustomer.Item1.DistinctBy(x => x.MobileNew);
                 uploadStatus.TotalRows = businessToCustomer.Item2;
+
                 var dbNumbers = _getBusinessToCustomerPhone.Get();
-                var filteredData = businessToCustomer.Item1.Except(dbNumbers, x => x.MobileNew, y => y).ToList();
+                var filteredData = businessToCustomerData.Except(dbNumbers, x => x.MobileNew, y => y).ToList();
                 dbNumbers = null;
                 uploadStatus.UploadedRows = filteredData.Count(); // number of rows going to update
                 if (uploadStatus.UploadedRows > 0) { 
@@ -130,11 +138,12 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             else if (saveDataModel.UploadTypeId == (int)CustomerDataUploadType.CustomerData)
             {
                 var customerData = _CustomerDataFileToDataModel.ReadFileData(saveDataModel);
+                var customerUploadedData = customerData.Item1.DistinctBy(x => x.Numbers);
                 uploadStatus.TotalRows = customerData.Item2;
 
                 // Mobile number filter
                 var dbNumbers = _getCustomerPhone.Get();
-                var filteredData = customerData.Item1.Except(dbNumbers, x => x.Numbers, y => y).ToList();
+                var filteredData = customerUploadedData.Except(dbNumbers, x => x.Numbers, y => y).ToList();
                 dbNumbers = null; // Make it as empty
                 uploadStatus.UploadedRows = filteredData.Count(); // number of rows going to update
                 if (uploadStatus.UploadedRows > 0)

@@ -17,6 +17,8 @@ namespace Application.Common
             CustomerDataColumn.Add("DB Quality", 6);
             CustomerDataColumn.Add("Date of Use", 7);
             CustomerDataColumn.Add("Client City", 8);
+            CustomerDataColumn.Add("State", 9);
+            CustomerDataColumn.Add("Country", 10);
         }
 
         public Dictionary<string, int> GetCustomerColumnMapping()

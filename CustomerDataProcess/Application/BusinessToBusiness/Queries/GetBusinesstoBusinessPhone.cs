@@ -15,7 +15,7 @@ namespace Application.BusinessToBusiness.Queries
 
         public List<string> Get()
         {
-            var numbers = _customerDataManagementContext.BusinessToBusiness.Select(x => x.MobileNew).ToList();
+            var numbers = _customerDataManagementContext.BusinessToBusiness.Select(x => x.PhoneNew.Trim()).ToList();
             return numbers;
         }
     }

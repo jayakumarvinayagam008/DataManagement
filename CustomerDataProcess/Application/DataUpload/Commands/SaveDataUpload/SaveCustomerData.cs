@@ -22,19 +22,21 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 customerDataManagementContext.CustomerDataManagement.AddRange(
                     customerDataModels.Select(x => new CustomerDataManagement
                     {
-                        Circle = x.Circle,
-                        ClientBusinessVertical = x.ClientBusinessVertical,
-                        ClientCity = x.ClientCity,
-                        ClientName = x.ClientName,
+                        Circle = x.Circle?.Trim(),
+                        ClientBusinessVertical = x.ClientBusinessVertical?.Trim(),
+                        ClientCity = x.ClientCity?.Trim(),
+                        ClientName = x.ClientName?.Trim(),
                         DateOfUse = x.DateOfUse,
-                        Numbers = x.Numbers,
-                        Operator = x.Operator,
-                        Dbquality = x.DBQuality,
-                        CreatedBy = x.UpdatedBy,
+                        Numbers = x.Numbers?.Trim(),
+                        Operator = x.Operator?.Trim(),
+                        Dbquality = x.DBQuality?.Trim(),
+                        CreatedBy = x.UpdatedBy?.Trim(),
                         CreatedDate = x.UpdatedOn,
-                        ModifiedBy = x.UpdatedBy,
+                        ModifiedBy = x.UpdatedBy?.Trim(),
                         ModifiedDate = x.UpdatedOn,
-                        RequestId = requestId
+                        RequestId = requestId,
+                        Country = x.Country,
+                        State = x.State
                     }));
                 saveStatus = customerDataManagementContext.SaveChanges() > 0;
             }
