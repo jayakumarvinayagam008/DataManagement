@@ -16,8 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EFCore.BulkExtensions" Version="2.2.3" />
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
-    <PackageReference Include="MoreLinq.Portable" Version="1.4.0" />
+    <PackageReference Include="morelinq" Version="3.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="System.Linq" Version="4.3.0" />
   </ItemGroup>

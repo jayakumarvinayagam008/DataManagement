@@ -1,4 +1,5 @@
 ﻿using Application.DataUpload.Commands.SaveDataUpload;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Persistance;
 using System.Linq;
@@ -89,6 +90,34 @@ namespace Application.CustomerData.Queries
 
         public CustomerListDataModel Get(CustomerDataFilter customerDataFilter)
         {
+            //context.Database.ExecuteSqlCommand("CreateStudents @p0, @p1", parameters: new[] { "Bill", "Gates" });
+            var countries = string.Join(",", customerDataFilter.Countries);
+            var state = string.Join(",", customerDataFilter.States);
+            var city = string.Join(",", customerDataFilter.Cities);
+            var network = string.Join(",", customerDataFilter.Network);
+            var businessVertical = string.Join(",", customerDataFilter.BusinessVertical);
+            var dataQuality = string.Join(",", customerDataFilter.DataQuantities);
+            var customerName = string.Join(",", customerDataFilter.CustomerNames);
+            var tag = string.Join(",", customerDataFilter.Tags);
+
+            var customerData = _customerDataManagementContext.CustomerDataManagement
+                .FromSql("EXECUTE dm.usp_SearchCustomerDataManagement @p0, @p1,@p2, @p3,@p4, @p5,@p6, @p7", parameters: new[] { countries, state, city, network, businessVertical, dataQuality, customerName, tag }).ToList();
+
+            var filteredData = customerData.Select(x => new CustomerDataModel
+            {
+                Circle = x.Circle,
+                ClientBusinessVertical = x.ClientBusinessVertical,
+                ClientCity = x.ClientCity,
+                ClientName = x.ClientName,
+                DateOfUse = x.DateOfUse.Value,
+                DBQuality = x.Dbquality,
+                Numbers = x.Numbers,
+                Operator = x.Operator,
+                CustomerDataManagementId = x.Cdmid,
+                Country = x.Country,
+                State = x.State
+            }).ToList();
+            /*
             var customerData = _customerDataManagementContext.CustomerDataManagement.AsQueryable();
             if (customerDataFilter.Countries.Any())
             {
@@ -158,7 +187,7 @@ namespace Application.CustomerData.Queries
                 Country = x.Country,
                 State = x.State
             }).ToList();
-
+            */
             return new CustomerListDataModel
             {
                 CustomerDataModels = filteredData,

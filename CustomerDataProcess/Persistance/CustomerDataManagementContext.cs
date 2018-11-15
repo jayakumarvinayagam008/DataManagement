@@ -19,6 +19,11 @@ namespace Persistance
         public virtual DbSet<UploadHistoryDetail> UploadHistoryDetail { get; set; }
         public virtual DbSet<UploadStatus> UploadStatus { get; set; }
         public virtual DbSet<UploadType> UploadType { get; set; }
+        public virtual DbSet<VB2BDestination> DestiantionViews { get; set; }
+        public virtual DbSet<VB2BArea> Area { get; set; }
+        public virtual DbSet<VB2BCity> Citys { get; set; }
+        public virtual DbSet<VB2BState> States { get; set; }
+        public virtual DbSet<VB2BCountry> Countries { get; set; }
 
         public CustomerDataManagementContext(DbContextOptions<CustomerDataManagementContext> options)
           : base(options)
@@ -682,6 +687,27 @@ namespace Persistance
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<VB2BDestination>(entity => {
+                entity.ToTable("vw_B2BDesigination", "dm");
+                entity.HasKey(e => e.Designation);
+            });
+            modelBuilder.Entity<VB2BArea>(entity => {
+                entity.ToTable("vw_B2BArea", "dm");
+                entity.HasKey(e => e.Area);
+            });
+            modelBuilder.Entity<VB2BCity>(entity => {
+                entity.ToTable("vw_B2BCity", "dm");
+                entity.HasKey(e => e.City);
+            });
+            modelBuilder.Entity<VB2BCountry>(entity => {
+                entity.ToTable("vw_B2BCountry", "dm");
+                entity.HasKey(e => e.Country);
+            });
+            modelBuilder.Entity<VB2BState>(entity => {
+                entity.ToTable("vw_B2BState", "dm");
+                entity.HasKey(e => e.State);
             });
         }
     }

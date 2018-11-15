@@ -20,6 +20,7 @@ namespace Application.BusinessToCustomers.Queries
             var today = DateTime.Now;
 
             var dob = _customerDataManagementContext.BusinessToCustomer
+                .Where(x=>x.Dob >DateTime.MinValue)
                 .Select(x => x.Dob)
                 .Distinct()
                 .OrderBy(x => x).ToArray();

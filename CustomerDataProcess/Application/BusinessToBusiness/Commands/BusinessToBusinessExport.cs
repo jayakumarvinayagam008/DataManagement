@@ -35,7 +35,8 @@ namespace Application.BusinessToBusiness.Commands
                                         "LandMark",
                                         "NoOfEmp",
                                         "Country",
-                                        "CompanyName"};
+                                        "CompanyName",
+                                        "CategoryName"};
 
         public string ExportExcel(IEnumerable<BusinessToBusinesModel> businessToBusinesModels, string fileRootPath, int rowRange)
         {
@@ -106,6 +107,7 @@ namespace Application.BusinessToBusiness.Commands
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.NoOfEmp; //NoOfEmp
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.Country; //Country
                 excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.CompanyName;   //CompanyName
+                excelWorksheet.Cells[rowIndex, columnIndex++].Value = x.CategoryName;   //CompanyName
                 rowIndex++;
             });
             return excelWorksheet;

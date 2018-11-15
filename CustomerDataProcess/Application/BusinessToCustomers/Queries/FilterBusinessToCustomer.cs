@@ -2,6 +2,7 @@
 using Persistance;
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.BusinessToCustomers.Queries
 {
@@ -20,54 +21,24 @@ namespace Application.BusinessToCustomers.Queries
         public BusinessToCustomerListModel Search(BusinessToCustomerFilter businessToCustomerFilter)
         {
             var today = DateTime.Now;
-            var b2cFilter = _customerDataManagementContext.BusinessToCustomer.AsQueryable();
-            // 1.Country
-            if (businessToCustomerFilter.Countries.Any())
-            {
-                b2cFilter = b2cFilter.Where(x => businessToCustomerFilter.Countries.Any(y => y == x.Country)).AsQueryable();
-            }
-            //2./State
-            if (businessToCustomerFilter.States.Any())
-            {
-                b2cFilter = b2cFilter.Where(x => businessToCustomerFilter.States.Any(y => y == x.State)).AsQueryable();
-            }
-            //3.city
-            if (businessToCustomerFilter.Cities.Any())
-            {
-                b2cFilter = b2cFilter.Where(x => businessToCustomerFilter.Cities.Any(y => y == x.City)).AsQueryable();
-            }
-            //4.Area
-            if (businessToCustomerFilter.Areas.Any())
-            {
-                b2cFilter = b2cFilter.Where(x => businessToCustomerFilter.Areas.Any(y => y == x.Area)).AsQueryable();
-            }
-            //5.Role
-            if (businessToCustomerFilter.Roles.Any())
-            {
-                b2cFilter = b2cFilter.Where(x => businessToCustomerFilter.Roles.Any(y => y == x.Roles)).AsQueryable();
-            }
-            //6.Salary
-            if (businessToCustomerFilter.Salaries.Any())
-            {
-                b2cFilter = b2cFilter.Where(x => businessToCustomerFilter.Salaries.Any(y => y == x.AnnualSalary)).AsQueryable();
-            }
-            //7.Age
+            
+            var country = string.Join(",", businessToCustomerFilter.Countries);
+            var state = string.Join(",", businessToCustomerFilter.States);
+            var city = string.Join(",", businessToCustomerFilter.Cities);
+            var area = string.Join(",", businessToCustomerFilter.Areas);
+            var role = string.Join(",", businessToCustomerFilter.Roles);
+            var salary = string.Join(",", businessToCustomerFilter.Salaries);
+            var age = string.Empty;
+            var experience = string.Join(",", businessToCustomerFilter.Experience);
+            var tags = string.Join(",", businessToCustomerFilter.Tags);
+            var b2cFilter = _customerDataManagementContext.BusinessToCustomer
+                .FromSql("EXECUTE dm.usp_SearchBusinessToCustomer @p0, @p1,@p2, @p3,@p4, @p5,@p6, @p7, @p8"
+                , parameters: new[] { country, state, city, area, role, salary, area, experience, tags }).ToList();
             if (businessToCustomerFilter.Age.Any())
             {
-                b2cFilter = b2cFilter.Where(x => businessToCustomerFilter.Age.Any(y => y == x.Dob.Value.Age(today))).AsQueryable();
+                b2cFilter = b2cFilter.Where(x => businessToCustomerFilter.Age.Any(y => y == x.Dob.Value.Age(today))).ToList();
             }
-            //8.Experience
-            if (businessToCustomerFilter.Experience.Any())
-            {
-                b2cFilter = b2cFilter.Where(x => businessToCustomerFilter.Experience.Any(y => y == x.Experience)).AsQueryable();
-            }
-            //9.Tag
-            var tags = _getBusinessToCustomerTags.Filter(businessToCustomerFilter.Tags).ToList();
-            if (tags.Any())
-            {
-                b2cFilter = b2cFilter.Where(x => tags.Any(y => y == x.RequestId)).AsQueryable();
-            }
-
+           
             var b2cSearchResult = b2cFilter.Select(x => new BusinessToCustomerModel
             {
                 Address = x.Address,
@@ -77,7 +48,7 @@ namespace Application.BusinessToCustomers.Queries
                 Caste = x.Caste,
                 City = x.City,
                 Country = x.Country,
-                Dob = x.Dob,
+                Dob = x.Dob.Value,
                 Email = x.Email,
                 Employer = x.Employer,
                 Experience = x.Experience,

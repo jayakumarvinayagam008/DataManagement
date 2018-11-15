@@ -16,17 +16,14 @@ namespace Application.BusinessToBusiness.Queries
 
         public IEnumerable<SelectListItem> Get()
         {
-            var area = _customerDataManagementContext.BusinessToBusiness
-                .Select(x => x.Area.Trim())
-                .Distinct<string>()
-                .OrderBy(x => x).ToArray();
-
-            return area.Where(x => !string.IsNullOrWhiteSpace(x))
+            var area = _customerDataManagementContext.Area.OrderBy(x => x.Area).ToList();
+         
+            return area.Where(x => !string.IsNullOrWhiteSpace(x.Area))
                 .Select(x =>
             new SelectListItem()
             {
-                Value = x,
-                Text = x
+                Value = x.Area,
+                Text = x.Area
             }).AsEnumerable<SelectListItem>();
         }
     }

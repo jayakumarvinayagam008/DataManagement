@@ -81,7 +81,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                 var businessToBusinessData = _businessToBusinessFileToDataModel.ReadFileData(saveDataModel);
 
                 //var emptyPhone =businessToBusinessData.Item1.Where(x => !string.IsNullOrWhiteSpace(x.MobileNew));
-
+                // remove dublicate
                 var businessToBusiness = businessToBusinessData.Item1.DistinctBy(x => x.PhoneNew);
                 //var tt = businessToBusiness.Concat(emptyPhone);
                 uploadStatus.TotalRows = businessToBusinessData.Item2;

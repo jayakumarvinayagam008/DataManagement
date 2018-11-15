@@ -1,4 +1,5 @@
-﻿using Persistance;
+﻿using Microsoft.EntityFrameworkCore;
+using Persistance;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,8 +16,12 @@ namespace Application.BusinessToBusiness.Queries
 
         public List<string> Get()
         {
-            var numbers = _customerDataManagementContext.BusinessToBusiness.Select(x => x.PhoneNew.Trim()).ToList();
+              var numbers = _customerDataManagementContext.BusinessToBusiness.Select(x => x.PhoneNew.Trim()).Distinct().ToList();
             return numbers;
         }
+    }
+    public class Phone
+    {
+        public string PhoneNew { get; set; }
     }
 }
