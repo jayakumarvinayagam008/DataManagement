@@ -28,7 +28,6 @@ namespace Application.BusinessToCustomers.Queries
             var area = string.Join(",", businessToCustomerFilter.Areas);
             var role = string.Join(",", businessToCustomerFilter.Roles);
             var salary = string.Join(",", businessToCustomerFilter.Salaries);
-            var age = string.Empty;
             var experience = string.Join(",", businessToCustomerFilter.Experience);
             var tags = string.Join(",", businessToCustomerFilter.Tags);
             var b2cFilter = _customerDataManagementContext.BusinessToCustomer

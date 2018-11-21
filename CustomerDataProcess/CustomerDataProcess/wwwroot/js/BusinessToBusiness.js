@@ -68,7 +68,6 @@ $(document).ready(function (eve) {
             alert('selectedCities');
         }
     });
-    
 });
 
 function UpdateB2BDashBoard(customerData) {
@@ -76,7 +75,11 @@ function UpdateB2BDashBoard(customerData) {
     $('#spnb2bTotal').text(customerData.total);
     $('#spnb2bSearchTotal').text(customerData.searchCount);
     $('#downloadb2bLink').val(customerData.downloadLink);
-
+    if (customerData.searchCount < 1) {
+        $('#btnb2bDownloadExcel, #btnb2bDownloadCSV').attr('disabled', 'disabled');
+    } else {
+        $('#btnb2bDownloadExcel, #btnb2bDownloadCSV').removeAttr('disabled');
+    }
     var listItems = '';
     for (var key in customerData) {
         if (customerData.hasOwnProperty(key)) {
@@ -131,4 +134,9 @@ $("#btnb2bDownloadExcel").on('click', function (eve) {
         alert('file does not exist');
     }
 
+});
+
+$(window).on('load', function () {
+    // code here            
+    //$("#divLoading").hide();
 });

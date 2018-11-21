@@ -22,7 +22,6 @@
     });
 
     $('#btnBusinessToCustomerSearch').on('click', function (eve) {
-
         var cities = $('#b2cCityId').val();
         var states = $('#b2cStateId').val();
         var countries = $('#b2cCuntryId').val();
@@ -90,7 +89,11 @@ function UpdateB2CDashBoard(customerData) {
     $('#spnb2cTotal').text(customerData.total);
     $('#spnb2cSearchTotal').text(customerData.searchCount);
     $('#downloadb2cLink').val(customerData.downloadLink);
-    
+    if (customerData.searchCount < 1) {
+        $('#btnb2cDownloadExport, #btnb2cCSVDownloadExport').attr('disabled', 'disabled');
+    } else {
+        $('#btnb2cDownloadExport, #btnb2cCSVDownloadExport').removeAttr('disabled');
+    }
     var listItems = '';
     for (var key in customerData) {
         if (customerData.hasOwnProperty(key)) {

@@ -19,12 +19,6 @@ namespace Persistance
         public virtual DbSet<UploadHistoryDetail> UploadHistoryDetail { get; set; }
         public virtual DbSet<UploadStatus> UploadStatus { get; set; }
         public virtual DbSet<UploadType> UploadType { get; set; }
-        public virtual DbSet<VB2BDestination> DestiantionViews { get; set; }
-        public virtual DbSet<VB2BArea> Area { get; set; }
-        public virtual DbSet<VB2BCity> Citys { get; set; }
-        public virtual DbSet<VB2BState> States { get; set; }
-        public virtual DbSet<VB2BCountry> Countries { get; set; }
-
         public CustomerDataManagementContext(DbContextOptions<CustomerDataManagementContext> options)
           : base(options)
         {
@@ -75,35 +69,35 @@ namespace Persistance
                 entity.ToTable("BusinessToBusiness", "dm");
 
                 entity.Property(e => e.Add1)
-                    .HasMaxLength(500)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Add2)
-                    .HasMaxLength(500)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Area)
-                    .HasMaxLength(500)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.City)
-                    .HasMaxLength(500)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.CompanyName)
-                    .HasMaxLength(500)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ContactPerson)
-                    .HasMaxLength(500)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Contactperson1)
-                    .HasMaxLength(500)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Country)
-                    .HasMaxLength(500)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.CreatedBy)
@@ -116,42 +110,42 @@ namespace Persistance
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Designation)
-                    .HasMaxLength(500)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Designation1)
-                    .HasMaxLength(500)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Email)
-                    .HasMaxLength(100)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Email1)
-                    .HasMaxLength(100)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.EstYear).HasColumnName("Est_year");
 
                 entity.Property(e => e.Fax)
-                    .HasMaxLength(100)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.LandMark)
-                    .HasMaxLength(500)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Mobile1)
-                    .HasMaxLength(20)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Mobile2)
-                    .HasMaxLength(20)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.MobileNew)
                     .HasColumnName("Mobile_New")
-                    .HasMaxLength(20)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ModifiedBy)
@@ -163,28 +157,28 @@ namespace Persistance
                 entity.Property(e => e.NoOfEmp).HasColumnName("No_of_Emp");
 
                 entity.Property(e => e.Phone1)
-                    .HasMaxLength(20)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Phone2)
-                    .HasMaxLength(20)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.PhoneNew)
                     .HasColumnName("Phone_New")
-                    .HasMaxLength(20)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Pincode)
-                    .HasMaxLength(10)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.State)
-                    .HasMaxLength(100)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Web)
-                    .HasMaxLength(500)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Category)
@@ -687,28 +681,8 @@ namespace Persistance
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<VB2BDestination>(entity => {
-                entity.ToTable("vw_B2BDesigination", "dm");
-                entity.HasKey(e => e.Designation);
-            });
-            modelBuilder.Entity<VB2BArea>(entity => {
-                entity.ToTable("vw_B2BArea", "dm");
-                entity.HasKey(e => e.Area);
-            });
-            modelBuilder.Entity<VB2BCity>(entity => {
-                entity.ToTable("vw_B2BCity", "dm");
-                entity.HasKey(e => e.City);
-            });
-            modelBuilder.Entity<VB2BCountry>(entity => {
-                entity.ToTable("vw_B2BCountry", "dm");
-                entity.HasKey(e => e.Country);
-            });
-            modelBuilder.Entity<VB2BState>(entity => {
-                entity.ToTable("vw_B2BState", "dm");
-                entity.HasKey(e => e.State);
-            });
+            });          
+           
         }
     }
 }

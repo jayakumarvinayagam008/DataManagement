@@ -2,6 +2,8 @@
 using Persistance;
 using System.Collections.Generic;
 using System.Linq;
+using Snickler.EFCore;
+using Application.Common;
 
 namespace Application.BusinessToCustomers.Queries
 {
@@ -16,12 +18,44 @@ namespace Application.BusinessToCustomers.Queries
 
         public IEnumerable<SelectListItem> Get()
         {
-            var area = _customerDataManagementContext.BusinessToCustomer
+            IList<Role> roles;
+            IList<TotalExperience> experence;
+            IList<SearchCountry> country;
+            IList<SearchState> state;
+            IList<SearchCity> city;
+            IList<SearchArea> area;
+            IList<SearchSalary> salary;
+            IList<SearchAge> age;
+            IList<BToCTags> tags;
+            
+            _customerDataManagementContext.LoadStoredProc("dm.usp_B2CSearchBlock")               
+               .ExecuteStoredProc((handler) =>
+               {
+                   roles = handler.ReadToList<Role>();
+                   handler.NextResult();
+                   experence = handler.ReadToList<TotalExperience>();
+                   handler.NextResult();
+                   country = handler.ReadToList<SearchCountry>();
+                   handler.NextResult();
+                   state = handler.ReadToList<SearchState>();
+                   handler.NextResult();
+                   city = handler.ReadToList<SearchCity>();
+                   handler.NextResult();
+                   area = handler.ReadToList<SearchArea>();
+                   handler.NextResult();
+                   age = handler.ReadToList<SearchAge>();
+                   handler.NextResult();
+                   salary = handler.ReadToList<SearchSalary>();
+                   handler.NextResult();
+                   tags = handler.ReadToList<BToCTags>();
+               });
+
+            var area1 = _customerDataManagementContext.BusinessToCustomer
                 .Select(x => x.City.Trim())
                 .Distinct<string>()
                 .OrderBy(x => x).ToArray();
 
-            return area.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x =>
+            return area1.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x =>
              new SelectListItem()
              {
                  Value = x,
@@ -29,4 +63,10 @@ namespace Application.BusinessToCustomers.Queries
              }).AsEnumerable<SelectListItem>();
         }
     }
+    
 }
+/*
+	CREATE TABLE #tempArea(Area VARCHAR(500));
+	CREATE TABLE #tempSalary(Salary VARCHAR(500));
+	CREATE TABLE #tempAge(Age int);
+     */

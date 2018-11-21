@@ -1,0 +1,67 @@
+View implementation
+-------------------------
+
+public virtual DbSet<VB2BDestination> DestiantionViews { get; set; }
+        public virtual DbSet<VB2BArea> Area { get; set; }
+        public virtual DbSet<VB2BCity> Citys { get; set; }
+        public virtual DbSet<VB2BState> States { get; set; }
+        public virtual DbSet<VB2BCountry> Countries { get; set; }
+
+modelBuilder.Entity<VB2BDestination>(entity => {
+                entity.ToTable("vw_B2BDesigination", "dm");
+                entity.HasKey(e => e.Designation);
+            });
+            modelBuilder.Entity<VB2BArea>(entity => {
+                entity.ToTable("vw_B2BArea", "dm");
+                entity.HasKey(e => e.Area);
+            });
+            modelBuilder.Entity<VB2BCity>(entity => {
+                entity.ToTable("vw_B2BCity", "dm");
+                entity.HasKey(e => e.City);
+            });
+            modelBuilder.Entity<VB2BCountry>(entity => {
+                entity.ToTable("vw_B2BCountry", "dm");
+                entity.HasKey(e => e.Country);
+            });
+            modelBuilder.Entity<VB2BState>(entity => {
+                entity.ToTable("vw_B2BState", "dm");
+                entity.HasKey(e => e.State);
+            });
+
+
+ //_customerDataManagementContext.BusinessToBusiness.AddRange(
+            //    customerToBusiness.Select(x => new Persistance.BusinessToBusiness()
+            //    {
+            //        Add1 = x.Add1?.Trim(),
+            //        Add2 = x.Add2?.Trim(),
+            //        Area = x.Area?.Trim(),
+            //        CategoryId = x.CategoryId,
+            //        City = x.City?.Trim(),
+            //        CompanyName = x.CompanyName?.Trim(),
+            //        ContactPerson = x.ContactPerson?.Trim(),
+            //        Contactperson1 = x.Contactperson1?.Trim(),
+            //        Country = x.Country?.Trim(),
+            //        Designation = x.Designation?.Trim(),
+            //        Designation1 = x.Designation1?.Trim(),
+            //        Email = x.Email?.Trim(),
+            //        Email1 = x.Email1?.Trim(),
+            //        EstYear = x.EstYear,
+            //        Fax = x.Fax?.Trim(),
+            //        LandMark = x.LandMark?.Trim(),
+            //        Mobile1 = x.Mobile1?.Trim(),
+            //        Mobile2 = x.Mobile2?.Trim(),
+            //        MobileNew = x.MobileNew?.Trim(),
+            //        NoOfEmp = x.NoOfEmp,
+            //        Phone1 = x.Phone1?.Trim(),
+            //        Phone2 = x.Phone2?.Trim(),
+            //        PhoneNew = x.PhoneNew?.Trim(),
+            //        Pincode = x.Pincode?.Trim(),
+            //        State = x.State?.Trim(),
+            //        Web = x.Web?.Trim(),
+            //        RequestId = requestId
+            //    }));
+            //status = _customerDataManagementContext.SaveChanges() > 0;
+
+
+
+			https://www.jqueryscript.net/blog/Best-Multiple-Select-jQuery-Plugins.html

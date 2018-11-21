@@ -63,12 +63,6 @@ namespace CustomerDataProcess
             services.AddScoped<IGetBusinessToCustomerCity, GetBusinessToCustomerCity>();
             services.AddScoped<IGetBusinessToCustomerCountry, GetBusinessToCustomerCountry>();
             services.AddScoped<IGetBusinessToCustomerDistinctName, GetBusinessToCustomerDestination>();
-
-            services.AddScoped<IGetBusinessCities, GetBusinessCities>();
-            services.AddScoped<IGetBusinessCountry, GetBusinessCountry>();
-            services.AddScoped<IGetBusinessArea, GetBusinessArea>();
-            services.AddScoped<IGetBusinessStates, GetBusinessStates>();
-            services.AddScoped<IGetBusinessDestination, GetBusinessDestination>();
             services.AddScoped<IGetCustomerCities, GetCustomerCities>();
             services.AddScoped<IGetFullFilePath, GetFullFilePath>();
             services.AddScoped<IGetFileName, GetFileName>();
@@ -113,7 +107,11 @@ namespace CustomerDataProcess
             services.AddScoped<IGetLastCustomerRequestId, GetCustomerRequestId>();
             services.AddScoped<IGetLastBusinessRequestId, GetBusinessRequestId>();
             services.AddScoped<IGetLatestUploadSummary, GetLatestUploadSummary>();
-            services.AddScoped<ISaveUploadSummary, SaveUploadSummary>();            
+            services.AddScoped<ISaveUploadSummary, SaveUploadSummary>();
+            services.AddScoped<IB2CSearchBlockBind, B2CSearchBlockBind>();
+            services.AddScoped<ICustomerDataSearchBlockBind, CustomerDataSearchBlockBind>();
+            services.AddScoped<IB2BSearchBlockBind, B2BSearchBlockBind>();
+            
             services.AddMvc();
         }
 

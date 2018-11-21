@@ -1,6 +1,9 @@
 ﻿using Application.Common;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Persistance;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Application.BusinessToCustomers.Queries
 {
@@ -17,13 +20,14 @@ namespace Application.BusinessToCustomers.Queries
         private readonly IGetBusinessToCustomerRoles _getRoles;
         private readonly IGetBusinessToCustomerExperience _getExperience;
         private readonly IGetBusinessToCustomerTags _getTags;
-
+        private readonly IB2CSearchBlockBind _b2CSearchBlockBind;
+        
         public GetBusinessToCustomer(CustomerDataManagementContext dbContext, IGetBusinessToCustomerArea getArea,
             IGetBusinessToCustomerCity getCity, IGetBusinessToCustomerCountry getCountry,
             IGetBusinessToCustomerState getState, IGetBusinessToCustomerDistinctName getDestination,
             IGetBusinessToCustomerSalary getSalary, IGetBusinessToCustomerAge getAge,
             IGetBusinessToCustomerRoles getRoles, IGetBusinessToCustomerExperience getExperience,
-            IGetBusinessToCustomerTags getTags)
+            IGetBusinessToCustomerTags getTags, IB2CSearchBlockBind b2CSearchBlockBind)
         {
             _customerDataManagementContext = dbContext;
             _getArea = getArea;
@@ -36,19 +40,69 @@ namespace Application.BusinessToCustomers.Queries
             _getRoles = getRoles;
             _getExperience = getExperience;
             _getTags = getTags;
+            _b2CSearchBlockBind = b2CSearchBlockBind;
         }
 
         public BusinessToCustomerListModel Get()
         {
-            var filterCity = _getCity.Get();
-            var filterState = _getState.Get();
-            var filterArea = _getArea.Get();
-            var filterCountry = _getCountry.Get();
-            var filterRoles = _getRoles.Get();
-            var filterSalary = _getSalary.Get();
-            var filterExprence = _getExperience.Get();
-            var filterAge = _getAge.Get();
-            var filterTags = _getTags.Get();
+
+            //var filterCity = _getCity.Get();
+            //var filterState = _getState.Get();
+            //var filterArea = _getArea.Get();
+            //var filterCountry = _getCountry.Get();
+            //var filterRoles = _getRoles.Get();
+            //var filterSalary = _getSalary.Get();
+            //var filterExprence = _getExperience.Get();
+            //var filterAge = _getAge.Get();
+            //var filterTags = _getTags.Get();
+
+            var searchBlock = _b2CSearchBlockBind.Fetch();
+
+            var Filter = new DataFilter
+            {
+                Area = searchBlock?.Area.Select(x => new SelectListItem()
+                {
+                    Value = x.Area,
+                    Text = x.Area
+                }).AsEnumerable(),
+                Cities = searchBlock?.City.Select(x => new SelectListItem()
+                {
+                    Value = x.City,
+                    Text = x.City
+                }).AsEnumerable(),
+                Countries = searchBlock?.Country.Select(x => new SelectListItem()
+                {
+                    Value = x.Country,
+                    Text = x.Country
+                }).AsEnumerable(),
+                States = searchBlock?.State.Select(x => new SelectListItem()
+                {
+                    Value = x.States,
+                    Text = x.States
+                }).AsEnumerable(),
+                Ages = searchBlock?.Age.Where(x=>x.Age>0).Select(x => new SelectListItem()
+                {
+                    Value = $"{x.Age}",
+                    Text = $"{x.Age}"
+                }).AsEnumerable(),
+                Roles = searchBlock?.Roles.Select(x => new SelectListItem()
+                {
+                    Value = x.Roles,
+                    Text = x.Roles
+                }).AsEnumerable(),
+                Salaries = searchBlock?.Salary.Select(x => new SelectListItem()
+                {
+                    Value = x.Salary,
+                    Text = x.Salary
+                }).AsEnumerable(),
+                Expercince = searchBlock?.Experience.Select(x => new SelectListItem()
+                {
+                    Value = x.Experience,
+                    Text = x.Experience
+                }).AsEnumerable(),
+                Tags = JsonConvert.SerializeObject(searchBlock?.Tags)
+            };
+
             //var filterDestination = _getDestination.Get();
             //var customer = _customerDataManagementContext.BusinessToCustomer
             //    .OrderByDescending(x => x.CreatedDate)
@@ -83,18 +137,7 @@ namespace Application.BusinessToCustomers.Queries
 
             return new BusinessToCustomerListModel
             {
-                Filter = new DataFilter
-                {
-                    Area = filterArea,
-                    Cities = filterCity,
-                    Countries = filterCountry,
-                    States = filterState,
-                    Ages = filterAge,
-                    Roles = filterRoles,
-                    Salaries = filterSalary,
-                    Expercince = filterExprence,
-                    Tags = JsonConvert.SerializeObject(filterTags)
-                }
+                Filter = Filter
             };
         }
     }

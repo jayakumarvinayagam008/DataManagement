@@ -125,6 +125,12 @@ function UpdateDashBoard(customerData) {
     $('#spnSearchTotal').text(customerData.searchCount);
     $('#downloadLink').val(customerData.downloadLink);
 
+    if (customerData.searchCount < 1) {
+        $('#btnCustomerExcelExport, #btnCustomeCSVExport').attr('disabled', 'disabled');
+    } else {
+        $('#btnCustomerExcelExport, #btnCustomeCSVExport').removeAttr('disabled');
+    }
+
     var listItems = '';
     for (var key in customerData) {
         if (customerData.hasOwnProperty(key)) {

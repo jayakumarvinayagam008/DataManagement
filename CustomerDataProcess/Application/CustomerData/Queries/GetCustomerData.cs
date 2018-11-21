@@ -1,4 +1,5 @@
 ﻿using Application.DataUpload.Commands.SaveDataUpload;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Persistance;
@@ -22,7 +23,7 @@ namespace Application.CustomerData.Queries
         private readonly IFilterCustomerTags _filterCustomerTags;
         private readonly IGetStates _getStates;
         private readonly IGetCustomerCountry _getCustomerCountry;
-
+        private readonly ICustomerDataSearchBlockBind _customerDataSearchBlockBind;
         public GetCustomerData(CustomerDataManagementContext dbContext,
             IGetCustomerCities getCustomerCities,
             IGetCustomerBusinessVertical getCustomerBusinessVertical,
@@ -32,7 +33,8 @@ namespace Application.CustomerData.Queries
             IGetCustomerClientNames getCustomerClientNames,
             IFilterCustomerTags filterCustomerTags,
             IGetStates getStates,
-            IGetCustomerCountry getCustomerCountry)
+            IGetCustomerCountry getCustomerCountry,
+            ICustomerDataSearchBlockBind customerDataSearchBlockBind)
         {
             _customerDataManagementContext = dbContext;
             _getCustomerCities = getCustomerCities;
@@ -44,18 +46,22 @@ namespace Application.CustomerData.Queries
             _filterCustomerTags = filterCustomerTags;
             _getStates = getStates;
             _getCustomerCountry = getCustomerCountry;
+            _customerDataSearchBlockBind = customerDataSearchBlockBind;
         }
 
         public CustomerListDataModel Get()
         {
-            var cities = _getCustomerCities.Get();
-            var businessValues = _getCustomerBusinessVertical.Get();
-            var network = _getCustomerNetwork.Get();
-            var dataQuality = _getCustomerDataQuality.Get();
-            var tags = _getCustomerTags.Get();
-            var clientNames = _getCustomerClientNames.Get();
-            var countries = _getCustomerCountry.Get();
-            var staties = _getStates.Get();
+            var searchBlock = _customerDataSearchBlockBind.Fetch();
+            
+
+            //var cities = _getCustomerCities.Get();
+            //var businessValues = _getCustomerBusinessVertical.Get();
+            //var network = _getCustomerNetwork.Get();
+            //var dataQuality = _getCustomerDataQuality.Get();
+            //var tags = _getCustomerTags.Get();
+            //var clientNames = _getCustomerClientNames.Get();
+            //var countries = _getCustomerCountry.Get();
+            //var staties = _getStates.Get();
 
             //var customerData = _customerDataManagementContext.CustomerDataManagement
             //    .OrderByDescending(x => x.CreatedDate).Take(5000)
@@ -76,14 +82,42 @@ namespace Application.CustomerData.Queries
             {
                 Filter = new Common.DataFilter
                 {
-                    Cities = cities,
-                    BusinessVertical = businessValues,
-                    DataQuality = dataQuality,
-                    Networks = network,
-                    Tags = JsonConvert.SerializeObject(tags),
-                    Customers = clientNames,
-                    Countries = countries,
-                    States = staties
+                    Countries = searchBlock?.Country.Select(x => new SelectListItem()
+                    {
+                        Value = x.Country,
+                        Text = x.Country
+                    }).AsEnumerable(),
+                    States = searchBlock?.State.Select(x => new SelectListItem()
+                    {
+                        Text = x.States,
+                        Value = x.States
+                    }).AsEnumerable(),
+                    Cities = searchBlock?.City.Select(x => new SelectListItem() {
+                        Text = x.City,
+                        Value = x.City
+                    }).AsEnumerable(),
+                    Networks = searchBlock?.Network.Select(x => new SelectListItem()
+                    {
+                        Text = x.Network,
+                        Value = x.Network
+                    }).AsEnumerable(),
+                    BusinessVertical = searchBlock?.BusinessVertical.Select(x => new SelectListItem()
+                    {
+                        Text = x.BusinessVertical,
+                        Value = x.BusinessVertical
+                    }).AsEnumerable(),
+                    DataQuality = searchBlock?.DataQuality.Select(x => new SelectListItem()
+                    {
+                        Text = x.DataQuality,
+                        Value = x.DataQuality
+                    }).AsEnumerable(),                
+                   
+                    Customers = searchBlock?.CustomerName.Select(x => new SelectListItem()
+                    {
+                        Text = x.CustomerName,
+                        Value = x.CustomerName
+                    }).AsEnumerable(),
+                    Tags = JsonConvert.SerializeObject(searchBlock?.Tags)
                 }
             };
         }

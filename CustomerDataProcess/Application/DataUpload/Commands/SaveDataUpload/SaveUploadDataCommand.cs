@@ -25,10 +25,9 @@ namespace Application.DataUpload.Commands.SaveDataUpload
         private readonly IGetCustomerPhone _getCustomerPhone;
         private readonly IGetBusinessToCustomerPhone _getBusinessToCustomerPhone;
         private readonly IGetBusinesstoBusinessPhone _getBusinesstoBusinessPhone;
-        //private IUploadProcess[] uploadProcesses = new IUploadProcess[] {
-        //    new BusinessToCustomerUploadProcess(new BusinessToCustomerFileToDataModel(),        //new SaveCustomerData()),
-
-        //};
+        private IUploadProcess[] uploadProcesses = new IUploadProcess[] {
+            new BusinessToCustomerUploadProcess()
+        };
         private readonly IGetNewRequestId _getNewRequestId;
         private readonly ISaveBusinessToBusinessTags _saveBusinessToBusinessTags;
         private readonly ISaveBusinessToCustomerTags _saveBusinessToCustomerTags;
@@ -79,29 +78,19 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             if (saveDataModel.UploadTypeId == (int)CustomerDataUploadType.BusinessToBusiness)
             {
                 var businessToBusinessData = _businessToBusinessFileToDataModel.ReadFileData(saveDataModel);
-
-                //var emptyPhone =businessToBusinessData.Item1.Where(x => !string.IsNullOrWhiteSpace(x.MobileNew));
                 // remove dublicate
                 var businessToBusiness = businessToBusinessData.Item1.DistinctBy(x => x.PhoneNew);
-                //var tt = businessToBusiness.Concat(emptyPhone);
                 uploadStatus.TotalRows = businessToBusinessData.Item2;
 
                 // Check business category validation
                 // Ceck phone number validation
-                //var phone = businessToBusiness.Select(x => x.Phone1).Where(x => !string.IsNullOrWhiteSpace(x)).AsEnumerable<string>();
                 var numbers = _getBusinesstoBusinessPhone.Get();
                 businessToBusiness = businessToBusiness.Except(numbers, x => x.PhoneNew, y => y).ToList();
                 numbers = null;
                 if (businessToBusiness.Count() > 0)
                 {
                     // validate Business category
-                    //var categoryName = businessToBusiness.Select(x => x.CategoryId.Value).AsEnumerable<int>();
-                    //var unmappedCategory = _validateBusinessCategoruEntiry.Validate(categoryName).ToList<int>();
-                    var validBusinessToBusiness = businessToBusiness;
-                        //businessToBusiness.Join(unmappedCategory,
-                        //x => x.CategoryId,
-                        //y => y,
-                        //(x, y) => x).AsEnumerable<BusinessToBusinesModel>();
+                    var validBusinessToBusiness = businessToBusiness;                       
                     uploadStatus.UploadedRows = validBusinessToBusiness.Count(); // number of rows going to update
                     if (validBusinessToBusiness.Count() > 0)
                     {

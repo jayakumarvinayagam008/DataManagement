@@ -20,7 +20,9 @@
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
     <PackageReference Include="morelinq" Version="3.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Snickler.EFCore" Version="1.0.3" />
     <PackageReference Include="System.Linq" Version="4.3.0" />
+    <PackageReference Include="Z.EntityFramework.Extensions.EFCore" Version="2.1.40" />
   </ItemGroup>
 
   <ItemGroup>

@@ -17,9 +17,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataManagement.Data", "Data
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReferenceDocument", "ReferenceDocument", "{0521085B-11DF-4E21-B33F-E33F2CDEC3E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistance", "Persistance\Persistance.csproj", "{F53BCADB-9F3E-48E5-B3F5-09C28386137D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistance", "Persistance\Persistance.csproj", "{F53BCADB-9F3E-48E5-B3F5-09C28386137D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{4CE13B0D-728B-4B5E-A4B1-8FCE6DB279D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{4CE13B0D-728B-4B5E-A4B1-8FCE6DB279D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{1F046E20-B94F-4448-9018-A4EAAA9DF5F1}"
+	ProjectSection(SolutionItems) = preProject
+		Ref.txt = Ref.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +65,7 @@ Global
 		{0521085B-11DF-4E21-B33F-E33F2CDEC3E0} = {62D2E344-B447-4539-B8B0-D8327E44D685}
 		{F53BCADB-9F3E-48E5-B3F5-09C28386137D} = {62D2E344-B447-4539-B8B0-D8327E44D685}
 		{4CE13B0D-728B-4B5E-A4B1-8FCE6DB279D5} = {62D2E344-B447-4539-B8B0-D8327E44D685}
+		{1F046E20-B94F-4448-9018-A4EAAA9DF5F1} = {62D2E344-B447-4539-B8B0-D8327E44D685}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09D54169-E519-4D04-B953-068D894D9D73}

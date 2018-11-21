@@ -1,4 +1,6 @@
 ﻿using Application.Common;
+using EFCore.BulkExtensions;
+using Microsoft.EntityFrameworkCore;
 using Persistance;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ namespace Application.DataUpload.Commands.SaveDataUpload
     public class SaveBusinessToCustomer : ISaveBusinessToCustomer
     {
         private readonly CustomerDataManagementContext _customerDataManagementContext;
-
+        private decimal _percentage = 0;
         public SaveBusinessToCustomer(CustomerDataManagementContext customerDataManagementContext)
         {
             _customerDataManagementContext = customerDataManagementContext;
@@ -20,7 +22,9 @@ namespace Application.DataUpload.Commands.SaveDataUpload
             try
             {
                 bool status = false;
-                _customerDataManagementContext.BusinessToCustomer.AddRange(
+                List<Persistance.BusinessToCustomer> businessToCustomers = new List<BusinessToCustomer>();
+
+                businessToCustomers.AddRange(
                     businessToCustomer.Select(
                         x => new Persistance.BusinessToCustomer
                         {
@@ -50,14 +54,29 @@ namespace Application.DataUpload.Commands.SaveDataUpload
                             State = x.State?.Trim(),
                             RequestId = requestId
                         }));
+                _customerDataManagementContext.Database.SetCommandTimeout(CommonSetting.TimeOut);
 
-                status = _customerDataManagementContext.SaveChanges() > 0;
+                _customerDataManagementContext.BulkInsert(businessToCustomers,
+                new BulkConfig
+                {
+                    PreserveInsertOrder = true,
+                    SetOutputIdentity = true,
+                    BatchSize = CommonSetting.BulkInsertRange,
+                },
+                 (a) => WriteProgress(a));
+
+                status = (CommonSetting.BulkInsertRange <= businessToCustomer.Count()) ? (int)_percentage >= 1 : true;
                 return status;
+
             }
             catch (Exception ex)
             {
                 throw;
             }
+        }
+        private void WriteProgress(decimal percentage)
+        {
+            _percentage = percentage;
         }
     }
 }
